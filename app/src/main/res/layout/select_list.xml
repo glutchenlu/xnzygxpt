@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whitesmoke"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+
+        <Button
+            android:id="@+id/btn_select_list_fenlei_back"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="2"
+            android:background="@android:color/background_light"
+            android:text="返回" />
+
+
+        <TextView
+            android:id="@+id/tv_select_list_search_icon"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@android:drawable/ic_search_category_default"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/tv_select_list_search"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="6"
+            android:gravity="start"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:text="检索相关内容" />
+
+        <TextView
+            android:id="@+id/tv_select_list_fabu"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="发布"
+            android:textColor="@android:color/holo_green_light" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/background_light"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/sp_select_list1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/list_str_quyu"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/sp_select_list2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/list_str_leibie"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/sp_select_list3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/list_str_sal"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/sp_select_list4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/list_str_qita"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_select_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light"
+        android:divider="@color/whitesmoke"
+        android:dividerHeight="7dp"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:paddingBottom="10dp" />
+</LinearLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sal">
+        <item>面议</item>
+        <item>1-499元</item>
+        <item>500-999元</item>
+        <item>1000-1999元</item>
+        <item>2000-2999元</item>
+        <item>3000-5999元</item>
+        <item>6000-8999元</item>
+        <item>9000-14999元</item>
+        <item>15000-19999元</item>
+        <item>20000元以上</item>
+    </string-array>
+
+    <string-array name="work_nature">
+        <item>兼职</item>
+        <item>全职</item>
+    </string-array>
+    <string-array name="company_nature">
+        <item>国企</item>
+        <item>民营</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="company_scale">
+        <item>1-499人</item>
+        <item>500-999人</item>
+        <item>1000-1999人</item>
+        <item>2000-4999人</item>
+        <item>5000人以上</item>
+    </string-array>
+    <string-array name="fabu_work_experience">
+        <item>无</item>
+        <item>1-2年</item>
+        <item>3-5年</item>
+        <item>5-10年</item>
+        <item>10年以上</item>
+    </string-array>
+    <string-array name="fabu_work_education">
+        <item>本科</item>
+        <item>初中</item>
+        <item>高中</item>
+        <item>专科</item>
+        <item>硕士</item>
+        <item>博士</item>
+    </string-array>
+    <string-array name="fabu_goods_degree">
+        <item>全新</item>
+        <item>99成新</item>
+        <item>95成新</item>
+        <item>9成新</item>
+        <item>8成新</item>
+        <item>7成新及以下</item>
+    </string-array>
+    <string-array name="list_str_quyu">
+        <item>区域1</item>
+        <item>区域2</item>
+        <item>区域3</item>
+        <item>区域4</item>
+        <item>区域5</item>
+        <item>区域6</item>
+    </string-array>
+    <string-array name="list_str_leibie">
+        <item>类别1</item>
+        <item>类别2</item>
+        <item>类别3</item>
+        <item>类别4</item>
+        <item>类别5</item>
+        <item>类别6</item>
+    </string-array>
+    <string-array name="list_str_sal">
+        <item>薪资1</item>
+        <item>薪资2</item>
+        <item>薪资3</item>
+        <item>薪资4</item>
+        <item>薪资5</item>
+        <item>薪资6</item>
+    </string-array>
+    <string-array name="list_str_qita">
+        <item>其他1</item>
+        <item>其他2</item>
+        <item>其他3</item>
+        <item>其他4</item>
+        <item>其他5</item>
+        <item>其他6</item>
+    </string-array>
+</resources>
