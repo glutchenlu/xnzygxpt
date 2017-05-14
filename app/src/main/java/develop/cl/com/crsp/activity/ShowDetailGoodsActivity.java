@@ -2,6 +2,7 @@ package develop.cl.com.crsp.activity;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -14,7 +15,10 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 
@@ -27,7 +31,6 @@ import develop.cl.com.crsp.adapter.ViewPagerNetAdapter;
 import develop.cl.com.crsp.image.BitmapCache;
 import develop.cl.com.crsp.image.CircleImageView;
 import develop.cl.com.crsp.util.DFVolley;
-import develop.cl.com.crsp.util.MySharedPreferences;
 import develop.cl.com.crsp.util.ServerInformation;
 import develop.cl.com.crsp.util.VolleyCallback;
 
@@ -90,13 +93,9 @@ public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.O
         UrlStr = map.get("pic").toString().split(",");
         setViewPageArr();
 
-        tvTitle.setText(map.get("title").toString());
-        tvSource.setText(map.get("source").toString());
-        tvSal.setText(map.get("price").toString());
-//        tvSource.setText(map.get("source").toString());
-        tvDegree.setText(map.get("degree").toString());
-        tvDetail.setText(map.get("detail").toString());
-        tvArea.setText(map.get("area").toString());
+        /**
+         * 请求数据
+         */
         String userUrl = ServerInformation.URL + "user/findbyid?userid=" + map.get("userid");
         VolleyCallback volleyCallback = new VolleyCallback() {
             @Override
@@ -109,40 +108,50 @@ public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.O
                     //解析返回的json
                     JSONObject jsonObject = JSON.parseObject(result);
                     JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
-                    //显示提示消息
-//                    DisPlay(jsonMap.get("returnString").toString());
                     //根据返回内容执行操作
                     if (jsonMap.get("returnCode").toString().equals("1")) {
-                        Basic jsonBasic = JSON.parseObject(jsonMap.get("resultBasic").toString(), Basic.class);
-                        MySharedPreferences.setBasic(ShowDetailGoodsActivity.this, jsonBasic);
-//                        sendFindDatingServer(jsonUser);
-                    } else {
+                        JSONObject beanMap = JSON.parseObject(jsonMap.get("returnBean").toString());
+                        Basic locbasic = JSON.parseObject(beanMap.get("basic").toString(), Basic.class);
+                        //卖家名称
+                        tvName.setText(locbasic.getName());
+                        tvTitle.setText(map.get("title").toString());
+                        tvSource.setText(map.get("source").toString());
+                        tvSal.setText(map.get("price").toString());
+                        tvSource.setText(map.get("source").toString());
+                        tvDegree.setText(map.get("degree").toString());
+                        tvDetail.setText(map.get("detail").toString());
+                        tvArea.setText(map.get("area").toString());
+                        ImageRequest imageRequest = new ImageRequest(locbasic.getPicture(),
+                                new Response.Listener<Bitmap>() {
+                                    @Override
+                                    public void onResponse(Bitmap response) {
+                                        //获得卖家头像信息
+                                        ivPic.setImageBitmap(response);
+                                    }
+                                }, 50, 50, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e("error", error.getMessage());
+                            }
+                        });
+                        mQueue.add(imageRequest);
                     }
                     Log.d("returnCode", jsonMap.get("returnCode").toString());
                 }
             }
         };
+        /**
+         * 请求卖家信息
+         */
         DFVolley.NoMReq(mQueue, userUrl, volleyCallback);
-//        tvName.setText(basic.getName());
-
-//        ImageRequest imageRequest = new ImageRequest(basic.getPicture(),
-//                new Response.Listener<Bitmap>() {
-//                    @Override
-//                    public void onResponse(Bitmap response) {
-//                        ivPic.setImageBitmap(response);
-//                    }
-//                }, 50, 50, Bitmap.Config.RGB_565, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("error", error.getMessage());
-//            }
-//        });
-//        mQueue.add(imageRequest);
     }
 
+    /**
+     * 设置viewpage内容
+     */
     protected void setViewPageArr() {
         /**
-         * 生命NetworkImageView控件数组
+         * 声明NetworkImageView控件数组
          */
         ArrayList<NetworkImageView> list = new ArrayList<NetworkImageView>();
         //获取屏幕的高度,取其三分之一

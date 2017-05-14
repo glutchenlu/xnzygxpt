@@ -159,7 +159,7 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (type) {
                     case "二手交易":
-                        datalistp.get(position);
+                        nextMap = datalistp.get(position);
                         mIntent = new Intent(Select_ListActivity.this, ShowDetailGoodsActivity.class);
                         //无法直接传map，需要序列化
                         mIntent.putExtra("map", (Serializable) nextMap);

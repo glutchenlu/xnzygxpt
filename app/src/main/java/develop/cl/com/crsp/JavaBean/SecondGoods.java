@@ -60,6 +60,7 @@ public class SecondGoods {
     }
 
 
+
     public int getSecond_goodsid() {
         return second_goodsid;
     }
