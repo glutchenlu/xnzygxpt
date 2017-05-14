@@ -132,10 +132,10 @@ public class RegisterBormalActivity extends BaseActivity implements View.OnClick
                 }
             };
             //声明自定义Volley实例
-            DFVolley dfv = new DFVolley(volleyCallback);
+//            DFVolley dfv = new DFVolley(volleyCallback);
             String url = ServerInformation.URL + "user/register";
             //调用自定义的Volley函数
-            dfv.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, xuser), volleyCallback);
+            DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, xuser), volleyCallback);
         }
     }
 

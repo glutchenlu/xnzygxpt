@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -147,6 +148,45 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
             default:
                 break;
         }
+
+        /**
+         * listview 点击监听
+         */
+        lv_select_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            Map<String, Object> nextMap;
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (type) {
+                    case "二手交易":
+                        datalistp.get(position);
+                        mIntent = new Intent(Select_ListActivity.this, ShowDetailGoodsActivity.class);
+                        //无法直接传map，需要序列化
+                        mIntent.putExtra("map", (Serializable) nextMap);
+                        startActivity(mIntent);
+                        break;
+                    case "物品出租":
+                        nextMap = datalistp.get(position);
+                        mIntent = new Intent(Select_ListActivity.this, ShowDetailGoodsActivity.class);
+                        //无法直接传map，需要序列化
+                        mIntent.putExtra("map", (Serializable) nextMap);
+                        startActivity(mIntent);
+                        break;
+                    case "学习资料":
+                        break;
+                    case "校内快捷服务":
+                        if (classposition == 0) {
+
+                        } else if (classposition == 1) {
+                        }
+                        break;
+                    case "校内资讯互动":
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     /**
@@ -170,15 +210,16 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                         public void onResponse(Bitmap response) {
                             count++;
                             Log.d(Tag, "count:" + count);
-                            map.put("pic", response);
+                            map.put("showpic", response);
                             datalistp.add(map);
                             if (count == listsize) {
                                 /**
                                  * 构造数据填充listview
                                  */
-                                String[] mapName = new String[]{"pic", "userid", "title", "release_time"
+                                String[] mapName = new String[]{"showpic", "userid", "scource", "title", "release_time"
                                         , "price", "area"};
                                 int[] controlId = new int[]{R.id.iv_select_list_pic, R.id.iv_select_list_user
+                                        , R.id.iv_select_list_source
                                         , R.id.iv_select_list_title, R.id.iv_select_list_timeitem
                                         , R.id.iv_select_list_price, R.id.iv_select_list_address};
                                 sadapter = new SimpleAdapter(Select_ListActivity.this, datalistp
@@ -241,10 +282,10 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv = new DFVolley(volleyCallback);
+//        DFVolley dfv = new DFVolley(volleyCallback);
 //        String url = ServerInformation.URL + "goods/addGoods";
         //调用自定义的Volley函数
-        dfv.NoMReq(mQueue, preUrl, volleyCallback);
+        DFVolley.NoMReq(mQueue, preUrl, volleyCallback);
     }
 
     @Override

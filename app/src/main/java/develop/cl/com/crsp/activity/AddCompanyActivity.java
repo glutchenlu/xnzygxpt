@@ -171,10 +171,10 @@ public class AddCompanyActivity extends BaseActivity implements View.OnClickList
                 }
             };
             //声明自定义Volley实例
-            DFVolley dfv = new DFVolley(volleyCallback);
+//            DFVolley dfv = new DFVolley(volleyCallback);
             String url = ServerInformation.URL + "company/addCompany";
             //调用自定义的Volley函数
-            dfv.VolleyUtilWithGet(0, mQueue, url, MyList.strList(str, company), volleyCallback);
+            DFVolley.VolleyUtilWithGet(0, mQueue, url, MyList.strList(str, company), volleyCallback);
         }
     }
 

@@ -139,11 +139,11 @@ public class Goods {
 		this.goods_name = goods_name;
 	}
 
-	public String getRelese_time() {
+	public String getRelease_time() {
 		return release_time;
 	}
 
-	public void setRelese_time(String relese_time) {
+	public void setRelease_time(String relese_time) {
 		this.release_time = relese_time;
 	}
 

@@ -189,9 +189,9 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv = new DFVolley(volleyCallback);
+//        DFVolley dfv = new DFVolley(volleyCallback);
         //调用自定义的Volley函数
-        dfv.NoMReq(mQueue, url, volleyCallback);
+        DFVolley.NoMReq(mQueue, url, volleyCallback);
     }
 
     @Override

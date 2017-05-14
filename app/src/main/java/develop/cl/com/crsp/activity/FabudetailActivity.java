@@ -266,10 +266,10 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                 }
             };
             //声明自定义Volley实例
-            DFVolley dfv = new DFVolley(volleyCallback);
+//            DFVolley dfv = new DFVolley(volleyCallback);
             String url = ServerInformation.URL + "company/checkCompany";
             //调用自定义的Volley函数
-            dfv.VolleyUtilWithGet(0, mQueue, url, MyList.strList(str, company), volleyCallback);
+            DFVolley.VolleyUtilWithGet(0, mQueue, url, MyList.strList(str, company), volleyCallback);
         }
     }
 
@@ -323,10 +323,10 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv = new DFVolley(volleyCallback);
+//        DFVolley dfv = new DFVolley(volleyCallback);
         String url = ServerInformation.URL + "work/addWork";
         //调用自定义的Volley函数
-        dfv.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, work), volleyCallback);
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, work), volleyCallback);
     }
 
     protected void showNormalDialog(String title, String message) {

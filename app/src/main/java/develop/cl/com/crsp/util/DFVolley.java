@@ -14,13 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 public class DFVolley {
-    final VolleyCallback callback;
 
-    public DFVolley(VolleyCallback callback) {
-        this.callback = callback;
-    }
 
-    public void NoMReq(RequestQueue mQueue, String getUrl, final VolleyCallback callback) {
+    public static void NoMReq(RequestQueue mQueue, String getUrl, final VolleyCallback callback) {
         StringRequest stringRequest = new StringRequest(getUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -44,7 +40,7 @@ public class DFVolley {
      * @param getUrl 所要请求的url
      * @param mList  url参数
      */
-    public void VolleyUtilWithGet(int mothod, RequestQueue mQueue, String getUrl, List<String[]> mList
+    public static void VolleyUtilWithGet(int mothod, RequestQueue mQueue, String getUrl, List<String[]> mList
             , final VolleyCallback callback) {
         if (mothod == Request.Method.GET) {
             if (mList.size() != 0) {
@@ -102,17 +98,17 @@ public class DFVolley {
         }
     }
 
-    public void VolleyUtilWithGet(int mothod, RequestQueue mQueue, String getUrl) {
+    public static void VolleyUtilWithGet(int mothod, RequestQueue mQueue, String getUrl, final VolleyCallback callback) {
         List<String[]> mList = new ArrayList<String[]>();
-        this.VolleyUtilWithGet(mothod, mQueue, getUrl, mList, this.callback);
+        VolleyUtilWithGet(mothod, mQueue, getUrl, mList, callback);
     }
 
-    public void VolleyUtilWithGet(RequestQueue mQueue, String getUrl) {
+    public static void VolleyUtilWithGet(RequestQueue mQueue, String getUrl, final VolleyCallback callback) {
         List<String[]> mList = new ArrayList<String[]>();
-        this.VolleyUtilWithGet(0, mQueue, getUrl, mList, this.callback);
+        VolleyUtilWithGet(0, mQueue, getUrl, mList, callback);
     }
 
-    public void VolleyUtilWithGet(RequestQueue mQueue, String getUrl, List<String[]> mList) {
-        this.VolleyUtilWithGet(0, mQueue, getUrl, mList, this.callback);
+    public static void VolleyUtilWithGet(RequestQueue mQueue, String getUrl, List<String[]> mList, final VolleyCallback callback) {
+        VolleyUtilWithGet(0, mQueue, getUrl, mList, callback);
     }
 }

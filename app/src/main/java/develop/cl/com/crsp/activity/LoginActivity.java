@@ -164,10 +164,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 }
             };
             //声明自定义Volley实例
-            DFVolley dfv = new DFVolley(volleyCallback);
+//            DFVolley dfv = new DFVolley(volleyCallback);
             String url = ServerInformation.URL + "user/login";
             //调用自定义的Volley函数
-            dfv.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, xuser), volleyCallback);
+            DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, xuser), volleyCallback);
         }
     }
 
@@ -207,10 +207,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv = new DFVolley(volleyCallbackBasic);
+//        DFVolley dfv = new DFVolley(volleyCallbackBasic);
         String url = ServerInformation.URL + "basic/findbyid";
         //调用自定义的Volley函数
-        dfv.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, basic), volleyCallbackBasic);
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, basic), volleyCallbackBasic);
     }
 
     /**
@@ -247,10 +247,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv = new DFVolley(volleyCallbackBasic);
+//        DFVolley dfv = new DFVolley(volleyCallbackBasic);
         String url = ServerInformation.URL + "dating/findbyid";
         //调用自定义的Volley函数
-        dfv.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, dating), volleyCallbackBasic);
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, dating), volleyCallbackBasic);
     }
 
     /**

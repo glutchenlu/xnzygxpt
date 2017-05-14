@@ -335,10 +335,10 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv = new DFVolley(volleyCallback);
+//        DFVolley dfv = new DFVolley(volleyCallback);
         String url = ServerInformation.URL + "basic/update";
         //调用自定义的Volley函数
-        dfv.VolleyUtilWithGet(1, mQueue, url, MyList.strList(strBasic, basic), volleyCallback);
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(strBasic, basic), volleyCallback);
 
         //创建回调接口并实例化方法
         VolleyCallback volleyCallback1 = new VolleyCallback() {
@@ -349,10 +349,10 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv1 = new DFVolley(volleyCallback1);
+//        DFVolley dfv1 = new DFVolley(volleyCallback1);
         String url1 = ServerInformation.URL + "dating/update";
         //调用自定义的Volley函数
-        dfv1.VolleyUtilWithGet(1, mQueue, url1, MyList.strList(strDating, dating), volleyCallback1);
+        DFVolley.VolleyUtilWithGet(1, mQueue, url1, MyList.strList(strDating, dating), volleyCallback1);
     }
 
     /**

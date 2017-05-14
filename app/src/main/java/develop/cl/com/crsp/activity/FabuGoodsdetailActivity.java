@@ -521,10 +521,10 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv = new DFVolley(volleyCallback);
+//        DFVolley dfv = new DFVolley(volleyCallback);
         String url = ServerInformation.URL + "goods/addGoods";
         //调用自定义的Volley函数
-        dfv.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, goods), volleyCallback);
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, goods), volleyCallback);
     }
 
     /**
@@ -572,10 +572,10 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
             }
         };
         //声明自定义Volley实例
-        DFVolley dfv = new DFVolley(volleyCallback);
+//        DFVolley dfv = new DFVolley(volleyCallback);
         String url = ServerInformation.URL + "secondgoods/addsecondGoods";
         //调用自定义的Volley函数
-        dfv.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, secondGoods), volleyCallback);
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, secondGoods), volleyCallback);
     }
 
     /**
