@@ -26,7 +26,7 @@
             android:layout_height="40dp"
             android:layout_weight="8"
             android:gravity="center_horizontal"
-            android:text="请选择发布的类别"
+            android:text="请选择发布类别"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
     </LinearLayout>

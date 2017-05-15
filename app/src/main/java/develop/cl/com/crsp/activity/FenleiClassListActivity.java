@@ -159,6 +159,13 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
         );
     }
 
+    /**
+     * 根据选择的分类请求数据
+     *
+     * @param url           服务器地址
+     * @param cls           将要跳转的页面
+     * @param classposition list的序列
+     */
     protected void LocQueryServer(String url, final Class<?> cls, final int classposition) {
         mQueue = Volley.newRequestQueue(FenleiClassListActivity.this);
         //创建回调接口并实例化方法
@@ -188,8 +195,6 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                 }
             }
         };
-        //声明自定义Volley实例
-//        DFVolley dfv = new DFVolley(volleyCallback);
         //调用自定义的Volley函数
         DFVolley.NoMReq(mQueue, url, volleyCallback);
     }

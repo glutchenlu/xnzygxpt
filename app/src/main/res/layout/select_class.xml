@@ -9,8 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/background_light"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_select_class_back"
@@ -21,28 +20,41 @@
             android:background="@android:color/background_light"
             android:text="返回" />
 
-        <SearchView
-            android:id="@+id/sv_select_class"
+        <TextView
+            android:id="@+id/tv_select_class_search_icon"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:iconifiedByDefault="false"
-            android:queryHint="查询相关内容" />
+            android:layout_height="30dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@android:drawable/ic_search_category_default"
+            android:padding="10dp" />
 
-        <Button
-            android:id="@+id/btn_select_class_jianli"
+        <TextView
+            android:id="@+id/tv_select_class_search"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="6"
+            android:gravity="start"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:text="检索相关内容" />
+
+        <TextView
+            android:id="@+id/tv_select_class_jianli"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_marginRight="10dp"
             android:layout_weight="2"
-            android:background="@android:color/holo_green_light"
+            android:gravity="center"
             android:text="写简历"
-            android:textColor="?attr/colorSwitchThumbNormal" />
+            android:textColor="@android:color/holo_green_light" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@color/whitesmoke"
         android:orientation="horizontal" />
 
@@ -55,23 +67,14 @@
             android:layout_height="wrap_content"
             android:background="@android:color/background_light"
             android:orientation="vertical"
-            android:paddingBottom="50dp">
+            android:paddingBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@android:color/background_light"
                 android:orientation="vertical">
-
-                <GridView
-                    android:id="@+id/gv_select_class_s"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_margin="20dp"
-                    android:horizontalSpacing="10dp"
-                    android:numColumns="3"
-                    android:verticalSpacing="10dp" />
 
                 <TextView
                     android:id="@+id/tv_select_remind"
@@ -82,35 +85,183 @@
                     android:gravity="center_horizontal"
                     android:padding="10dp"
                     android:text="你距离月薪过万 只差一份好的简历"
-                    android:textColor="?attr/colorSwitchThumbNormal" />
+                    android:textColor="@color/whitesmoke" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:background="@android:color/background_light"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tb_select_class_fenlei"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center_horizontal"
-                    android:padding="10dp"
-                    android:text="热门工作"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginTop="15dp"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical">
 
-                <GridView
-                    android:id="@+id/gv_select_class_x"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="left"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:text="商务·营销"
+                        android:textColor="@android:color/holo_green_light"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_margin="20dp"
-                    android:horizontalSpacing="10dp"
-                    android:numColumns="3"
-                    android:verticalSpacing="10dp" />
+                    android:layout_height="2dp"
+                    android:background="@color/whitesmoke"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
+
+                    <GridView
+                        android:id="@+id/gv_select_work_fenlei1"
+                        android:layout_width="match_parent"
+                        android:layout_height="265dp"
+                        android:layout_margin="20dp"
+                        android:horizontalSpacing="10dp"
+                        android:numColumns="3"
+                        android:verticalSpacing="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="left"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:text="生活·服务"
+                        android:textColor="@android:color/holo_green_light"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/whitesmoke"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
+
+                    <GridView
+                        android:id="@+id/gv_select_work_fenlei2"
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:layout_margin="20dp"
+                        android:horizontalSpacing="10dp"
+                        android:numColumns="3"
+                        android:verticalSpacing="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="left"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:text="技术·制造"
+                        android:textColor="@android:color/holo_green_light"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/whitesmoke"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
+
+                    <GridView
+                        android:id="@+id/gv_select_work_fenlei3"
+                        android:layout_width="match_parent"
+                        android:layout_height="265dp"
+                        android:layout_margin="20dp"
+                        android:horizontalSpacing="10dp"
+                        android:numColumns="3"
+                        android:verticalSpacing="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="left"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:text="艺术·教育"
+                        android:textColor="@android:color/holo_green_light"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/whitesmoke"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@android:color/background_light"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
+
+                    <GridView
+                        android:id="@+id/gv_select_work_fenlei4"
+                        android:layout_width="match_parent"
+                        android:layout_height="85dp"
+                        android:layout_margin="20dp"
+                        android:horizontalSpacing="10dp"
+                        android:numColumns="3"
+                        android:verticalSpacing="10dp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

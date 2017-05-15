@@ -245,7 +245,7 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                 //回调内容result
                 public void onSuccessResponse(String result) {
                     Log.d("callBack result", result);
-                    if ("".equals(result)) {
+                    if ("error".equals(result)) {
                         DisPlay("服务器异常！");
                         return;
                     } else {
@@ -304,7 +304,7 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
             //回调内容result
             public void onSuccessResponse(String result) {
                 Log.d("callBack result", result);
-                if ("".equals(result)) {
+                if ("error".equals(result)) {
                     DisPlay("服务器异常！");
                     return;
                 } else {

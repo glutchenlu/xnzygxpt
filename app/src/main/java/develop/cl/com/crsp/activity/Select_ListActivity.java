@@ -281,9 +281,6 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         };
-        //声明自定义Volley实例
-//        DFVolley dfv = new DFVolley(volleyCallback);
-//        String url = ServerInformation.URL + "goods/addGoods";
         //调用自定义的Volley函数
         DFVolley.NoMReq(mQueue, preUrl, volleyCallback);
     }

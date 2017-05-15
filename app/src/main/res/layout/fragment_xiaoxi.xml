@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <Button
         android:id="@+id/btn_xiaoxi1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="70dp"
+        android:background="@color/whitesmoke"
         android:text="消息" />
 
     <Button
@@ -20,6 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="70dp"
         android:layout_toEndOf="@+id/btn_xiaoxi1"
+        android:background="@color/whitesmoke"
         android:text="其他消息" />
 
     <ListView

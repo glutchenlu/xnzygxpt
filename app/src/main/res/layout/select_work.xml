@@ -9,8 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/background_light"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_select_work_back"
@@ -21,24 +20,36 @@
             android:background="@android:color/background_light"
             android:text="返回" />
 
-        <SearchView
-
-            android:id="@+id/sv_select_work"
+        <TextView
+            android:id="@+id/tv_select_work_search_icon"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@android:drawable/ic_search_category_default"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/tv_select_work_search"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_weight="6"
-            android:iconifiedByDefault="false"
-            android:queryHint="查询相关内容" />
+            android:gravity="start"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:text="检索相关内容" />
 
-        <Button
-            android:id="@+id/btn_select_work_jianli"
+        <TextView
+            android:id="@+id/tv_select_work_jianli"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginRight="10dp"
             android:layout_weight="2"
-            android:background="@android:color/holo_green_light"
+            android:gravity="center"
             android:text="写简历"
-            android:textColor="?attr/colorSwitchThumbNormal" />
+            android:textColor="@android:color/holo_green_light" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,6 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:entries="@array/list_str_quyu"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -62,6 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:entries="@array/list_str_leibie"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -69,6 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:entries="@array/list_str_sal"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -76,6 +90,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:entries="@array/list_str_qita"
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
@@ -87,6 +102,6 @@
         android:divider="@color/whitesmoke"
         android:dividerHeight="7dp"
         android:gravity="center_horizontal"
-        android:padding="20dp"
-        android:paddingBottom="30dp" />
+        android:padding="10dp"
+        android:paddingBottom="10dp" />
 </LinearLayout>
