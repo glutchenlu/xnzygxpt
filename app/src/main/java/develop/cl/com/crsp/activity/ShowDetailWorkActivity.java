@@ -76,7 +76,7 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
         tvShoucang.setOnClickListener(this);
         btnSummit.setOnClickListener(this);
         btnCall.setOnClickListener(this);
-//从Intent获得额外信息
+        //从Intent获得额外信息
         mIntent = this.getIntent();
         mapw = (Map<String, Object>) mIntent.getSerializableExtra("mapw");
         mapc = (Map<String, Object>) mIntent.getSerializableExtra("mapc");

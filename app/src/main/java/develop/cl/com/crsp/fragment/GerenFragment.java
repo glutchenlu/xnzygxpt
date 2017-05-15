@@ -17,6 +17,11 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +31,23 @@ import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.FabudetailActivity;
 import develop.cl.com.crsp.activity.LoginActivity;
 import develop.cl.com.crsp.activity.Person_DataActivity;
+import develop.cl.com.crsp.activity.UserFabuActivity;
 import develop.cl.com.crsp.image.CircleImageView;
+import develop.cl.com.crsp.util.DFVolley;
 import develop.cl.com.crsp.util.MySharedPreferences;
+import develop.cl.com.crsp.util.ServerInformation;
+import develop.cl.com.crsp.util.VolleyCallback;
 
 
 public class GerenFragment extends Fragment implements View.OnClickListener {
-
+    /**
+     * 网络请求Volley
+     */
+    private VolleyCallback volleyCallback;
+    /**
+     * 存放网络请求的队列
+     */
+    private RequestQueue mQueue;
     private boolean isLogin;
     private View view;
     private Intent mIntent;
@@ -90,6 +106,57 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
             ivPhoto.setImageBitmap(bitmap);
             tvName.setText(basic.getName());
         }
+        gv_geren_s.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        sendQueryServer();
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+
+    /**
+     * 向服务器请求数据
+     */
+    protected void sendQueryServer() {
+        String locUrl = ServerInformation.URL + "user/userfabu?userid="
+                + MySharedPreferences.getUserID(getActivity());
+        mQueue = Volley.newRequestQueue(getActivity());
+        volleyCallback = new VolleyCallback() {
+            @Override
+            //回调内容result
+            public void onSuccessResponse(String result) {
+                Log.d("callBack result", result);
+                if ("error".equals(result)) {
+                    Toast.makeText(getActivity(), "服务器异常！", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    //解析返回的json
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+                    //显示提示消息
+                    Toast.makeText(getActivity(), jsonMap.get("returnString").toString(), Toast.LENGTH_SHORT).show();
+                    //根据返回内容执行操作
+                    if (jsonMap.get("returnCode").toString().equals("1")) {
+                        mIntent = new Intent(getActivity(), UserFabuActivity.class);
+                        mIntent.putExtra("resultBean", jsonMap.getString("resultBean"));
+                        startActivity(mIntent);
+                    }
+                    Log.d("returnCode", jsonMap.get("returnCode").toString());
+                }
+            }
+        };
+        //调用自定义的Volley函数
+        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
     }
 
     protected void mySetAdapter2(GridView gv, List<Map<String, Object>> list, SimpleAdapter adapter
