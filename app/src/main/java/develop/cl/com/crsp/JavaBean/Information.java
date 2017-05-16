@@ -3,86 +3,95 @@ package develop.cl.com.crsp.JavaBean;
 
 public class Information {
 
-	private int informationid;
-	private String userid;
-	private String classify;
-	private String title;
-	private String theme;
-	private String keyword;
-	private String detail;
-	private String release_time;
-	private int type;
+    private int informationid;
+    private String userid;
+    private String classify;
+    private String title;
+    private String theme;
+    private String keyword;
+    private String detail;
+    private String release_time;
+    private int type;
+    private String school;
 
-	public int getInformationid() {
-		return informationid;
-	}
+    public String getSchool() {
+        return school;
+    }
 
-	public void setInformationid(int informationid) {
-		this.informationid = informationid;
-	}
+    public void setSchool(String school) {
+        this.school = school;
+    }
 
-	public String getUserid() {
-		return userid;
-	}
+    public int getInformationid() {
+        return informationid;
+    }
 
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
+    public void setInformationid(int informationid) {
+        this.informationid = informationid;
+    }
 
-	public String getClassify() {
-		return classify;
-	}
+    public String getUserid() {
+        return userid;
+    }
 
-	public void setClassify(String classify) {
-		this.classify = classify;
-	}
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getClassify() {
+        return classify;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setClassify(String classify) {
+        this.classify = classify;
+    }
 
-	public String getTheme() {
-		return theme;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTheme(String theme) {
-		this.theme = theme;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getKeyword() {
-		return keyword;
-	}
+    public String getTheme() {
+        return theme;
+    }
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 
-	public String getDetail() {
-		return detail;
-	}
+    public String getKeyword() {
+        return keyword;
+    }
 
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
-	public String getRelease_time() {
-		return release_time;
-	}
+    public String getDetail() {
+        return detail;
+    }
 
-	public void setRelease_time(String release_time) {
-		this.release_time = release_time;
-	}
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
-	public int getType() {
-		return type;
-	}
+    public String getRelease_time() {
+        return release_time;
+    }
 
-	public void setType(int type) {
-		this.type = type;
-	}
+    public void setRelease_time(String release_time) {
+        this.release_time = release_time;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
 }

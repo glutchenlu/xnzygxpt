@@ -15,18 +15,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.sun.star.io.IOException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 
+import cn.qqtheme.framework.entity.City;
+import cn.qqtheme.framework.entity.County;
+import cn.qqtheme.framework.entity.Province;
+import cn.qqtheme.framework.picker.AddressPicker;
+import cn.qqtheme.framework.picker.DatePicker;
+import cn.qqtheme.framework.util.ConvertUtils;
+import cn.qqtheme.framework.util.LogUtils;
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.JavaBean.Dating;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.adapter.AddressPickTask;
 import develop.cl.com.crsp.image.CircleImageView;
 import develop.cl.com.crsp.util.DFVolley;
 import develop.cl.com.crsp.util.ImageUtils;
@@ -134,17 +144,17 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initView() {
 
-        lySchool.setOnClickListener(this);
+//        lySchool.setOnClickListener(this);
         lyStuid.setOnClickListener(this);
         lyName.setOnClickListener(this);
         lySex.setOnClickListener(this);
-        lyData.setOnClickListener(this);
+//        lyData.setOnClickListener(this);
         lyTel.setOnClickListener(this);
         lyEmail.setOnClickListener(this);
         lyAccount.setOnClickListener(this);
-        lyHome.setOnClickListener(this);
+//        lyHome.setOnClickListener(this);
         lyWork.setOnClickListener(this);
-        lyAddress.setOnClickListener(this);
+//        lyAddress.setOnClickListener(this);
         lyLstate.setOnClickListener(this);
         lyMark.setOnClickListener(this);
         ivPic.setOnClickListener(this);
@@ -235,15 +245,38 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    public void onAddress3Picker(View view) {
+        AddressPickTask task = new AddressPickTask(this);
+        task.setHideCounty(true);
+        task.setCallback(new AddressPickTask.Callback() {
+            @Override
+            public void onAddressInitFailed() {
+                showToast("数据初始化失败");
+            }
+
+            @Override
+            public void onAddressPicked(Province province, City city, County county) {
+//                showToast(province.getAreaName() + " " + city.getAreaName());
+                tvSchool.setText(city.getAreaName());
+                isChange = true;
+            }
+        });
+        task.execute("广西", "桂林理工大学");
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_person_pic:
                 pickPhoto();
                 break;
-            case R.id.ly_person_school:
-                checkData(tvSchool, "修改学校");
-                break;
+//            case R.id.ly_person_school:
+//                checkData(tvSchool, "修改学校");
+//                break;
             case R.id.ly_person_stuid:
                 checkData(tvStuid, "修改学号");
                 break;
@@ -253,30 +286,113 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
             case R.id.ly_person_sex:
                 checkData(tvSex, "修改性别");
                 break;
-            case R.id.lv_person_data:
-                checkData(tvData, "修改生日");
-                break;
+//            case R.id.lv_person_data:
+//                checkData(tvData, "修改生日");
+//                break;
             case R.id.lv_person_tel:
                 checkData(tvTel, "修改手机号码");
                 break;
             case R.id.lv_person_email:
                 checkData(tvEmail, "修改邮箱地址");
                 break;
-            case R.id.lv_person_home:
-                checkData(tvHome, "修改家乡");
-                break;
+//            case R.id.lv_person_home:
+//                checkData(tvHome, "修改家乡");
+//                break;
             case R.id.lv_person_work:
                 checkData(tvWork, "修改工作");
                 break;
-            case R.id.lv_person_address:
-                checkData(tvAddress, "修改地址");
-                break;
+//            case R.id.lv_person_address:
+//                checkData(tvAddress, "修改地址");
+//                break;
             case R.id.lv_person_lstate:
                 checkData(tvLstate, "修改情感状态");
                 break;
             case R.id.lv_person_mark:
                 checkData(tvMark, "修改签名");
                 break;
+        }
+    }
+
+    public void onYearMonthDayPicker(View view) {
+        final DatePicker picker = new DatePicker(this);
+        picker.setCanceledOnTouchOutside(true);
+        picker.setUseWeight(true);
+        picker.setTopPadding(ConvertUtils.toPx(this, 20));
+        picker.setRangeEnd(2111, 12, 31);
+        picker.setRangeStart(1930, 01, 01);
+        picker.setSelectedItem(1994, 12, 16);
+        picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
+            @Override
+            public void onDatePicked(String year, String month, String day) {
+                isChange = true;
+                tvData.setText(year + "-" + month + "-" + day);
+                showToast(year + "-" + month + "-" + day);
+            }
+        });
+        picker.setOnWheelListener(new DatePicker.OnWheelListener() {
+            @Override
+            public void onYearWheeled(int index, String year) {
+                picker.setTitleText(year + "-" + picker.getSelectedMonth() + "-" + picker.getSelectedDay());
+            }
+
+            @Override
+            public void onMonthWheeled(int index, String month) {
+                picker.setTitleText(picker.getSelectedYear() + "-" + month + "-" + picker.getSelectedDay());
+            }
+
+            @Override
+            public void onDayWheeled(int index, String day) {
+                picker.setTitleText(picker.getSelectedYear() + "-" + picker.getSelectedMonth() + "-" + day);
+            }
+        });
+        picker.show();
+    }
+
+    public void onAddress2Picker(final View view) {
+        try {
+            ArrayList<Province> data = new ArrayList<>();
+            String json = ConvertUtils.toString(getAssets().open("city.json"));
+            data.addAll(JSON.parseArray(json, Province.class));
+            AddressPicker picker = new AddressPicker(this, data);
+            picker.setShadowVisible(true);
+            picker.setHideProvince(false);
+            picker.setHideCounty(false);
+            picker.setSelectedItem("广西壮族自治区", "桂林", "雁山区");
+            picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
+                @Override
+                public void onAddressPicked(Province province, City city, County county) {
+                    showToast("province : " + province + ", city: " + city + ", county: " + county);
+                    tvHome.setText(province.getAreaName() + "-" + city.getAreaName() + "-" + county.getAreaName());
+                    isChange = true;
+                }
+            });
+            picker.show();
+        } catch (Exception e) {
+            showToast(LogUtils.toStackTraceString(e));
+        }
+    }
+
+    public void onAddress4Picker(final View view) {
+        try {
+            ArrayList<Province> data = new ArrayList<>();
+            String json = ConvertUtils.toString(getAssets().open("city.json"));
+            data.addAll(JSON.parseArray(json, Province.class));
+            AddressPicker picker = new AddressPicker(this, data);
+            picker.setShadowVisible(true);
+            picker.setHideProvince(false);
+            picker.setHideCounty(true);
+            picker.setSelectedItem("广西壮族自治区", "桂林", "雁山区");
+            picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
+                @Override
+                public void onAddressPicked(Province province, City city, County county) {
+                    showToast("province : " + province + ", city: " + city + ", county: " + county);
+                    tvAddress.setText(province.getAreaName() + "-" + city.getAreaName());
+                    isChange = true;
+                }
+            });
+            picker.show();
+        } catch (Exception e) {
+            showToast(LogUtils.toStackTraceString(e));
         }
     }
 
@@ -334,8 +450,6 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
                 Log.d("callBack result", result);
             }
         };
-        //声明自定义Volley实例
-//        DFVolley dfv = new DFVolley(volleyCallback);
         String url = ServerInformation.URL + "basic/update";
         //调用自定义的Volley函数
         DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(strBasic, basic), volleyCallback);
@@ -348,8 +462,6 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
                 Log.d("callBack1 result", result);
             }
         };
-        //声明自定义Volley实例
-//        DFVolley dfv1 = new DFVolley(volleyCallback1);
         String url1 = ServerInformation.URL + "dating/update";
         //调用自定义的Volley函数
         DFVolley.VolleyUtilWithGet(1, mQueue, url1, MyList.strList(strDating, dating), volleyCallback1);
@@ -362,7 +474,7 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
      * @throws IOException
      * @throws FileNotFoundException
      */
-    protected void sendUploadServer(String pthotoUrl) throws IOException, FileNotFoundException {
+    protected void sendUploadServer(String pthotoUrl) throws IOException {
         mQueue = Volley.newRequestQueue(Person_DataActivity.this);
         String uploadUrl = "";
         uploadUrl = ServerInformation.URL + "basic/upload";
@@ -424,7 +536,7 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
             MySharedPreferences.setPhoto(Person_DataActivity.this, getivPic);
             try {
                 sendUploadServer(getivPic);
-            } catch (IOException | FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

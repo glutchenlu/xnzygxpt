@@ -27,8 +27,8 @@
 
         <HorizontalScrollView
             android:id="@+id/scrollview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/ok_button"
             android:scrollbars="none">
 
@@ -43,8 +43,8 @@
 
     <GridView
         android:id="@+id/myGrid"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/bottom_layout"
         android:layout_below="@id/headview"
         android:layout_centerHorizontal="true"

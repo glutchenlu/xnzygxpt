@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import develop.cl.com.crsp.JavaBean.SelectWorkBean;
 import develop.cl.com.crsp.R;
 
 
@@ -67,18 +66,17 @@ public class GridViewData {
         return datalist;
     }
 
-    public List<Map<String, Object>> getData_SeleceWork(SelectWorkBean selectwork) {
-        for (int i = 0; i < selectwork.getWork_title().length; i++) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("title", selectwork.getWork_title()[i]);
-            map.put("work_sal", selectwork.getWork_sal()[i]);
-            map.put("work_welfare", selectwork.getWork_welfare()[i]);
-            map.put("work_company", selectwork.getWork_company()[i]);
-            map.put("work_time", selectwork.getWork_time()[i]);
-            map.put("work_land", selectwork.getWork_land()[i]);
-            map.put("work_submit", selectwork.getWork_submit());
-            datalist.add(map);
-        }
-        return datalist;
-    }
+//        for (int i = 0; i < selectwork.getWork_title().length; i++) {
+//            Map<String, Object> map = new HashMap<String, Object>();
+//            map.put("title", selectwork.getWork_title()[i]);
+//            map.put("work_sal", selectwork.getWork_sal()[i]);
+//            map.put("work_welfare", selectwork.getWork_welfare()[i]);
+//            map.put("work_company", selectwork.getWork_company()[i]);
+//            map.put("work_time", selectwork.getWork_time()[i]);
+//            map.put("work_land", selectwork.getWork_land()[i]);
+//            map.put("work_submit", selectwork.getWork_submit());
+//            datalist.add(map);
+//        }
+//        return datalist;
+//    }
 }

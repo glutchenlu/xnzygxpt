@@ -20,6 +20,15 @@ public class Work {
     private String count;
     private String tel;
     private String industry;
+    private String school;
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
 
     public String getIndustry() {
         return industry;

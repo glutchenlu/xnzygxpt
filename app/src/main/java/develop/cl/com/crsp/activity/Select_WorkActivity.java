@@ -85,7 +85,6 @@ public class Select_WorkActivity extends BaseActivity implements View.OnClickLis
 //        sp_select_work3.setAdapter(adapter3);
 //        sp_select_work4.setAdapter(adapter4);
 
-//        SelectWorkBean selectWork = new SelectWorkBean();
 //        GridViewData gridViewData_select_work = new GridViewData(datalist);
         //配置数据
 //        selectWork.setWork_company(new String[]{"广西", "广东", "北京", "上海", "武汉", "重庆", "四川", "天津"});

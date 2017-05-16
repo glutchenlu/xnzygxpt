@@ -18,6 +18,15 @@ public class SecondGoods {
     private String telname;
     private String pic;
     private String degree;
+    private String school;
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
 
     public String getDegree() {
         return degree;
@@ -58,7 +67,6 @@ public class SecondGoods {
     public void setType(int type) {
         this.type = type;
     }
-
 
 
     public int getSecond_goodsid() {

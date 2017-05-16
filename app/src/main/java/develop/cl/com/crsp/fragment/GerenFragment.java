@@ -244,6 +244,9 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_geren_set:
+                MySharedPreferences.setLogin(getActivity(), "no");
+                mIntent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(mIntent);
                 break;
         }
     }

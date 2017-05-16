@@ -26,15 +26,21 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.sun.star.io.IOException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import cn.qqtheme.framework.entity.City;
+import cn.qqtheme.framework.entity.County;
+import cn.qqtheme.framework.entity.Province;
+import cn.qqtheme.framework.picker.AddressPicker;
+import cn.qqtheme.framework.util.ConvertUtils;
+import cn.qqtheme.framework.util.LogUtils;
 import develop.cl.com.crsp.JavaBean.Goods;
 import develop.cl.com.crsp.JavaBean.SecondGoods;
 import develop.cl.com.crsp.R;
@@ -127,7 +133,7 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
     /**
      * 交易区域
      */
-    private EditText etGoodsArea;
+    private TextView etGoodsArea;
     /**
      * 物品来源
      */
@@ -392,7 +398,7 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
         etGoodsPrice = (EditText) this.findViewById(R.id.et_fabu_goods_price);
         spGoodsDegree = (Spinner) this.findViewById(R.id.sp_fabu_goods_degree);
         etGoodsDetail = (EditText) this.findViewById(R.id.et_fabu_goods_detail);
-        etGoodsArea = (EditText) this.findViewById(R.id.et_fabu_goods_area);
+        etGoodsArea = (TextView) this.findViewById(R.id.et_fabu_goods_area);
         etGoodsSource = (EditText) this.findViewById(R.id.et_fabu_goods_source);
         etGoodsTelName = (EditText) this.findViewById(R.id.et_fabu_goods_telname);
         etGoodsTel = (EditText) this.findViewById(R.id.et_fabu_goods_tel);
@@ -490,19 +496,20 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
         goods.setKeyword(gettvTop + "," + getetTitle + "," + getetGoodsArea + "," + getetGoodsName);
         goods.setPrice(getetGoodsPrice);
         goods.setTel(getetGoodsTel);
+        goods.setSchool(MySharedPreferences.getSchool(FabuGoodsdetailActivity.this));
         goods.setTelname(getetGoodsTelName);
         goods.setDegree(getspGoodsDegree);
         goods.setPic(getPic);
         goods.setUserid(MySharedPreferences.getUserID(FabuGoodsdetailActivity.this));
         String[] str = new String[]{"userid", "classify", "area", "price", "title", "keyword"
-                , "detail", "goods_name", "source", "tel", "telname", "degree", "pic"};
+                , "detail", "goods_name", "source", "tel", "telname", "degree", "pic", "school"};
         //创建回调接口并实例化方法
         volleyCallback = new VolleyCallback() {
             @Override
             //回调内容result
             public void onSuccessResponse(String result) {
                 Log.d("callBack result", result);
-                if ("".equals(result)) {
+                if ("error".equals(result)) {
                     DisPlay("服务器异常！");
                     return;
                 } else {
@@ -520,8 +527,6 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
                 }
             }
         };
-        //声明自定义Volley实例
-//        DFVolley dfv = new DFVolley(volleyCallback);
         String url = ServerInformation.URL + "goods/addGoods";
         //调用自定义的Volley函数
         DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, goods), volleyCallback);
@@ -541,19 +546,20 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
         secondGoods.setKeyword(gettvTop + "," + getetTitle + "," + getetGoodsArea + "," + getetGoodsName);
         secondGoods.setPrice(getetGoodsPrice);
         secondGoods.setTel(getetGoodsTel);
+        secondGoods.setSchool(MySharedPreferences.getSchool(FabuGoodsdetailActivity.this));
         secondGoods.setTelname(getetGoodsTelName);
         secondGoods.setDegree(getspGoodsDegree);
         secondGoods.setPic(getPic);
         secondGoods.setUserid(MySharedPreferences.getUserID(FabuGoodsdetailActivity.this));
         String[] str = new String[]{"userid", "classify", "area", "price", "title", "keyword"
-                , "detail", "goods_name", "source", "tel", "telname", "degree", "pic"};
+                , "detail", "goods_name", "source", "tel", "telname", "degree", "pic", "school"};
         //创建回调接口并实例化方法
         volleyCallback = new VolleyCallback() {
             @Override
             //回调内容result
             public void onSuccessResponse(String result) {
                 Log.d("callBack result", result);
-                if ("".equals(result)) {
+                if ("error".equals(result)) {
                     DisPlay("服务器异常！");
                     return;
                 } else {
@@ -571,8 +577,6 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
                 }
             }
         };
-        //声明自定义Volley实例
-//        DFVolley dfv = new DFVolley(volleyCallback);
         String url = ServerInformation.URL + "secondgoods/addsecondGoods";
         //调用自定义的Volley函数
         DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, secondGoods), volleyCallback);
@@ -581,7 +585,7 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
     /**
      * 上传文件向服务器发送请求并解析
      */
-    protected void sendUploadServer() throws IOException, FileNotFoundException {
+    protected void sendUploadServer() throws FileNotFoundException {
         if (ps) {
             mQueue = Volley.newRequestQueue(FabuGoodsdetailActivity.this);
             showProgressDialog();
@@ -611,6 +615,33 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
         }
     }
 
+    public void onAddress2Picker(final View view) {
+        try {
+            ArrayList<Province> data = new ArrayList<>();
+            String json = ConvertUtils.toString(getAssets().open("city.json"));
+            data.addAll(JSON.parseArray(json, Province.class));
+            AddressPicker picker = new AddressPicker(this, data);
+            picker.setShadowVisible(true);
+            picker.setHideProvince(false);
+            picker.setHideCounty(false);
+            picker.setSelectedItem("广西壮族自治区", "桂林", "雁山区");
+            picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
+                @Override
+                public void onAddressPicked(Province province, City city, County county) {
+                    showToast("province : " + province + ", city: " + city + ", county: " + county);
+                    getetGoodsArea = province.getAreaName() + "-" + city.getAreaName() + "-" + county.getAreaName();
+                    etGoodsArea.setText(province.getAreaName() + "-" + city.getAreaName() + "-" + county.getAreaName());
+                }
+            });
+            picker.show();
+        } catch (Exception e) {
+            showToast(LogUtils.toStackTraceString(e));
+        }
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * 加载进度条
@@ -634,7 +665,7 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
                 checkEdit();
                 try {
                     sendUploadServer();
-                } catch (IOException | FileNotFoundException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;

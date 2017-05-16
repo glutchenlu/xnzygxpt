@@ -11,12 +11,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+
+import cn.qqtheme.framework.entity.City;
+import cn.qqtheme.framework.entity.County;
+import cn.qqtheme.framework.entity.Province;
+import cn.qqtheme.framework.picker.AddressPicker;
+import cn.qqtheme.framework.util.ConvertUtils;
+import cn.qqtheme.framework.util.LogUtils;
 import develop.cl.com.crsp.JavaBean.Company;
 import develop.cl.com.crsp.JavaBean.Work;
 import develop.cl.com.crsp.R;
@@ -39,13 +48,13 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
     private Spinner spExperience;
     private Spinner spNature;
     private EditText etCount;
-    private EditText etArea;
+    private TextView etArea;
     private EditText etArea1;
     private EditText etTel;
     private EditText etWelfare;
     private EditText etDetail;
     private EditText etCompanyName;
-    private EditText etClass;
+    private TextView etClass;
     private EditText etCompanyDetail;
 
     private String getetTitle;
@@ -90,13 +99,13 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
         spEducation = (Spinner) this.findViewById(R.id.sp_fabu_work_education);
         spExperience = (Spinner) this.findViewById(R.id.sp_fabu_work_experience);
         etCount = (EditText) this.findViewById(R.id.et_fabu_work_count);
-        etArea = (EditText) this.findViewById(R.id.et_fabu_work_area);
+        etArea = (TextView) this.findViewById(R.id.et_fabu_work_area);
         etArea1 = (EditText) this.findViewById(R.id.et_fabu_work_area1);
         etTel = (EditText) this.findViewById(R.id.et_fabu_work_tel);
         etWelfare = (EditText) this.findViewById(R.id.et_fabu_work_welfare);
         etDetail = (EditText) this.findViewById(R.id.et_fabu_work_detail);
         etCompanyName = (EditText) this.findViewById(R.id.et_fabu_work_companyname);
-        etClass = (EditText) this.findViewById(R.id.et_fabu_work_classify);
+        etClass = (TextView) this.findViewById(R.id.et_fabu_work_classify);
         etCompanyDetail = (EditText) this.findViewById(R.id.et_fabu_work_companydetail);
     }
 
@@ -288,6 +297,7 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
         work.setExperience(getspExperience);
         work.setKeyword(getetTitle + "," + getetCompanyName + "," + getspNature + "," + getetPosition);
         work.setPosition(getetPosition);
+        work.setSchool(MySharedPreferences.getSchool(FabudetailActivity.this));
         work.setSalary(getspSal);
         work.setSource(getetCompanyName);
         work.setWelfare(getetWelfare);
@@ -296,7 +306,7 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
         work.setTitle(getetTitle);
         String[] str = new String[]{"userid", "classify", "keyword", "title", "work_area", "welfare"
                 , "detail", "salary", "education", "source", "experience", "position", "count"
-                , "tel", "industry"};
+                , "tel", "industry", "school"};
         //创建回调接口并实例化方法
         showProgressDialog();
         volleyCallback = new VolleyCallback() {
@@ -356,6 +366,34 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                 });
         // 显示
         normalDialog.show();
+    }
+
+    public void onAddress4Picker(final View view) {
+        try {
+            ArrayList<Province> data = new ArrayList<>();
+            String json = ConvertUtils.toString(getAssets().open("city.json"));
+            data.addAll(JSON.parseArray(json, Province.class));
+            AddressPicker picker = new AddressPicker(this, data);
+            picker.setShadowVisible(true);
+            picker.setHideProvince(false);
+            picker.setHideCounty(true);
+            picker.setSelectedItem("广西壮族自治区", "桂林", "雁山区");
+            picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
+                @Override
+                public void onAddressPicked(Province province, City city, County county) {
+                    showToast("province : " + province + ", city: " + city + ", county: " + county);
+                    getetArea = province.getAreaName() + "-" + city.getAreaName();
+                    etArea.setText(province.getAreaName() + "-" + city.getAreaName());
+                }
+            });
+            picker.show();
+        } catch (Exception e) {
+            showToast(LogUtils.toStackTraceString(e));
+        }
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

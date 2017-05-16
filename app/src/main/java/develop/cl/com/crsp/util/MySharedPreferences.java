@@ -22,8 +22,8 @@ public class MySharedPreferences {
     }
 
     public static String getMyConfig(Context context) {
-        SharedPreferences spf = context.getSharedPreferences("myconfig", 0);
-        String config = spf.getString("myconfig", "noLogin");
+        SharedPreferences spf = context.getSharedPreferences("Myconfig", 0);
+        String config = spf.getString("loginstate", "noLogin");
         return config;
     }
 
@@ -35,11 +35,25 @@ public class MySharedPreferences {
     }
 
     public static void setMyConfig(Context context, String str) {
-        SharedPreferences spf = context.getSharedPreferences("myconfig", 0);
+        SharedPreferences spf = context.getSharedPreferences("Myconfig", 0);
         SharedPreferences.Editor editor = spf.edit();
-        editor.putString("myconfig", str);
+        editor.putString("loginstate", str);
         editor.apply();
     }
+
+    public static void setSchool(Context context, String str) {
+        SharedPreferences spf = context.getSharedPreferences("PersonData", 0);
+        SharedPreferences.Editor editor = spf.edit();
+        editor.putString("school", str);
+        editor.apply();
+    }
+
+    public static String getSchool(Context context) {
+        SharedPreferences spf = context.getSharedPreferences("PersonData", 0);
+        String config = spf.getString("school", "0");
+        return config;
+    }
+
 
     public static String getUserID(Context context) {
         SharedPreferences spf = context.getSharedPreferences("UserID", 0);
