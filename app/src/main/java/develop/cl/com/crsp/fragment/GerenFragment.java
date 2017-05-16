@@ -90,7 +90,7 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
         String[] iconName = {"已发帖子", "收藏", "订阅管理",};
         String[] typeName = {"我的求职", "我的招聘", "我的店铺", "我的测试1"};
         String[] typeShow = {"我的求职描述", "我的招聘描述", "我的店铺描述", "我的测试描述1"};
-        int[] pic = {R.mipmap.jiaoyi2, R.mipmap.chuzu, R.mipmap.ziliao};
+        int[] pic = {R.mipmap.userfabuicon, R.mipmap.usershoucang, R.mipmap.userdingyue};
         int[] pic1 = {R.mipmap.jiaoyi2, R.mipmap.chuzu, R.mipmap.ziliao, R.mipmap.fuwu};
 
         mySetAdapter2(gv_geren_s, datalist_s, sadapter_s, iconName, pic);
@@ -148,7 +148,7 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
                     //根据返回内容执行操作
                     if (jsonMap.get("returnCode").toString().equals("1")) {
                         mIntent = new Intent(getActivity(), UserFabuActivity.class);
-                        mIntent.putExtra("resultBean", jsonMap.getString("resultBean"));
+                        mIntent.putExtra("returnBean", jsonMap.getString("returnBean"));
                         startActivity(mIntent);
                     }
                     Log.d("returnCode", jsonMap.get("returnCode").toString());
