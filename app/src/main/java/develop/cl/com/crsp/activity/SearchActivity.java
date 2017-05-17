@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
 
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.R;
 
 public class SearchActivity extends BaseActivity implements View.OnClickListener {

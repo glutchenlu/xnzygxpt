@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.activity.FenleiClassListActivity;
-import develop.cl.com.crsp.activity.Select_ClassActivity;
+import develop.cl.com.crsp.activity.fenleiactivity.FenleiClassListActivity;
+import develop.cl.com.crsp.activity.fenleiactivity.Select_ClassActivity;
 import develop.cl.com.crsp.myutil.GridViewData;
 
 

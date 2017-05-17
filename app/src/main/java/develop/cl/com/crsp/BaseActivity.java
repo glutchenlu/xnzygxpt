@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import develop.cl.com.crsp.AppManager;
-import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.config.Constants;
 import develop.cl.com.crsp.image.ImageLoaderConfig;
 

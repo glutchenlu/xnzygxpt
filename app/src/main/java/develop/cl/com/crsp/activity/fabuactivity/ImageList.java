@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fabuactivity;
 
 import android.app.Activity;
 import android.content.ContentResolver;

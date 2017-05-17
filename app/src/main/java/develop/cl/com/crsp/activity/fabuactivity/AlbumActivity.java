@@ -7,7 +7,7 @@
  * @date 2013-11-12 下午3:39:27
  * @version V1.0
  */
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fabuactivity;
 
 import android.app.Activity;
 import android.content.ContentResolver;

@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fabuactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.myutil.GridViewData;
 

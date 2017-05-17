@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fabuactivity;
 
 
 import android.content.Intent;
@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.SearchActivity;
 import develop.cl.com.crsp.myutil.GridViewData;
 
 public class FabuClassActivity extends BaseActivity {

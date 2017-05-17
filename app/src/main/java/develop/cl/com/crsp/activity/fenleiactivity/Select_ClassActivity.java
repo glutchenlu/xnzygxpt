@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fenleiactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.JianliActivity;
+import develop.cl.com.crsp.activity.SearchActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
 import develop.cl.com.crsp.myutil.ServerInformation;

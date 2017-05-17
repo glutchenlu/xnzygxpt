@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fabuactivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,9 +26,11 @@ import cn.qqtheme.framework.entity.Province;
 import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.LogUtils;
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Company;
 import develop.cl.com.crsp.JavaBean.Work;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.MainActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;

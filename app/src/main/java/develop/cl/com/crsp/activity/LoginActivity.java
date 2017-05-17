@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.JavaBean.Dating;
 import develop.cl.com.crsp.JavaBean.XUser;

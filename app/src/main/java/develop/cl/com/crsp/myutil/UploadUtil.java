@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import develop.cl.com.crsp.util.MultipartRequest;
-import develop.cl.com.crsp.util.VolleyCallback;
 
 public class UploadUtil {
 

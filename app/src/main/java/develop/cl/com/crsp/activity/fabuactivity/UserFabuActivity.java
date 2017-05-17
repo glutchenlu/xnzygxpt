@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fabuactivity;
 
 
 import android.content.Intent;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Company;
 import develop.cl.com.crsp.JavaBean.Courier;
 import develop.cl.com.crsp.JavaBean.Goods;
@@ -25,6 +26,9 @@ import develop.cl.com.crsp.JavaBean.SecondGoods;
 import develop.cl.com.crsp.JavaBean.TrainTicket;
 import develop.cl.com.crsp.JavaBean.Work;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.MainActivity;
+import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailGoodsActivity;
+import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailWorkActivity;
 import develop.cl.com.crsp.myutil.MyList;
 
 public class UserFabuActivity extends BaseActivity {

@@ -27,6 +27,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+import develop.cl.com.crsp.MyApplication;
+
 
 /**
  * 图片加载类

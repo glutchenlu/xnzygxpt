@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fenleiactivity;
 
 
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.Map;
 
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.R;
 
 public class ShowCompanyActivity extends BaseActivity implements View.OnClickListener {

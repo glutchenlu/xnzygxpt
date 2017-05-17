@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.activity.FabuClassActivity;
-import develop.cl.com.crsp.activity.FabuClassListActivity;
+import develop.cl.com.crsp.activity.fabuactivity.FabuClassActivity;
+import develop.cl.com.crsp.activity.fabuactivity.FabuClassListActivity;
 import develop.cl.com.crsp.activity.LoginActivity;
 import develop.cl.com.crsp.myutil.GridViewData;
 import develop.cl.com.crsp.myutil.MySharedPreferences;

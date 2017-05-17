@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.activity;
+package develop.cl.com.crsp.activity.fenleiactivity;
 
 
 import android.content.Intent;
@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.Map;
 
+import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.adapter.ViewPagerNetAdapter;
