@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.util.ImageManager2;
-import develop.cl.com.crsp.util.PhotoDirInfo;
+import develop.cl.com.crsp.JavaBean.PhotoDirInfo;
 
 
 public class ImageListAdapter extends BaseAdapter {

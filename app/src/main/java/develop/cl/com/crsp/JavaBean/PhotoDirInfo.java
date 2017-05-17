@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.util;
+package develop.cl.com.crsp.JavaBean;
 
 
 public class PhotoDirInfo {

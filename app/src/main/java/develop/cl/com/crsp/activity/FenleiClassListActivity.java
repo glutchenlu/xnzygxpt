@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.fragment.GridViewData;
+import develop.cl.com.crsp.util.GridViewData;
 import develop.cl.com.crsp.util.DFVolley;
 import develop.cl.com.crsp.util.ServerInformation;
 import develop.cl.com.crsp.util.VolleyCallback;

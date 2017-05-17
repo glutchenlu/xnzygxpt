@@ -23,6 +23,20 @@ android {
     }
     productFlavors {
     }
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/fenleis',
+                            'src/main/res/layouts/fragments',
+                            'src/main/res/layouts/fabus',
+                            'src/main/res/layouts/items',
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
+        }
+    }
+
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

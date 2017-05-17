@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.adapter.ImageListAdapter;
-import develop.cl.com.crsp.util.PhotoDirInfo;
+import develop.cl.com.crsp.JavaBean.PhotoDirInfo;
 
 public class ImageList extends Activity {
     private ArrayList<String> selectedDataList = new ArrayList<String>();
