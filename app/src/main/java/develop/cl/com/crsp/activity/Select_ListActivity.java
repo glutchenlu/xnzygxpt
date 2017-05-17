@@ -31,10 +31,10 @@ import java.util.Map;
 import develop.cl.com.crsp.JavaBean.Goods;
 import develop.cl.com.crsp.JavaBean.SecondGoods;
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.util.DFVolley;
-import develop.cl.com.crsp.util.MyList;
-import develop.cl.com.crsp.util.ServerInformation;
-import develop.cl.com.crsp.util.VolleyCallback;
+import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyList;
+import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.VolleyCallback;
 
 public class Select_ListActivity extends BaseActivity implements View.OnClickListener
         , AdapterView.OnItemSelectedListener {

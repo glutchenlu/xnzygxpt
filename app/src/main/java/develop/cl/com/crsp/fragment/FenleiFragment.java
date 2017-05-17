@@ -18,7 +18,7 @@ import java.util.Map;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.FenleiClassListActivity;
 import develop.cl.com.crsp.activity.Select_ClassActivity;
-import develop.cl.com.crsp.util.GridViewData;
+import develop.cl.com.crsp.myutil.GridViewData;
 
 
 public class FenleiFragment extends Fragment {

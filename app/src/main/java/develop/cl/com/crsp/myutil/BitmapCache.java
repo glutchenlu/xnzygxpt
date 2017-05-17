@@ -1,4 +1,4 @@
-package develop.cl.com.crsp.image;
+package develop.cl.com.crsp.myutil;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;

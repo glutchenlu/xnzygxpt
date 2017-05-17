@@ -25,11 +25,11 @@ import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.JavaBean.Dating;
 import develop.cl.com.crsp.JavaBean.XUser;
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.util.DFVolley;
-import develop.cl.com.crsp.util.MyList;
-import develop.cl.com.crsp.util.MySharedPreferences;
-import develop.cl.com.crsp.util.ServerInformation;
-import develop.cl.com.crsp.util.VolleyCallback;
+import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyList;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
+import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.VolleyCallback;
 
 ;
 

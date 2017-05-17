@@ -33,11 +33,11 @@ import develop.cl.com.crsp.activity.LoginActivity;
 import develop.cl.com.crsp.activity.Person_DataActivity;
 import develop.cl.com.crsp.activity.UserFabuActivity;
 import develop.cl.com.crsp.image.CircleImageView;
-import develop.cl.com.crsp.util.DFVolley;
-import develop.cl.com.crsp.util.GridViewData;
-import develop.cl.com.crsp.util.MySharedPreferences;
-import develop.cl.com.crsp.util.ServerInformation;
-import develop.cl.com.crsp.util.VolleyCallback;
+import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.GridViewData;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
+import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.VolleyCallback;
 
 
 public class GerenFragment extends Fragment implements View.OnClickListener {

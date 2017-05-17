@@ -45,14 +45,14 @@ import develop.cl.com.crsp.JavaBean.Goods;
 import develop.cl.com.crsp.JavaBean.SecondGoods;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.adapter.GridImageAdapter;
-import develop.cl.com.crsp.util.DFVolley;
+import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyList;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
+import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.SetHight;
+import develop.cl.com.crsp.myutil.UploadUtil;
+import develop.cl.com.crsp.myutil.VolleyCallback;
 import develop.cl.com.crsp.util.ImageUtils;
-import develop.cl.com.crsp.util.MyList;
-import develop.cl.com.crsp.util.MySharedPreferences;
-import develop.cl.com.crsp.util.ServerInformation;
-import develop.cl.com.crsp.util.SetHight;
-import develop.cl.com.crsp.util.UploadUtil;
-import develop.cl.com.crsp.util.VolleyCallback;
 
 
 public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClickListener {

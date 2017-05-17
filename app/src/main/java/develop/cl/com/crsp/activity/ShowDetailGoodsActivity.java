@@ -28,11 +28,11 @@ import java.util.Map;
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.adapter.ViewPagerNetAdapter;
-import develop.cl.com.crsp.image.BitmapCache;
+import develop.cl.com.crsp.myutil.BitmapCache;
 import develop.cl.com.crsp.image.CircleImageView;
-import develop.cl.com.crsp.util.DFVolley;
-import develop.cl.com.crsp.util.ServerInformation;
-import develop.cl.com.crsp.util.VolleyCallback;
+import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.VolleyCallback;
 
 
 public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.OnPageChangeListener {

@@ -25,7 +25,7 @@ import develop.cl.com.crsp.JavaBean.SecondGoods;
 import develop.cl.com.crsp.JavaBean.TrainTicket;
 import develop.cl.com.crsp.JavaBean.Work;
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.util.MyList;
+import develop.cl.com.crsp.myutil.MyList;
 
 public class UserFabuActivity extends BaseActivity {
     private static final String Tag = "UserFabuActivity";

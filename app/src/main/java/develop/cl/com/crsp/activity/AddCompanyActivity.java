@@ -17,10 +17,10 @@ import com.android.volley.toolbox.Volley;
 
 import develop.cl.com.crsp.JavaBean.Company;
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.util.DFVolley;
-import develop.cl.com.crsp.util.MyList;
-import develop.cl.com.crsp.util.ServerInformation;
-import develop.cl.com.crsp.util.VolleyCallback;
+import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyList;
+import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.VolleyCallback;
 
 public class AddCompanyActivity extends BaseActivity implements View.OnClickListener {
 

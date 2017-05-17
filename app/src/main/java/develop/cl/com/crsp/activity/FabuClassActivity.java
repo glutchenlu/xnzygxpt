@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.util.GridViewData;
+import develop.cl.com.crsp.myutil.GridViewData;
 
 public class FabuClassActivity extends BaseActivity {
     private Intent mIntent;

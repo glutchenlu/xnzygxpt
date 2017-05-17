@@ -38,13 +38,13 @@ import develop.cl.com.crsp.JavaBean.Dating;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.adapter.AddressPickTask;
 import develop.cl.com.crsp.image.CircleImageView;
-import develop.cl.com.crsp.util.DFVolley;
+import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyList;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
+import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.UploadUtil;
+import develop.cl.com.crsp.myutil.VolleyCallback;
 import develop.cl.com.crsp.util.ImageUtils;
-import develop.cl.com.crsp.util.MyList;
-import develop.cl.com.crsp.util.MySharedPreferences;
-import develop.cl.com.crsp.util.ServerInformation;
-import develop.cl.com.crsp.util.UploadUtil;
-import develop.cl.com.crsp.util.VolleyCallback;
 
 
 public class Person_DataActivity extends BaseActivity implements View.OnClickListener {

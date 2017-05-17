@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 
 import develop.cl.com.crsp.R;
 
-/**
- * Created by Administrator on 2017/1/14.
- */
 
 public class FujinFragment extends Fragment {
     @Override

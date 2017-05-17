@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.util.GridViewData;
+import develop.cl.com.crsp.myutil.GridViewData;
 
 public class FabuClassListActivity extends BaseActivity implements View.OnClickListener {
     private static final String Tag = "FabuClassListActivity";
