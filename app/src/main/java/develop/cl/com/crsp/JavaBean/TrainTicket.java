@@ -11,6 +11,33 @@ public class TrainTicket {
     private String release_time;
     private int type;
     private String school;
+    private int state;
+    private String degree;
+    private String area;
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
 
     public String getSchool() {
         return school;

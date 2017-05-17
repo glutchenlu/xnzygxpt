@@ -1,8 +1,10 @@
 package develop.cl.com.crsp.activity.fenleiactivity;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,8 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 import develop.cl.com.crsp.BaseActivity;
+import develop.cl.com.crsp.JavaBean.Courier;
 import develop.cl.com.crsp.JavaBean.Goods;
 import develop.cl.com.crsp.JavaBean.SecondGoods;
+import develop.cl.com.crsp.JavaBean.TrainTicket;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.MainActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
@@ -64,7 +68,6 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
 
     private ListView lv_select_list;
     private SimpleAdapter sadapter;
-    private List<Map<String, Object>> datalist;
     private List<Map<String, Object>> datalistp;
 
     private String getspspSelectList1;
@@ -74,6 +77,7 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
     private int listsize;
     private int count = 0;
     private String preUrl;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +143,24 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
             case "校内快捷服务":
                 if (classposition == 0) {
                     preUrl = ServerInformation.URL + "courier";
-
+                    List<Courier> clist = JSON.parseArray(jsonMap.get("resultBean").toString(), Courier.class);
+                    datalistp = new ArrayList<Map<String, Object>>();
+                    listBeanToMapPic(clist, datalistp);
+                    spSelectList1.setVisibility(View.GONE);
+                    spSelectList2.setVisibility(View.GONE);
+                    spSelectList3.setVisibility(View.GONE);
+                    spSelectList4.setVisibility(View.GONE);
+                    setDataByFuwu(classposition);
                 } else if (classposition == 1) {
                     preUrl = ServerInformation.URL + "trainticket";
+                    List<TrainTicket> tlist = JSON.parseArray(jsonMap.get("resultBean").toString(), TrainTicket.class);
+                    datalistp = new ArrayList<Map<String, Object>>();
+                    listBeanToMapPic(tlist, datalistp);
+                    spSelectList1.setVisibility(View.GONE);
+                    spSelectList2.setVisibility(View.GONE);
+                    spSelectList3.setVisibility(View.GONE);
+                    spSelectList4.setVisibility(View.GONE);
+                    setDataByFuwu(classposition);
                 }
                 break;
             case "校内资讯互动":
@@ -178,8 +197,19 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                         break;
                     case "校内快捷服务":
                         if (classposition == 0) {
-
+                            nextMap = datalistp.get(position);
+                            mIntent = new Intent(Select_ListActivity.this, ShowDetailFuwuActivity.class);
+                            //无法直接传map，需要序列化
+                            mIntent.putExtra("map", (Serializable) nextMap);
+                            mIntent.putExtra("classposition", classposition);
+                            startActivity(mIntent);
                         } else if (classposition == 1) {
+                            nextMap = datalistp.get(position);
+                            mIntent = new Intent(Select_ListActivity.this, ShowDetailFuwuActivity.class);
+                            //无法直接传map，需要序列化
+                            mIntent.putExtra("map", (Serializable) nextMap);
+                            mIntent.putExtra("classposition", classposition);
+                            startActivity(mIntent);
                         }
                         break;
                     case "校内资讯互动":
@@ -189,6 +219,42 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
+    }
+
+    /**
+     * 校内快捷服务数据绑定
+     *
+     * @param fuwu 服务类型
+     */
+    protected void setDataByFuwu(int fuwu) {
+        String[] mapName;
+        if (fuwu == 0) {
+            String[] mapName1 = new String[]{"detail", "release_time", "userid"
+                    , "merchant", "price", "degree", "receive_time"};
+            mapName = mapName1;
+        } else {
+            String[] mapName1 = new String[]{"detail", "release_time", "userid"
+                    , "station", "price", "degree", "receive_time"};
+            mapName = mapName1;
+        }
+        int[] controlId = new int[]{R.id.iv_fuwu_detail, R.id.iv_fuwu_timeitem
+                , R.id.iv_fuwu_user, R.id.iv_fuwu_station, R.id.iv_fuwu_price
+                , R.id.iv_fuwu_degree, R.id.iv_fuwu_time};
+        sadapter = new SimpleAdapter(this, datalistp, R.layout.lv_fuwu_item, mapName, controlId);
+        lv_select_list.setAdapter(sadapter);
+    }
+
+    /**
+     * 将list中的bean转换成map(无图片)
+     *
+     * @param olist
+     * @param loclist
+     */
+    protected void listBeanToMapPic(List<?> olist, List<Map<String, Object>> loclist) {
+        for (Object list : olist) {
+            final Map<String, Object> map = MyList.transBean2Map(list);
+            loclist.add(map);
+        }
     }
 
     /**
@@ -258,6 +324,9 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * 条件查询，未实现
+     */
     protected void LocQueryServer() {
 
         volleyCallback = new VolleyCallback() {
@@ -267,6 +336,10 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 Log.d("callBack result", result);
                 if ("error".equals(result)) {
                     DisPlay("服务器异常！");
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
                     return;
                 } else {
                     //解析返回的json
@@ -292,6 +365,19 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
 
     }
 
+    /**
+     * 加载进度条
+     */
+    public void showProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        Drawable drawable = getResources().getDrawable(R.drawable.loading_animation);
+        progressDialog.setIndeterminateDrawable(drawable);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("请稍候，正在努力加载...");
+        progressDialog.show();
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (view.getId()) {
@@ -314,6 +400,15 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
     }
 

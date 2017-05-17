@@ -13,6 +13,13 @@
         <item>20000元以上</item>
     </string-array>
 
+    <string-array name="fuwu_area">
+        <item>3级信誉</item>
+        <item>1级信誉</item>
+        <item>2级信誉</item>
+        <item>4级信誉</item>
+        <item>5级信誉</item>
+    </string-array>
     <string-array name="work_nature">
         <item>兼职</item>
         <item>全职</item>

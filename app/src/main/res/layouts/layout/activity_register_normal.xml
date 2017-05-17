@@ -118,7 +118,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="35dp"
-            android:hint="@string/register_normal_password_hint" />
+            android:hint="@string/register_normal_password_hint"
+            android:inputType="textPassword" />
 
     </LinearLayout>
 
@@ -142,7 +143,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:hint="@string/register_normal_repassword_hint" />
+            android:hint="@string/register_normal_repassword_hint"
+            android:inputType="textPassword" />
 
     </LinearLayout>
 

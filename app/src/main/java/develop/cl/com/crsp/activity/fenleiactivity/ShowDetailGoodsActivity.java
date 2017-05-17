@@ -102,7 +102,7 @@ public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.O
             @Override
             public void onSuccessResponse(String result) {
                 Log.d("callBack result", result);
-                if ("".equals(result)) {
+                if ("error".equals(result)) {
                     DisPlay("服务器异常！");
                     return;
                 } else {

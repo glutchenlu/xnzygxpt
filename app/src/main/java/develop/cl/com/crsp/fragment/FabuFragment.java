@@ -45,7 +45,7 @@ public class FabuFragment extends Fragment {
         String[] typeName = {"二手交易", "物品出租", "学习资料", "校内快捷服务", "校内资讯互动"
                 , "兼职/全职"};
         String[] typeShow = {"手机/自行车/笔记本", "自行车/书籍/户外用品", "知识/学习内容"
-                , "快递代领/火车票代领", "消息互动", "兼职/全职工作"};
+                , "快递/火车票代领", "消息互动", "兼职/全职工作"};
         int[] pic = {R.mipmap.jiaoyi2, R.mipmap.chuzu, R.mipmap.ziliao, R.mipmap.fuwu
                 , R.mipmap.hudong, R.mipmap.gongzuo};
         GridViewData gridViewData = new GridViewData(datalist);

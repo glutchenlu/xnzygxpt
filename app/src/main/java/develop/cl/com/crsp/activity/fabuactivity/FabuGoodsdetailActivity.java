@@ -58,7 +58,9 @@ import develop.cl.com.crsp.util.ImageUtils;
 
 
 public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClickListener {
-
+    /**
+     * 物品出租或二手交易
+     */
     private int servicePosition;
     /**
      * 拍照图片保存路径

@@ -1,6 +1,8 @@
 package develop.cl.com.crsp.activity.fenleiactivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,10 +26,10 @@ import develop.cl.com.crsp.activity.SearchActivity;
 import develop.cl.com.crsp.activity.fabuactivity.FabuClassListActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
 import develop.cl.com.crsp.myutil.VolleyCallback;
 
-import static develop.cl.com.crsp.R.id.tv_fenlei_search_icon;
 
 public class FenleiClassListActivity extends BaseActivity implements View.OnClickListener {
     /**
@@ -50,6 +52,8 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
     private List<Map<String, Object>> datalist;
     private int servicePosition;
     private String type;
+    private String locSchool;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
 
     @Override
     protected void findViewById() {
-        tvIcon = (TextView) this.findViewById(tv_fenlei_search_icon);
+        tvIcon = (TextView) this.findViewById(R.id.tv_fenlei_search_icon);
         tvSeacrch = (TextView) this.findViewById(R.id.tv_fenlei_search);
         tvFabu = (TextView) this.findViewById(R.id.tv_select_fabu);
         lv_class = (ListView) this.findViewById(R.id.lv_fenlei_list);
@@ -73,6 +77,7 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
         tvSeacrch.setOnClickListener(this);
         tvFabu.setOnClickListener(this);
 
+        locSchool = MySharedPreferences.getSchool(FenleiClassListActivity.this);
         lv_class.setDivider(null);
         mIntent = this.getIntent();
         Log.d(Tag, mIntent.getStringExtra("typeName"));
@@ -121,44 +126,51 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                 , R.layout.lv_fabu_list, new String[]{"pic", "typeName"}
                 , new int[]{R.id.iv_fabu_list_next, R.id.tv_fabu_list_item});
         lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                      @Override
-                                      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                          Log.d(Tag, "点击:" + position);
-                                          Log.d(Tag, "ID:" + id);
-                                          Map<String, Object> locMap = finalList.get(position);
-                                          String typeName = locMap.get("typeName").toString();
-                                          String sendUrl = "";
-                                          switch (firstposition) {
-                                              case 0:
-                                                  sendUrl = ServerInformation.URL +
-                                                          "secondgoods/queryclass?classify=" + typeName;
-                                                  break;
-                                              case 1:
-                                                  sendUrl = ServerInformation.URL +
-                                                          "goods/queryclass?classify=" + typeName;
-                                                  break;
-                                              case 2:
-                                                  sendUrl = ServerInformation.URL +
-                                                          "learningdata/queryclass?classify=" + typeName;
-                                                  break;
-                                              case 3:
-                                                  if ("快递代领".equals(typeName)) {
-                                                      sendUrl = ServerInformation.URL + "courier/queryclass";
-                                                  } else if ("火车票代领".equals(typeName)) {
-                                                      sendUrl = ServerInformation.URL + "trainticket/queryclass";
-                                                  }
-                                                  break;
-                                              case 4:
-                                                  sendUrl = ServerInformation.URL +
-                                                          "information/queryclass?classify=" + typeName;
-                                                  break;
-                                              default:
-                                                  break;
-                                          }
-                                          LocQueryServer(sendUrl, cls, position);
-                                      }
-                                  }
+        lv.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d(Tag, "点击:" + position);
+                        Log.d(Tag, "ID:" + id);
+                        Map<String, Object> locMap = finalList.get(position);
+                        String typeName = locMap.get("typeName").toString();
+                        String sendUrl = "";
+                        switch (firstposition) {
+                            case 0:
+                                sendUrl = ServerInformation.URL +
+                                        "secondgoods/queryclass?classify="
+                                        + typeName + "&school=" + locSchool;
+                                break;
+                            case 1:
+                                sendUrl = ServerInformation.URL +
+                                        "goods/queryclass?classify=" + typeName
+                                        + "&school=" + locSchool;
+                                break;
+                            case 2:
+                                sendUrl = ServerInformation.URL +
+                                        "learningdata/queryclass?classify=" + typeName
+                                        + "&school=" + locSchool;
+                                break;
+                            case 3:
+                                if ("快递代领".equals(typeName)) {
+                                    sendUrl = ServerInformation.URL + "courier/querybyschool"
+                                            + "?school=" + locSchool;
+                                } else if ("火车票代领".equals(typeName)) {
+                                    sendUrl = ServerInformation.URL + "trainticket/querybyschool"
+                                            + "?school=" + locSchool;
+                                }
+                                break;
+                            case 4:
+                                sendUrl = ServerInformation.URL +
+                                        "information/queryclass?classify=" + typeName
+                                        + "&school=" + locSchool;
+                                break;
+                            default:
+                                break;
+                        }
+                        LocQueryServer(sendUrl, cls, position);
+                    }
+                }
         );
     }
 
@@ -172,6 +184,7 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
     protected void LocQueryServer(String url, final Class<?> cls, final int classposition) {
         mQueue = Volley.newRequestQueue(FenleiClassListActivity.this);
         //创建回调接口并实例化方法
+        showProgressDialog();
         volleyCallback = new VolleyCallback() {
             @Override
             //回调内容result
@@ -179,6 +192,10 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                 Log.d("callBack result", result);
                 if ("error".equals(result)) {
                     DisPlay("服务器异常！");
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
                     return;
                 } else {
                     //解析返回的json
@@ -188,6 +205,10 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                     DisPlay(jsonMap.get("returnString").toString());
                     //根据返回内容执行操作
                     if (jsonMap.get("returnCode").toString().equals("1")) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
                         mIntent = new Intent(FenleiClassListActivity.this, cls);
                         mIntent.putExtra("typeName", type);
                         mIntent.putExtra("classposition", classposition);
@@ -222,6 +243,28 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 加载进度条
+     */
+    public void showProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        Drawable drawable = getResources().getDrawable(R.drawable.loading_animation);
+        progressDialog.setIndeterminateDrawable(drawable);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("请稍候，正在努力加载...");
+        progressDialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
     }
 }

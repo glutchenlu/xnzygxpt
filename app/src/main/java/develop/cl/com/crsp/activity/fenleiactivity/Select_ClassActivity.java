@@ -1,6 +1,8 @@
 package develop.cl.com.crsp.activity.fenleiactivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,7 @@ import develop.cl.com.crsp.activity.JianliActivity;
 import develop.cl.com.crsp.activity.SearchActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
 import develop.cl.com.crsp.myutil.VolleyCallback;
 
@@ -34,6 +37,7 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
      * 网络请求Volley
      */
     private VolleyCallback volleyCallback;
+    private ProgressDialog progressDialog;
     /**
      * 存放网络请求的队列
      */
@@ -61,6 +65,8 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
     private SimpleAdapter sadapter4;
     private List<Map<String, Object>> datalist4;
 
+    private String locSchool;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +91,8 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initView() {
+
+        locSchool = MySharedPreferences.getSchool(Select_ClassActivity.this);
         tvRemind.setOnClickListener(this);
         tvJianli.setOnClickListener(this);
         tvIcon.setOnClickListener(this);
@@ -124,7 +132,8 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
                                           Map<String, Object> locMap = finalList.get(position);
                                           String typeName = locMap.get("typeName").toString();
                                           String sendUrl = ServerInformation.URL +
-                                                  "work/querybyindustry?industry=" + typeName;
+                                                  "work/querybyindustry?industry=" + typeName
+                                                  + "&school=" + locSchool;
                                           LocQueryServer(sendUrl);
                                       }
                                   }
@@ -139,6 +148,7 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
     protected void LocQueryServer(String url) {
         mQueue = Volley.newRequestQueue(Select_ClassActivity.this);
         //创建回调接口并实例化方法
+        showProgressDialog();
         volleyCallback = new VolleyCallback() {
             @Override
             //回调内容result
@@ -146,6 +156,10 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
                 Log.d("callBack result", result);
                 if ("error".equals(result)) {
                     DisPlay("服务器异常！");
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
                     return;
                 } else {
                     //解析返回的json
@@ -165,6 +179,19 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
         };
         //调用自定义的Volley函数
         DFVolley.NoMReq(mQueue, url, volleyCallback);
+    }
+
+    /**
+     * 加载进度条
+     */
+    public void showProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        Drawable drawable = getResources().getDrawable(R.drawable.loading_animation);
+        progressDialog.setIndeterminateDrawable(drawable);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("请稍候，正在努力加载...");
+        progressDialog.show();
     }
 
     @Override
@@ -190,6 +217,15 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
     }
 }

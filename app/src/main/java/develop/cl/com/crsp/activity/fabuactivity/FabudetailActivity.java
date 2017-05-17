@@ -1,7 +1,9 @@
 package develop.cl.com.crsp.activity.fabuactivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -80,6 +82,11 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
     private RequestQueue mQueue;
     private static final String Tag = "FabudetailActivity";
     private Intent mIntent;
+
+    /**
+     * 加载提示框
+     */
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,6 +265,10 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                     Log.d("callBack result", result);
                     if ("error".equals(result)) {
                         DisPlay("服务器异常！");
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
                         return;
                     } else {
                         //解析返回的json
@@ -310,7 +321,7 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                 , "detail", "salary", "education", "source", "experience", "position", "count"
                 , "tel", "industry", "school"};
         //创建回调接口并实例化方法
-        showProgressDialog();
+        this.showProgressDialog();
         volleyCallback = new VolleyCallback() {
             @Override
             //回调内容result
@@ -318,6 +329,10 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                 Log.d("callBack result", result);
                 if ("error".equals(result)) {
                     DisPlay("服务器异常！");
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
                     return;
                 } else {
                     //解析返回的json
@@ -409,6 +424,28 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 加载进度条
+     */
+    public void showProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        Drawable drawable = getResources().getDrawable(R.drawable.loading_animation);
+        progressDialog.setIndeterminateDrawable(drawable);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("请稍候，正在努力加载...");
+        progressDialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
     }
 }

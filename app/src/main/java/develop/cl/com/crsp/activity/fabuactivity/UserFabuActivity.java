@@ -149,6 +149,7 @@ public class UserFabuActivity extends BaseActivity {
             switch (map.get("type").toString()) {
                 case "1":
                     map.put("typeName", "快递代领");
+                    map.put("title", map.get("detail"));
                     break;
                 case "2":
                     map.put("typeName", "物品出租");
@@ -161,6 +162,7 @@ public class UserFabuActivity extends BaseActivity {
                     break;
                 case "5":
                     map.put("typeName", "火车票代领");
+                    map.put("title", map.get("detail"));
                     break;
                 case "6":
                     workPosition++;
