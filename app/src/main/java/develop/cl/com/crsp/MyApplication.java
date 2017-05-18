@@ -19,59 +19,68 @@ import org.apache.http.protocol.HTTP;
 
 
 public class MyApplication extends Application {
-	
-	private HttpClient httpClient;
-	public boolean isLogin = false;
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		httpClient = this.createHttpClient();
-	}
+    private HttpClient httpClient;
+    public boolean isLogin = false;
+    private String xiaoxiMap;
 
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
-		this.shutdownHttpClient();
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        httpClient = this.createHttpClient();
+    }
 
-	@Override
-	public void onTerminate() {
-		super.onTerminate();
-		this.shutdownHttpClient();
-	}
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        this.shutdownHttpClient();
+    }
 
-	// 创建HttpClient实例
-	private HttpClient createHttpClient() {
-		HttpParams params = new BasicHttpParams();
-		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-		HttpProtocolParams.setContentCharset(params,
-				HTTP.DEFAULT_CONTENT_CHARSET);
-		HttpProtocolParams.setUseExpectContinue(params, true);
-		HttpConnectionParams.setConnectionTimeout(params, 20 * 1000);
-		HttpConnectionParams.setSoTimeout(params, 20 * 1000);
-		HttpConnectionParams.setSocketBufferSize(params, 8192);
-		SchemeRegistry schReg = new SchemeRegistry();
-		schReg.register(new Scheme("http", PlainSocketFactory
-				.getSocketFactory(), 80));
-		schReg.register(new Scheme("https",
-				SSLSocketFactory.getSocketFactory(), 443));
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        this.shutdownHttpClient();
+    }
 
-		ClientConnectionManager connMgr = new ThreadSafeClientConnManager(
-				params, schReg);
+    // 创建HttpClient实例
+    private HttpClient createHttpClient() {
+        HttpParams params = new BasicHttpParams();
+        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+        HttpProtocolParams.setContentCharset(params,
+                HTTP.DEFAULT_CONTENT_CHARSET);
+        HttpProtocolParams.setUseExpectContinue(params, true);
+        HttpConnectionParams.setConnectionTimeout(params, 20 * 1000);
+        HttpConnectionParams.setSoTimeout(params, 20 * 1000);
+        HttpConnectionParams.setSocketBufferSize(params, 8192);
+        SchemeRegistry schReg = new SchemeRegistry();
+        schReg.register(new Scheme("http", PlainSocketFactory
+                .getSocketFactory(), 80));
+        schReg.register(new Scheme("https",
+                SSLSocketFactory.getSocketFactory(), 443));
 
-		return new DefaultHttpClient(connMgr, params);
-	}
+        ClientConnectionManager connMgr = new ThreadSafeClientConnManager(
+                params, schReg);
 
-	// 关闭连接管理器并释放资源
-	private void shutdownHttpClient() {
-		if (httpClient != null && httpClient.getConnectionManager() != null) {
-			httpClient.getConnectionManager().shutdown();
-		}
-	}
+        return new DefaultHttpClient(connMgr, params);
+    }
 
-	// 对外提供HttpClient实例
-	public HttpClient getHttpClient() {
-		return httpClient;
-	}
+    // 关闭连接管理器并释放资源
+    private void shutdownHttpClient() {
+        if (httpClient != null && httpClient.getConnectionManager() != null) {
+            httpClient.getConnectionManager().shutdown();
+        }
+    }
+
+    // 对外提供HttpClient实例
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    public String getxiaoxiMap() {
+        return xiaoxiMap;
+    }
+
+    public void setxiaoxiMap(String str) {
+        xiaoxiMap = str;
+    }
 }

@@ -95,10 +95,6 @@ public class FenleiFragment extends Fragment {
                                 break;
                             default:
                                 break;
-//                    Intent intent = new Intent(getActivity(),
-//                            LoginActivity.class);
-//                    intent.putExtra("productId", position);//携带参数
-//                    startActivity(intent);
                         }
                     }
                 }

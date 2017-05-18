@@ -11,20 +11,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.JavaBean.Dating;
 
 public class MySharedPreferences {
     public static String getLogin(Context context) {
         SharedPreferences spf = context.getSharedPreferences("login", 0);
-        String isLogin = spf.getString("isLogin", "no");
-        return isLogin;
+        return spf.getString("isLogin", "no");
     }
 
     public static String getMyConfig(Context context) {
         SharedPreferences spf = context.getSharedPreferences("Myconfig", 0);
-        String config = spf.getString("loginstate", "noLogin");
-        return config;
+        return spf.getString("loginstate", "noLogin");
     }
 
     public static void setLogin(Context context, String str) {
@@ -50,15 +51,13 @@ public class MySharedPreferences {
 
     public static String getSchool(Context context) {
         SharedPreferences spf = context.getSharedPreferences("PersonData", 0);
-        String config = spf.getString("school", "0");
-        return config;
+        return spf.getString("school", "0");
     }
 
 
     public static String getUserID(Context context) {
         SharedPreferences spf = context.getSharedPreferences("UserID", 0);
-        String isLogin = spf.getString("UserID", "0");
-        return isLogin;
+        return spf.getString("UserID", "0");
     }
 
     public static void setUserID(Context context, String UserID) {
@@ -168,5 +167,32 @@ public class MySharedPreferences {
         dating.setSignature(spf.getString("signature", "0"));
         dating.setHometown(spf.getString("hometown", "0"));
         return dating;
+    }
+
+    public static String getlastQueryMessageTime(Context context) {
+        SharedPreferences spf = context.getSharedPreferences("MessageTime", 0);
+        return spf.getString("lastQueryMessageTime", "2000-11-11 00:00:00");
+    }
+
+    public static void setlastQueryMessageTime(Context context) {
+        SharedPreferences spf = context.getSharedPreferences("MessageTime", 0);
+        SharedPreferences.Editor editor = spf.edit();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date now = new Date();
+        Log.i("sdf", sdf.format(now));
+        editor.putString("lastQueryMessageTime", sdf.format(now));
+        editor.apply();
+    }
+
+    public static int getMessageCount(Context context) {
+        SharedPreferences spf = context.getSharedPreferences("MessageCount", 0);
+        return spf.getInt("count", 0);
+    }
+
+    public static void setMessageCount(Context context, int count) {
+        SharedPreferences spf = context.getSharedPreferences("MessageCount", 0);
+        SharedPreferences.Editor editor = spf.edit();
+        editor.putInt("count", count);
+        editor.apply();
     }
 }

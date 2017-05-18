@@ -33,6 +33,7 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
     private TextView tvCompanyName;
     private TextView tvScale;
     private TextView tvNature;
+    private TextView tvTel;
 
     private LinearLayout lyCompany;
     private TextView tvShoucang;
@@ -63,6 +64,7 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
         tvCompanyName = (TextView) this.findViewById(R.id.tv_workdetail_companyname);
         tvScale = (TextView) this.findViewById(R.id.tv_workdetail_scale);
         tvNature = (TextView) this.findViewById(R.id.tv_workdetail_nature);
+        tvTel = (TextView) this.findViewById(R.id.tv_workdetail_tel);
 
         lyCompany = (LinearLayout) this.findViewById(R.id.ly_workdetail_company);
         tvShoucang = (TextView) this.findViewById(R.id.tv_work_shoucang);
@@ -96,6 +98,7 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
         tvCompanyName.setText(mapc.get("companyname").toString());
         tvScale.setText(mapc.get("scale").toString());
         tvNature.setText(mapc.get("nature").toString());
+        tvTel.setText(mapc.get("tel").toString());
     }
 
     @Override

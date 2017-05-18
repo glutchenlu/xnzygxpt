@@ -27,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -265,9 +267,12 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
      */
     protected void listBeanToMapPic(List<?> olist) {
         listsize = olist.size();
+        int sort = 0;
         Log.d(Tag, "listsize:" + listsize);
         for (Object list : olist) {
             final Map<String, Object> map = MyList.transBean2Map(list);
+            sort++;
+            map.put("sort", sort);
             String str = StringUtils.substringBefore(map.get("pic").toString(), ",");
             /**
              * 根据地址请求服务器图片
@@ -281,6 +286,11 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                             map.put("showpic", response);
                             datalistp.add(map);
                             if (count == listsize) {
+                                Collections.sort(datalistp, new Comparator<Map<String, Object>>() {
+                                    public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                                        return (int) o1.get("sort") - (int) o2.get("sort");
+                                    }
+                                });
                                 /**
                                  * 构造数据填充listview
                                  */

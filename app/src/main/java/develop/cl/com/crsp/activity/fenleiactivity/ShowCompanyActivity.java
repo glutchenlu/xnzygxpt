@@ -22,6 +22,7 @@ public class ShowCompanyActivity extends BaseActivity implements View.OnClickLis
     private TextView tvNature;
     private TextView tvArea;
     private TextView tvDetail;
+    private TextView tvTel;
 
     private Button btnSummit;
     private Button btnCall;
@@ -41,6 +42,7 @@ public class ShowCompanyActivity extends BaseActivity implements View.OnClickLis
         tvNature = (TextView) this.findViewById(R.id.tv_workdetail_companynuture);
         tvArea = (TextView) this.findViewById(R.id.tv_companydetail_area);
         tvDetail = (TextView) this.findViewById(R.id.tv_companydetail_detail);
+        tvTel = (TextView) this.findViewById(R.id.tv_companydetail_tel);
 
         btnSummit = (Button) this.findViewById(R.id.btn_companydetail_summit);
         btnCall = (Button) this.findViewById(R.id.btn_companydetail_calluser);
@@ -61,6 +63,7 @@ public class ShowCompanyActivity extends BaseActivity implements View.OnClickLis
         tvNature.setText(mapc.get("nature").toString());
         tvArea.setText(mapc.get("companyarea").toString());
         tvDetail.setText(mapc.get("detail").toString());
+        tvTel.setText(mapc.get("tel").toString());
     }
 
     @Override

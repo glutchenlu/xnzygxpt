@@ -138,6 +138,26 @@
                 android:maxLines="30"
                 android:text="nuture" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系方式："
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_companydetail_tel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="30"
+                android:text="tel" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
