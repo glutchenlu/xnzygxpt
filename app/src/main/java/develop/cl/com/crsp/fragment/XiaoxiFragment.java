@@ -1,15 +1,15 @@
 package develop.cl.com.crsp.fragment;
 
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.JavaBean.Message;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -43,6 +45,7 @@ import develop.cl.com.crsp.myutil.VolleyCallback;
 
 public class XiaoxiFragment extends Fragment {
 
+    private boolean isLogin;
     /**
      * 网络请求Volley
      */
@@ -52,11 +55,8 @@ public class XiaoxiFragment extends Fragment {
      */
     private RequestQueue mQueue;
     private static final String Tag = "XiaoxiFragment";
-    private Button btn_xiaoxi1;
-    private Button btn_xiaoxi2;
     private int listsize;
-    private int count = 0;
-    private ProgressDialog progressDialog;
+    //    private int count = 0;
 
     private ListView lv_xiaoxi;
     private SimpleAdapter sadapter;
@@ -72,14 +72,91 @@ public class XiaoxiFragment extends Fragment {
     }
 
     protected void findview() {
-        btn_xiaoxi1 = (Button) view.findViewById(R.id.btn_xiaoxi1);
-        btn_xiaoxi2 = (Button) view.findViewById(R.id.btn_xiaoxi2);
         lv_xiaoxi = (ListView) view.findViewById(R.id.lv_xiaoxi);
     }
 
     protected void init() {
         datalist = new ArrayList<Map<String, Object>>();
-        LocQueryServer();
+        /**
+         * 登录状态并且网络状态可用
+         */
+        if (checkLogin()) {
+            if (MyCheckNet.isNetworkAvailable(getActivity())) {
+                LocQueryServer();
+            }
+        }
+        lv_xiaoxi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showNormalDialog(datalist.get(position), position);
+                return true;
+            }
+        });
+    }
+
+    private void showNormalDialog(final Map<String, Object> delMap, final int locposition) {
+        /* @setIcon 设置对话框图标
+         * @setTitle 设置对话框标题
+         * @setMessage 设置对话框消息提示
+         * setXXX方法返回Dialog对象，因此可以链式设置属性
+         */
+        final AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(getActivity());
+        normalDialog.setTitle("确定要删除这条消息记录吗？");
+        normalDialog.setPositiveButton("是",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int locmessageid = (Integer) delMap.get("messageid");
+                        delMessage(locmessageid, locposition);
+                    }
+                });
+        normalDialog.setNegativeButton("否",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        // 显示
+        normalDialog.show();
+    }
+
+    protected void delMessage(int id, final int locposition) {
+        //创建回调接口并实例化方法
+        VolleyCallback delVolleyCallback = new VolleyCallback() {
+            @Override
+            //回调内容result
+            public void onSuccessResponse(String result) {
+                Log.d("callBack result", result);
+                if ("error".equals(result)) {
+                    DisPlay("服务器异常！");
+                    return;
+                } else {
+                    //解析返回的json
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+                    //根据返回内容执行操作
+                    if (jsonMap.get("returnCode").toString().equals("1")) {
+                        //显示提示消息
+                        DisPlay(jsonMap.get("returnString").toString());
+                        datalist.remove(locposition);
+                        sadapter.notifyDataSetChanged();
+                    }
+                    Log.d("returnCode", jsonMap.get("returnCode").toString());
+                }
+            }
+        };
+        String url = ServerInformation.URL + "message/del?messageid=" + id;
+        //调用自定义的Volley函数
+        DFVolley.NoMReq(mQueue, url, delVolleyCallback);
+    }
+
+    protected boolean checkLogin() {
+        isLogin = false;
+        if (MySharedPreferences.getLogin(getActivity()).equals("yes")) {
+            isLogin = true;
+        }
+        return isLogin;
     }
 
     /**
@@ -91,6 +168,9 @@ public class XiaoxiFragment extends Fragment {
     protected void listBeanToMapPic(List<?> olist, List<?> blist) {
         listsize = olist.size();
         int sort = 0;
+        int count = 0;
+        final Map<String, Integer> countmap = new HashMap<String, Integer>();
+        countmap.put("loccount", count);
         Log.d(Tag, "listsize:" + listsize);
         for (int i = 0; i < listsize; i++) {
             final Map<String, Object> map = MyList.transBean2Map(olist.get(i));
@@ -99,6 +179,7 @@ public class XiaoxiFragment extends Fragment {
             map.put("sort", sort);
             map.put("pic", mapb.get("picture"));
             map.put("bname", mapb.get("name"));
+            map.put("showtime", StringUtils.substring(map.get("message_time").toString(), 5, 16));
             map.put("typeName", typeTotypename((Integer) (map.get("type"))));
             String str = StringUtils.substringBefore(map.get("pic").toString(), ",");
             /**
@@ -108,11 +189,13 @@ public class XiaoxiFragment extends Fragment {
                     new Response.Listener<Bitmap>() {
                         @Override
                         public void onResponse(Bitmap response) {
-                            count++;
-                            Log.d(Tag, "count:" + count);
+                            int reCount = countmap.get("loccount");
+                            reCount++;
+                            countmap.put("loccount", reCount);
+                            Log.d(Tag, "loccount:" + countmap.get("loccount"));
                             map.put("showpic", response);
                             datalist.add(map);
-                            if (count == listsize) {
+                            if (countmap.get("loccount") == listsize) {
                                 Collections.sort(datalist, new Comparator<Map<String, Object>>() {
                                     public int compare(Map<String, Object> o1, Map<String, Object> o2) {
                                         return (int) o1.get("sort") - (int) o2.get("sort");
@@ -121,7 +204,7 @@ public class XiaoxiFragment extends Fragment {
                                 /**
                                  * 构造数据填充listview
                                  */
-                                String str[] = {"showpic", "bname", "time", "typeName", "count"};
+                                String str[] = {"showpic", "bname", "showtime", "typeName", "count"};
                                 int[] iconid = {R.id.iv_xiaoxi_pic, R.id.tv_xiaoxi_name, R.id.tv_xiaoxi_time
                                         , R.id.iv_xiaoxi_type, R.id.iv_xiaoxi_count};
                                 sadapter = new SimpleAdapter(getActivity(), datalist, R.layout.lv_xiaoxi_item, str, iconid);
@@ -144,10 +227,6 @@ public class XiaoxiFragment extends Fragment {
                                         return false;
                                     }
                                 });
-                                if (progressDialog != null) {
-                                    progressDialog.dismiss();
-                                    progressDialog = null;
-                                }
                                 lv_xiaoxi.setAdapter(sadapter);
                             }
                         }
@@ -198,7 +277,6 @@ public class XiaoxiFragment extends Fragment {
     protected void LocQueryServer() {
         mQueue = Volley.newRequestQueue(getActivity());
         //创建回调接口并实例化方法
-        showProgressDialog();
         volleyCallback = new VolleyCallback() {
             @Override
             //回调内容result
@@ -206,10 +284,6 @@ public class XiaoxiFragment extends Fragment {
                 Log.d("callBack result", result);
                 if ("error".equals(result)) {
                     DisPlay("服务器异常！");
-                    if (progressDialog != null) {
-                        progressDialog.dismiss();
-                        progressDialog = null;
-                    }
                     return;
                 } else {
                     //解析返回的json
@@ -219,7 +293,6 @@ public class XiaoxiFragment extends Fragment {
                     DisPlay(jsonMap.get("returnString").toString());
                     //根据返回内容执行操作
                     if (jsonMap.get("returnCode").toString().equals("1")) {
-//                        JSONObject jsonBean = JSON.parseObject(jsonObject.get("resultBean").toString());
                         List<Message> mglist = JSON.parseArray(jsonMap.get("message").toString(), Message.class);
                         List<Basic> bglist = JSON.parseArray(jsonMap.get("basic").toString(), Basic.class);
                         listBeanToMapPic(mglist, bglist);
@@ -232,19 +305,6 @@ public class XiaoxiFragment extends Fragment {
                 + MySharedPreferences.getUserID(getActivity());
         //调用自定义的Volley函数
         DFVolley.NoMReq(mQueue, url, volleyCallback);
-    }
-
-    /**
-     * 加载进度条
-     */
-    public void showProgressDialog() {
-        progressDialog = new ProgressDialog(getActivity());
-        Drawable drawable = getResources().getDrawable(R.drawable.loading_animation);
-        progressDialog.setIndeterminateDrawable(drawable);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(true);
-        progressDialog.setMessage("请稍候，正在努力加载...");
-        progressDialog.show();
     }
 
     protected void DisPlay(String content) {

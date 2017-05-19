@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import java.util.Map;
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.SendMessageActivity;
 import develop.cl.com.crsp.adapter.ViewPagerNetAdapter;
 import develop.cl.com.crsp.myutil.BitmapCache;
 import develop.cl.com.crsp.image.CircleImageView;
@@ -36,7 +38,7 @@ import develop.cl.com.crsp.myutil.ServerInformation;
 import develop.cl.com.crsp.myutil.VolleyCallback;
 
 
-public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
 
     private Map<String, Object> map;
     private Intent mIntent;
@@ -58,6 +60,10 @@ public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.O
     private TextView tvName;
     private CircleImageView ivPic;
     private Button btnCall;
+    private LinearLayout lyUser;
+
+    private String nextMap;
+    private String showtpye;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +88,19 @@ public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.O
         tvName = (TextView) this.findViewById(R.id.tv_goods_user_name);
         ivPic = (CircleImageView) this.findViewById(R.id.iv_goods_user_pic);
         btnCall = (Button) this.findViewById(R.id.btn_goodsdetail_calluser);
+        lyUser = (LinearLayout) findViewById(R.id.ly_goods_user);
     }
 
     @Override
     protected void initView() {
 
+        lyUser.setOnClickListener(this);
+        btnCall.setOnClickListener(this);
+
         //从Intent获得额外信息
         mIntent = this.getIntent();
         map = (Map<String, Object>) mIntent.getSerializableExtra("map");
+        showtpye = map.get("type").toString();
         mQueue = Volley.newRequestQueue(ShowDetailGoodsActivity.this);
         UrlStr = map.get("pic").toString().split(",");
         setViewPageArr();
@@ -112,6 +123,7 @@ public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.O
                     //根据返回内容执行操作
                     if (jsonMap.get("returnCode").toString().equals("1")) {
                         JSONObject beanMap = JSON.parseObject(jsonMap.get("returnBean").toString());
+                        nextMap = beanMap.toJSONString();
                         Basic locbasic = JSON.parseObject(beanMap.get("basic").toString(), Basic.class);
                         //卖家名称
                         tvName.setText(locbasic.getName());
@@ -222,4 +234,22 @@ public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.O
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ly_goods_user:
+                mIntent = new Intent(ShowDetailGoodsActivity.this, ShowUserInfoActivity.class);
+                mIntent.putExtra("nextMap", nextMap);
+                startActivity(mIntent);
+                break;
+            case R.id.btn_goodsdetail_calluser:
+                mIntent = new Intent(ShowDetailGoodsActivity.this, SendMessageActivity.class);
+                mIntent.putExtra("touserid", map.get("userid").toString());
+                mIntent.putExtra("type", showtpye);
+                startActivity(mIntent);
+                break;
+            default:
+                break;
+        }
+    }
 }

@@ -26,6 +26,7 @@ import develop.cl.com.crsp.activity.JianliActivity;
 import develop.cl.com.crsp.activity.SearchActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
 import develop.cl.com.crsp.myutil.VolleyCallback;
@@ -134,7 +135,11 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
                                           String sendUrl = ServerInformation.URL +
                                                   "work/querybyindustry?industry=" + typeName
                                                   + "&school=" + locSchool;
-                                          LocQueryServer(sendUrl);
+                                          if (MyCheckNet.isNetworkAvailable(Select_ClassActivity.this)) {
+                                              LocQueryServer(sendUrl);
+                                          } else {
+                                              DisPlay("请检查您的网络连接");
+                                          }
                                       }
                                   }
         );
@@ -169,6 +174,10 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
                     DisPlay(jsonMap.get("returnString").toString());
                     //根据返回内容执行操作
                     if (jsonMap.get("returnCode").toString().equals("1")) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
                         mIntent = new Intent(Select_ClassActivity.this, Select_WorkActivity.class);
                         mIntent.putExtra("result", result);
                         startActivity(mIntent);

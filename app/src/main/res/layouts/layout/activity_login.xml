@@ -162,13 +162,13 @@
                     android:textSize="16.0sp" />
 
                 <TextView
-                    android:id="@+id/login_otherpassword"
+                    android:id="@+id/login_toMain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="20dp"
-                    android:text="@string/usecooperationaccount"
+                    android:text="进入主页"
                     android:textColor="#494949"
                     android:textSize="16.0sp" />
 

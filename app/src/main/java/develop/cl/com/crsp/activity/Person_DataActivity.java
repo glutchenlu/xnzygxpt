@@ -40,6 +40,7 @@ import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.adapter.AddressPickTask;
 import develop.cl.com.crsp.image.CircleImageView;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -536,7 +537,11 @@ public class Person_DataActivity extends BaseActivity implements View.OnClickLis
             Log.i(Tag, "isChange");
             MySharedPreferences.setPhoto(Person_DataActivity.this, getivPic);
             try {
-                sendUploadServer(getivPic);
+                if (MyCheckNet.isNetworkAvailable(Person_DataActivity.this)) {
+                    sendUploadServer(getivPic);
+                } else {
+                    DisPlay("请检查您的网络连接");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

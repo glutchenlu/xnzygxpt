@@ -24,9 +24,11 @@ import com.android.volley.toolbox.Volley;
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.JavaBean.Dating;
+import develop.cl.com.crsp.JavaBean.Setting;
 import develop.cl.com.crsp.JavaBean.XUser;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -51,6 +53,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private String getloginaccount;
     private String getpassword;
     private TextView find_password;
+    private TextView tvToMain;
     private Button register;
     private Button loginBtn;
     private Intent mIntent;
@@ -58,7 +61,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         findViewById();
@@ -75,6 +77,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         loginBtn = (Button) this.findViewById(R.id.login);
         register = (Button) this.findViewById(R.id.register);
         find_password = (TextView) this.findViewById(R.id.find_password);
+        tvToMain = (TextView) this.findViewById(R.id.login_toMain);
         getpassword = loginpassword.getText().toString();
         getloginaccount = loginaccount.getText().toString();
     }
@@ -85,6 +88,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         register.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         find_password.setOnClickListener(this);
+        tvToMain.setOnClickListener(this);
         isShowPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -92,14 +96,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 if (isChecked) {
                     //隐藏
                     loginpassword.setInputType(0x90);
-                    //loginpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
                     //明文显示
                     loginpassword.setInputType(0x81);
-                    //loginpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 Log.i("togglebutton", "" + isChecked);
-                //loginpassword.postInvalidate();
             }
         });
     }
@@ -147,6 +148,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 public void onSuccessResponse(String result) {
                     Log.d("callBack result", result);
                     if ("".equals(result)) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
                         DisPlay("服务器异常！");
                         return;
                     } else {
@@ -158,14 +163,17 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                         //根据返回内容执行操作
                         if (jsonMap.get("returnCode").toString().equals("1")) {
                             XUser jsonUser = JSON.parseObject(jsonMap.get("resultUser").toString(), XUser.class);
-                            sendFindBasicServer(jsonUser);
+                            sendFindServer();
+                        } else {
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                                progressDialog = null;
+                            }
                         }
                         Log.d("returnCode", jsonMap.get("returnCode").toString());
                     }
                 }
             };
-            //声明自定义Volley实例
-//            DFVolley dfv = new DFVolley(volleyCallback);
             String url = ServerInformation.URL + "user/login";
             //调用自定义的Volley函数
             DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, xuser), volleyCallback);
@@ -175,28 +183,35 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     /**
      * 向服务器发送请求并解析
      */
-    protected void sendFindBasicServer(final XUser jsonUser) {
-        Basic basic = new Basic();
-        basic.setBasicid(jsonUser.getBasicid());
-        String[] str = new String[]{"basicid"};
+    protected void sendFindServer() {
+        XUser user = new XUser();
+        user.setUserid(getloginaccount);
+        String[] str = new String[]{"userid"};
         VolleyCallback volleyCallbackBasic = new VolleyCallback() {
             @Override
             public void onSuccessResponse(String result) {
                 Log.d("callBack result", result);
-                if ("".equals(result)) {
+                if ("error".equals(result)) {
                     DisPlay("服务器异常！");
                     return;
+
                 } else {
                     //解析返回的json
                     JSONObject jsonObject = JSON.parseObject(result);
                     JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
-                    //显示提示消息
-//                    DisPlay(jsonMap.get("returnString").toString());
                     //根据返回内容执行操作
                     if (jsonMap.get("returnCode").toString().equals("1")) {
-                        Basic jsonBasic = JSON.parseObject(jsonMap.get("resultBasic").toString(), Basic.class);
+                        JSONObject jsonBean = JSON.parseObject(jsonMap.get("returnBean").toString());
+                        Basic jsonBasic = JSON.parseObject(jsonBean.get("basic").toString(), Basic.class);
+                        Dating jsonDating = JSON.parseObject(jsonBean.get("dating").toString(), Dating.class);
+                        Setting jsonSetting = JSON.parseObject(jsonBean.get("setting").toString(), Setting.class);
                         MySharedPreferences.setBasic(LoginActivity.this, jsonBasic);
-                        sendFindDatingServer(jsonUser);
+                        MySharedPreferences.setDating(LoginActivity.this, jsonDating);
+                        MySharedPreferences.setSetting(LoginActivity.this, jsonSetting);
+                        MySharedPreferences.setLogin(LoginActivity.this, "yes");
+                        MySharedPreferences.setUserID(LoginActivity.this, getloginaccount);
+                        mIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(mIntent);
                     } else {
                         if (progressDialog != null) {
                             progressDialog.dismiss();
@@ -207,51 +222,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 }
             }
         };
-        //声明自定义Volley实例
-//        DFVolley dfv = new DFVolley(volleyCallbackBasic);
-        String url = ServerInformation.URL + "basic/findbyid";
+        String url = ServerInformation.URL + "user/findbyid";
         //调用自定义的Volley函数
-        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, basic), volleyCallbackBasic);
-    }
-
-    /**
-     * 向服务器发送请求并解析
-     */
-    protected void sendFindDatingServer(XUser jsonUser) {
-        Dating dating = new Dating();
-        dating.setDating(jsonUser.getDatingid());
-        String[] str = new String[]{"dating"};
-        VolleyCallback volleyCallbackBasic = new VolleyCallback() {
-            @Override
-            public void onSuccessResponse(String result) {
-                Log.d("callBack result", result);
-                if ("".equals(result)) {
-                    DisPlay("服务器异常！");
-                    return;
-                } else {
-                    //解析返回的json
-                    JSONObject jsonObject = JSON.parseObject(result);
-                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
-                    //显示提示消息
-//                    DisPlay(jsonMap.get("returnString").toString());
-                    //根据返回内容执行操作
-                    if (jsonMap.get("returnCode").toString().equals("1")) {
-                        Dating jsonDating = JSON.parseObject(jsonMap.get("resultDating").toString(), Dating.class);
-                        MySharedPreferences.setDating(LoginActivity.this, jsonDating);
-                        MySharedPreferences.setLogin(LoginActivity.this, "yes");
-                        MySharedPreferences.setUserID(LoginActivity.this, getloginaccount);
-                        mIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(mIntent);
-                    }
-                    Log.d("returnCode", jsonMap.get("returnCode").toString());
-                }
-            }
-        };
-        //声明自定义Volley实例
-//        DFVolley dfv = new DFVolley(volleyCallbackBasic);
-        String url = ServerInformation.URL + "dating/findbyid";
-        //调用自定义的Volley函数
-        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, dating), volleyCallbackBasic);
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, user), volleyCallbackBasic);
     }
 
     /**
@@ -272,12 +245,19 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         switch (v.getId()) {
             case R.id.login:
                 checkLogin();
-                sendServer();
+                if (MyCheckNet.isNetworkAvailable(LoginActivity.this)) {
+                    sendServer();
+                } else {
+                    DisPlay("请检查您的网络连接");
+                }
                 break;
             case R.id.register:
                 mIntent = new Intent(LoginActivity.this, RegisterBormalActivity.class);
                 startActivity(mIntent);
                 break;
+            case R.id.login_toMain:
+                mIntent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(mIntent);
             default:
                 break;
         }

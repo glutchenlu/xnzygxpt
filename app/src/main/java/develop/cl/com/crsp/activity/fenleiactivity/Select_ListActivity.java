@@ -231,11 +231,11 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
     protected void setDataByFuwu(int fuwu) {
         String[] mapName;
         if (fuwu == 0) {
-            String[] mapName1 = new String[]{"detail", "release_time", "userid"
+            String[] mapName1 = new String[]{"detail", "showtime", "userid"
                     , "merchant", "price", "degree", "receive_time"};
             mapName = mapName1;
         } else {
-            String[] mapName1 = new String[]{"detail", "release_time", "userid"
+            String[] mapName1 = new String[]{"detail", "showtime", "userid"
                     , "station", "price", "degree", "receive_time"};
             mapName = mapName1;
         }
@@ -255,6 +255,7 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
     protected void listBeanToMapPic(List<?> olist, List<Map<String, Object>> loclist) {
         for (Object list : olist) {
             final Map<String, Object> map = MyList.transBean2Map(list);
+            map.put("showtime", StringUtils.substring(map.get("release_time").toString(), 5, 16));
             loclist.add(map);
         }
     }
@@ -273,6 +274,7 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
             final Map<String, Object> map = MyList.transBean2Map(list);
             sort++;
             map.put("sort", sort);
+            map.put("showtime", StringUtils.substring(map.get("release_time").toString(), 5, 16));
             String str = StringUtils.substringBefore(map.get("pic").toString(), ",");
             /**
              * 根据地址请求服务器图片
@@ -294,7 +296,7 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                                 /**
                                  * 构造数据填充listview
                                  */
-                                String[] mapName = new String[]{"showpic", "userid", "scource", "title", "release_time"
+                                String[] mapName = new String[]{"showpic", "userid", "scource", "title", "showtime"
                                         , "price", "area"};
                                 int[] controlId = new int[]{R.id.iv_select_list_pic, R.id.iv_select_list_user
                                         , R.id.iv_select_list_source

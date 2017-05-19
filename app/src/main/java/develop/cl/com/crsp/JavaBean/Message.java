@@ -9,7 +9,7 @@ public class Message {
     private String message_class;
     private String message_time;
     private int type;
-    private int serviceid;
+    private String fromuserid;
     private int count;
 
     public int getCount() {
@@ -20,12 +20,12 @@ public class Message {
         this.count = count;
     }
 
-    public int getServiceid() {
-        return serviceid;
+    public String getFromuserid() {
+        return fromuserid;
     }
 
-    public void setServiceid(int serviceid) {
-        this.serviceid = serviceid;
+    public void setFromuserid(String fromuserid) {
+        this.fromuserid = fromuserid;
     }
 
     public int getType() {

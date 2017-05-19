@@ -28,13 +28,15 @@ import java.util.Map;
 
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.activity.fabuactivity.FabudetailActivity;
 import develop.cl.com.crsp.activity.LoginActivity;
 import develop.cl.com.crsp.activity.Person_DataActivity;
+import develop.cl.com.crsp.activity.SettingActivity;
+import develop.cl.com.crsp.activity.fabuactivity.FabudetailActivity;
 import develop.cl.com.crsp.activity.fabuactivity.UserFabuActivity;
 import develop.cl.com.crsp.image.CircleImageView;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
 import develop.cl.com.crsp.myutil.VolleyCallback;
@@ -112,7 +114,11 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        sendQueryServer();
+                        if (MyCheckNet.isNetworkAvailable(getActivity())) {
+                            sendQueryServer();
+                        } else {
+                            Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case 1:
                         break;
@@ -245,9 +251,14 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_geren_set:
-                MySharedPreferences.setLogin(getActivity(), "no");
-                mIntent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(mIntent);
+                if (isLogin) {
+                    mIntent = new Intent(getActivity(), SettingActivity.class);
+                    startActivity(mIntent);
+                } else {
+                    mIntent = new Intent(getActivity(), LoginActivity.class);
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                    startActivityForResult(mIntent, 77);
+                }
                 break;
         }
     }

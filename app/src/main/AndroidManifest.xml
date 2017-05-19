@@ -43,9 +43,9 @@
             </intent-filter>
         </activity>
         <!--<service-->
-            <!--android:name=".service.PushService"-->
-            <!--android:enabled="true"-->
-            <!--android:process="system" />-->
+        <!--android:name=".service.PushService"-->
+        <!--android:enabled="true"-->
+        <!--android:process="system" />-->
 
         <activity
 
@@ -133,6 +133,18 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.fenleiactivity.ShowDetailFuwuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.fenleiactivity.ShowUserInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.SendMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>

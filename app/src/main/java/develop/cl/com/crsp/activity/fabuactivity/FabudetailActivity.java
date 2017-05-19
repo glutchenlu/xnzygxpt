@@ -34,6 +34,7 @@ import develop.cl.com.crsp.JavaBean.Work;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.MainActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -349,8 +350,6 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                 }
             }
         };
-        //声明自定义Volley实例
-//        DFVolley dfv = new DFVolley(volleyCallback);
         String url = ServerInformation.URL + "work/addWork";
         //调用自定义的Volley函数
         DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, work), volleyCallback);
@@ -420,7 +419,11 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.btn_fabu_submit:
                 checkEdit();
-                sendCheckServer();
+                if (MyCheckNet.isNetworkAvailable(FabudetailActivity.this)) {
+                    sendCheckServer();
+                } else {
+                    DisPlay("请检查您的网络连接");
+                }
                 break;
             default:
                 break;

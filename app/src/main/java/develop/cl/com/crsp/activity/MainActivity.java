@@ -31,6 +31,7 @@ import develop.cl.com.crsp.fragment.FenleiFragment;
 import develop.cl.com.crsp.fragment.GerenFragment;
 import develop.cl.com.crsp.fragment.XiaoxiFragment;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -42,9 +43,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     private List<Fragment> fragList;
     private ViewPager vp_main;
-    private int position;
+    //    private int position;
     private BottomNavigationBar bottomBar;
     private boolean isLogin;
+    private static final String Tag = "MainActivity";
 
     static Timer timer = null;
     private VolleyCallback volleyCallback;
@@ -59,6 +61,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         setContentView(R.layout.activity_mymain);
         findViewById();
         initView();
+        Log.d(Tag, "onCreate");
     }
 
     @Override
@@ -70,7 +73,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     protected void initView() {
         mQueue = Volley.newRequestQueue(MainActivity.this);
-        long period = 10 * 1000;
         int delay = 0;
         if (null == timer) {
             timer = new Timer();
@@ -78,11 +80,21 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                /**
+                 * 登录状态并且网络状态可用
+                 */
                 if (checkLogin()) {
-                    LocQueryServer();
+                    if (MyCheckNet.isNetworkAvailable(MainActivity.this)) {
+                        //允许消息通知
+                        if ("是".equals(MySharedPreferences
+                                .getSetting(MainActivity.this).getTongzhi())) {
+                            LocQueryServer();
+                        }
+                    }
                 }
             }
-        }, delay, period);
+        }, delay, Integer.parseInt(MySharedPreferences
+                .getSetting(MainActivity.this).getDelay()) * 1000);
 
         numberBadItem = new BadgeItem().setBorderWidth(4)
                 .setBackgroundColorResource(R.color.red)
@@ -113,10 +125,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
          */
         MainFragmentAdapter adapter = new MainFragmentAdapter(getSupportFragmentManager(), fragList);
         vp_main.setAdapter(adapter);
-
         bottomBar.setTabSelectedListener(this);
-
-
         vp_main.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -129,26 +138,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (state == 2) {
-                    position = vp_main.getCurrentItem();
-                    switch (position) {
-                        case 0:
-                            Log.d("tag", "ibtn_fenlei huadong");
-                            break;
-                        case 1:
-                            Log.d("tag", "ibtn_fujin huadong");
-                            break;
-                        case 2:
-                            Log.d("tag", "ibtn_fabu huadong");
-                            break;
-                        case 3:
-                            Log.d("tag", "ibtn_xiaoxi huadong");
-                            break;
-                        case 4:
-                            Log.d("tag", "ibtn_geren huadong");
-                            break;
-                    }
-                }
             }
         });
     }
@@ -173,6 +162,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             xiaoxiBottomNavigationItem.setBadgeItem(numberBadItem);
             numberBadItem.hide(true);
         }
+        Log.d("positon", position + "");
         vp_main.setCurrentItem(position, false);
     }
 
@@ -223,7 +213,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                         if (count > 0) {
                             numberBadItem.show(false);
                             numberBadItem.setText(count + "");
-//                            tongzhi();
+                            if ("是".equals(MySharedPreferences
+                                    .getSetting(MainActivity.this).getTanchuang())) {
+                                tongzhi();
+                            }
                         }
                     }
                     Log.d("returnCode", jsonMap.get("returnCode").toString());

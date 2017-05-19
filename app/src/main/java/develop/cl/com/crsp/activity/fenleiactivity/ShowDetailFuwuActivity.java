@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -22,6 +23,7 @@ import java.util.Map;
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.SendMessageActivity;
 import develop.cl.com.crsp.image.CircleImageView;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -46,6 +48,10 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
     private TextView tvArea;
     private TextView tvName;
     private CircleImageView ivPic;
+    private LinearLayout lyUser;
+
+    private String nextMap;
+    private String showtpye;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +74,18 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
         tvArea = (TextView) this.findViewById(R.id.tv_fuwudetail_area);
         tvName = (TextView) this.findViewById(R.id.tv_fuwu_user_name);
         ivPic = (CircleImageView) this.findViewById(R.id.iv_fuwu_user_pic);
-        btnCall = (Button) this.findViewById(R.id.btn_wrokdetail_calluser);
+        btnCall = (Button) this.findViewById(R.id.btn_fuwudetail_calluser);
+        lyUser = (LinearLayout) findViewById(R.id.ly_fuwu_user);
     }
 
     @Override
     protected void initView() {
-//从Intent获得额外信息
+        lyUser.setOnClickListener(this);
+        btnCall.setOnClickListener(this);
+        //从Intent获得额外信息
         mIntent = this.getIntent();
         map = (Map<String, Object>) mIntent.getSerializableExtra("map");
+        showtpye = map.get("type").toString();
         classposition = mIntent.getIntExtra("classposition", -1);
         mQueue = Volley.newRequestQueue(ShowDetailFuwuActivity.this);
         /**
@@ -96,6 +106,7 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
                     //根据返回内容执行操作
                     if (jsonMap.get("returnCode").toString().equals("1")) {
                         JSONObject beanMap = JSON.parseObject(jsonMap.get("returnBean").toString());
+                        nextMap = beanMap.toJSONString();
                         Basic locbasic = JSON.parseObject(beanMap.get("basic").toString(), Basic.class);
                         //卖家名称
                         if (classposition == 0) {
@@ -137,6 +148,20 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.ly_fuwu_user:
+                mIntent = new Intent(ShowDetailFuwuActivity.this, ShowUserInfoActivity.class);
+                mIntent.putExtra("nextMap", nextMap);
+                startActivity(mIntent);
+                break;
+            case R.id.btn_fuwudetail_calluser:
+                mIntent = new Intent(ShowDetailFuwuActivity.this, SendMessageActivity.class);
+                mIntent.putExtra("touserid", map.get("userid").toString());
+                mIntent.putExtra("type", showtpye);
+                startActivity(mIntent);
+                break;
+            default:
+                break;
+        }
     }
 }

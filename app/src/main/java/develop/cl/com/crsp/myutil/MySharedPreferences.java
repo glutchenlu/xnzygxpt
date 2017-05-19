@@ -16,6 +16,7 @@ import java.util.Date;
 
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.JavaBean.Dating;
+import develop.cl.com.crsp.JavaBean.Setting;
 
 public class MySharedPreferences {
     public static String getLogin(Context context) {
@@ -193,6 +194,26 @@ public class MySharedPreferences {
         SharedPreferences spf = context.getSharedPreferences("MessageCount", 0);
         SharedPreferences.Editor editor = spf.edit();
         editor.putInt("count", count);
+        editor.apply();
+    }
+
+    public static Setting getSetting(Context context) {
+        Setting setting = new Setting();
+        SharedPreferences spf = context.getSharedPreferences("Setting", 0);
+        setting.setSettingid(Integer.parseInt(spf.getString("settingid", "0")));
+        setting.setTongzhi(spf.getString("tongzhi", "是"));
+        setting.setTanchuang(spf.getString("tanchuang", "是"));
+        setting.setDelay(spf.getString("delay", "30"));
+        return setting;
+    }
+
+    public static void setSetting(Context context, Setting setting) {
+        SharedPreferences spf = context.getSharedPreferences("Setting", 0);
+        SharedPreferences.Editor editor = spf.edit();
+        editor.putString("settingid", setting.getSettingid() + "");
+        editor.putString("tongzhi", setting.getTongzhi());
+        editor.putString("tanchuang", setting.getTanchuang());
+        editor.putString("delay", setting.getDelay());
         editor.apply();
     }
 }

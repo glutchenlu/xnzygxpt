@@ -12,6 +12,7 @@ import java.util.Map;
 
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.SendMessageActivity;
 
 public class ShowDetailWorkActivity extends BaseActivity implements View.OnClickListener {
 
@@ -39,6 +40,7 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
     private TextView tvShoucang;
     private Button btnSummit;
     private Button btnCall;
+    private String showtpye;
 
 
     @Override
@@ -83,6 +85,7 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
         mIntent = this.getIntent();
         mapw = (Map<String, Object>) mIntent.getSerializableExtra("mapw");
         mapc = (Map<String, Object>) mIntent.getSerializableExtra("mapc");
+        showtpye = mapw.get("type").toString();
 
         tvTitile.setText(mapw.get("title").toString());
         tvTime.setText(mapw.get("release_time").toString());
@@ -109,6 +112,10 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
             case R.id.btn_workdetail_summit:
                 break;
             case R.id.btn_wrokdetail_calluser:
+                mIntent = new Intent(ShowDetailWorkActivity.this, SendMessageActivity.class);
+                mIntent.putExtra("touserid", mapw.get("userid").toString());
+                mIntent.putExtra("type", showtpye);
+                startActivity(mIntent);
                 break;
             case R.id.ly_workdetail_company:
                 mIntent = new Intent(ShowDetailWorkActivity.this,

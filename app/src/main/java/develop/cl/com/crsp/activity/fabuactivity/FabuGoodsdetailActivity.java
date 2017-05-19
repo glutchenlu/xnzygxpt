@@ -48,6 +48,7 @@ import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.MainActivity;
 import develop.cl.com.crsp.adapter.GridImageAdapter;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -667,10 +668,14 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.btn_fabu_goods_submit:
                 checkEdit();
-                try {
-                    sendUploadServer();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (MyCheckNet.isNetworkAvailable(FabuGoodsdetailActivity.this)) {
+                    try {
+                        sendUploadServer();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    DisPlay("请检查您的网络连接");
                 }
                 break;
             default:

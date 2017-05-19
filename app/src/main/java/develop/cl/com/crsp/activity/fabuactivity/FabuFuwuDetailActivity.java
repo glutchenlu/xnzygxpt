@@ -36,6 +36,7 @@ import develop.cl.com.crsp.JavaBean.TrainTicket;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.MainActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -330,12 +331,16 @@ public class FabuFuwuDetailActivity extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.btn_fabu_fuwu_submit:
                 checkEdit();
-                if ("快递代领".equals(typeName)) {
-                    showProgressDialog();
-                    sendAddCourierServer();
-                } else if ("火车票代领".equals(typeName)) {
-                    showProgressDialog();
-                    sendAddTrainTicketServer();
+                if (MyCheckNet.isNetworkAvailable(FabuFuwuDetailActivity.this)) {
+                    if ("快递代领".equals(typeName)) {
+                        showProgressDialog();
+                        sendAddCourierServer();
+                    } else if ("火车票代领".equals(typeName)) {
+                        showProgressDialog();
+                        sendAddTrainTicketServer();
+                    }
+                } else {
+                    DisPlay("请检查您的网络连接");
                 }
                 break;
             default:

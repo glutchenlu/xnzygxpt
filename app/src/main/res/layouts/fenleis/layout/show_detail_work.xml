@@ -419,7 +419,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:background="@android:color/holo_green_light"
-                    android:text="打电话"
+                    android:text="联系发布者"
                     android:textColor="@color/whitesmoke" />
             </LinearLayout>
         </LinearLayout>

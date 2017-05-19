@@ -215,7 +215,7 @@ public class RegisterBormalActivity extends BaseActivity implements View.OnClick
                 tvSchool.setText(city.getAreaName());
             }
         });
-        task.execute("北京", "北京大学");
+        task.execute("广西", "桂林理工大学");
     }
 
     private void showToast(String msg) {

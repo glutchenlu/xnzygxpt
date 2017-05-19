@@ -26,6 +26,7 @@ import develop.cl.com.crsp.activity.SearchActivity;
 import develop.cl.com.crsp.activity.fabuactivity.FabuClassListActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
 import develop.cl.com.crsp.myutil.VolleyCallback;
@@ -168,7 +169,11 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                             default:
                                 break;
                         }
-                        LocQueryServer(sendUrl, cls, position);
+                        if (MyCheckNet.isNetworkAvailable(FenleiClassListActivity.this)) {
+                            LocQueryServer(sendUrl, cls, position);
+                        } else {
+                            DisPlay("请检查您的网络连接");
+                        }
                     }
                 }
         );

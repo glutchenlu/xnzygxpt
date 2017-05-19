@@ -14,6 +14,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,10 +112,10 @@ public class Select_WorkActivity extends BaseActivity implements View.OnClickLis
         List<Company> clist = JSON.parseArray(jsonMap.get("resultcompany").toString(), Company.class);
         datalist = new ArrayList<Map<String, Object>>();
         datalistc = new ArrayList<Map<String, Object>>();
-        listBeanToMapPic(wlist, datalist);
+        listBeanToMapWork(wlist, datalist);
         listBeanToMapPic(clist, datalistc);
         String[] mapName = new String[]{"title", "salary", "welfare"
-                , "source", "release_time", "work_area"};
+                , "source", "showtime", "work_area"};
         int[] controlId = new int[]{R.id.tv_select_work_item_title
                 , R.id.tv_select_work_item_sal, R.id.tv_select_work_item_welfare
                 , R.id.tv_select_work_item_company, R.id.tv_select_work_item_time
@@ -143,6 +145,14 @@ public class Select_WorkActivity extends BaseActivity implements View.OnClickLis
     protected void listBeanToMapPic(List<?> olist, List<Map<String, Object>> loclist) {
         for (Object list : olist) {
             final Map<String, Object> map = MyList.transBean2Map(list);
+            loclist.add(map);
+        }
+    }
+    protected void listBeanToMapWork(List<?> olist, List<Map<String, Object>> loclist) {
+        for (Object list : olist) {
+            final Map<String, Object> map = MyList.transBean2Map(list);
+            map.put("showtime", StringUtils.substring(map.get("release_time").toString(), 5, 16));
+//            2017-05-01 03:45:37
             loclist.add(map);
         }
     }

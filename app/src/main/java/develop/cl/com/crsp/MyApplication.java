@@ -22,7 +22,6 @@ public class MyApplication extends Application {
 
     private HttpClient httpClient;
     public boolean isLogin = false;
-    private String xiaoxiMap;
 
     @Override
     public void onCreate() {
@@ -74,13 +73,5 @@ public class MyApplication extends Application {
     // 对外提供HttpClient实例
     public HttpClient getHttpClient() {
         return httpClient;
-    }
-
-    public String getxiaoxiMap() {
-        return xiaoxiMap;
-    }
-
-    public void setxiaoxiMap(String str) {
-        xiaoxiMap = str;
     }
 }

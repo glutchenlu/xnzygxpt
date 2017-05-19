@@ -220,6 +220,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ly_fuwu_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -249,7 +250,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btn_wrokdetail_calluser"
+                    android:id="@+id/btn_fuwudetail_calluser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
