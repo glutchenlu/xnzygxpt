@@ -205,11 +205,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                         Basic jsonBasic = JSON.parseObject(jsonBean.get("basic").toString(), Basic.class);
                         Dating jsonDating = JSON.parseObject(jsonBean.get("dating").toString(), Dating.class);
                         Setting jsonSetting = JSON.parseObject(jsonBean.get("setting").toString(), Setting.class);
+                        int count = Integer.parseInt(jsonBean.get("count").toString());
                         MySharedPreferences.setBasic(LoginActivity.this, jsonBasic);
                         MySharedPreferences.setDating(LoginActivity.this, jsonDating);
                         MySharedPreferences.setSetting(LoginActivity.this, jsonSetting);
                         MySharedPreferences.setLogin(LoginActivity.this, "yes");
                         MySharedPreferences.setUserID(LoginActivity.this, getloginaccount);
+                        MySharedPreferences.setResumeCount(LoginActivity.this, count);
                         mIntent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(mIntent);
                     } else {

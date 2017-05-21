@@ -93,6 +93,10 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initView() {
 
+        if (MySharedPreferences.getResumeCount(Select_ClassActivity.this) != 0) {
+            tvJianli.setVisibility(View.INVISIBLE);
+            tvRemind.setVisibility(View.GONE);
+        }
         locSchool = MySharedPreferences.getSchool(Select_ClassActivity.this);
         tvRemind.setOnClickListener(this);
         tvJianli.setOnClickListener(this);

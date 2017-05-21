@@ -115,7 +115,7 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
                         Basic locbasic = JSON.parseObject(beanMap.get("basic").toString(), Basic.class);
                         //卖家名称
                         if (classposition == 0) {
-                            tvStationName.setText("快递商家");
+                            tvStationName.setText("快递商家：");
                             tvStation.setText(map.get("merchant").toString());
                         } else if (classposition == 1) {
                             tvStation.setText(map.get("station").toString());
@@ -204,10 +204,16 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
                 startActivity(mIntent);
                 break;
             case R.id.btn_fuwudetail_calluser:
-                mIntent = new Intent(ShowDetailFuwuActivity.this, SendMessageActivity.class);
-                mIntent.putExtra("touserid", map.get("userid").toString());
-                mIntent.putExtra("type", showtpye);
-                startActivity(mIntent);
+                if (MySharedPreferences.getBasicData(
+                        ShowDetailFuwuActivity.this).getCredit() >=
+                        Integer.parseInt(map.get("degree").toString())) {
+                    mIntent = new Intent(ShowDetailFuwuActivity.this, SendMessageActivity.class);
+                    mIntent.putExtra("touserid", map.get("userid").toString());
+                    mIntent.putExtra("type", showtpye);
+                    startActivity(mIntent);
+                } else {
+                    DisPlay("您的信誉等级不够，无法联系发布者！");
+                }
                 break;
             case R.id.tv_fuwu_shoucang:
                 addShoucang();

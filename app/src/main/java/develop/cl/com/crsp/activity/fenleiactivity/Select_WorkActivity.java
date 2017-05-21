@@ -26,6 +26,7 @@ import develop.cl.com.crsp.JavaBean.Company;
 import develop.cl.com.crsp.JavaBean.Work;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.myutil.MyList;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.VolleyCallback;
 
 
@@ -101,6 +102,9 @@ public class Select_WorkActivity extends BaseActivity implements View.OnClickLis
         spWork2.setOnItemSelectedListener(this);
         spWork3.setOnItemSelectedListener(this);
         spWork4.setOnItemSelectedListener(this);
+        if (MySharedPreferences.getResumeCount(Select_WorkActivity.this) != 0) {
+            tvJianli.setVisibility(View.INVISIBLE);
+        }
 
         mIntent = this.getIntent();
         //从Intent获得额外信息，设置为TextView的文本
@@ -148,6 +152,7 @@ public class Select_WorkActivity extends BaseActivity implements View.OnClickLis
             loclist.add(map);
         }
     }
+
     protected void listBeanToMapWork(List<?> olist, List<Map<String, Object>> loclist) {
         for (Object list : olist) {
             final Map<String, Object> map = MyList.transBean2Map(list);

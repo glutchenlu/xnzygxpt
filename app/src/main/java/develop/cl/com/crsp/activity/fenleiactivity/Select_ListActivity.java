@@ -35,6 +35,7 @@ import java.util.Map;
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Courier;
 import develop.cl.com.crsp.JavaBean.Goods;
+import develop.cl.com.crsp.JavaBean.Information;
 import develop.cl.com.crsp.JavaBean.SecondGoods;
 import develop.cl.com.crsp.JavaBean.TrainTicket;
 import develop.cl.com.crsp.R;
@@ -167,6 +168,14 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 break;
             case "校内资讯互动":
                 preUrl = ServerInformation.URL + "information";
+                List<Information> ilist = JSON.parseArray(jsonMap.get("resultBean").toString(), Information.class);
+                datalistp = new ArrayList<Map<String, Object>>();
+                listBeanToMapPic(ilist, datalistp);
+                spSelectList1.setVisibility(View.GONE);
+                spSelectList2.setVisibility(View.GONE);
+                spSelectList3.setVisibility(View.GONE);
+                spSelectList4.setVisibility(View.GONE);
+                setDataByInfo();
                 break;
             default:
                 break;
@@ -215,6 +224,11 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                         }
                         break;
                     case "校内资讯互动":
+                        nextMap = datalistp.get(position);
+                        mIntent = new Intent(Select_ListActivity.this, ShowDetailInfoActivity.class);
+                        //无法直接传map，需要序列化
+                        mIntent.putExtra("map", (Serializable) nextMap);
+                        startActivity(mIntent);
                         break;
                     default:
                         break;
@@ -243,6 +257,17 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 , R.id.iv_fuwu_user, R.id.iv_fuwu_station, R.id.iv_fuwu_price
                 , R.id.iv_fuwu_degree, R.id.iv_fuwu_time};
         sadapter = new SimpleAdapter(this, datalistp, R.layout.lv_fuwu_item, mapName, controlId);
+        lv_select_list.setAdapter(sadapter);
+    }
+
+    /**
+     * 校内快捷服务数据绑定
+     */
+    protected void setDataByInfo() {
+        String[] mapName = {"title", "theme", "showtime"};
+        int[] controlId = new int[]{R.id.lv_info_list_title, R.id.lv_info_list_theme
+                , R.id.lv_info_list_time};
+        sadapter = new SimpleAdapter(this, datalistp, R.layout.lv_info_list_item, mapName, controlId);
         lv_select_list.setAdapter(sadapter);
     }
 

@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/list_str_quyu"
+            android:gravity="center"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -75,6 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/list_str_leibie"
+            android:gravity="center"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -83,6 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/list_str_sal"
+            android:gravity="center"
             android:spinnerMode="dropdown" />
 
         <Spinner
@@ -91,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/list_str_qita"
+            android:gravity="center"
             android:spinnerMode="dropdown" />
     </LinearLayout>
 

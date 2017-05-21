@@ -41,6 +41,9 @@ public class JianliActivity extends BaseActivity implements View.OnClickListener
     private RequestQueue mQueue;
     private static final String Tag = "JianliActivity";
     private Intent mIntent;
+    private String dotype;
+    private String resultMap;
+    private Resume preResume;
 
     private Button btnSubmi;
     private EditText etName;
@@ -96,6 +99,27 @@ public class JianliActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initView() {
+
+        mIntent = this.getIntent();
+        dotype = mIntent.getStringExtra("dotype");
+//        Resume preResume = new Resume();
+        if ("修改".equals(dotype)) {
+            resultMap = mIntent.getStringExtra("resultMap");
+            JSONObject jsonMap = JSON.parseObject(resultMap);
+            preResume = JSON.parseObject(jsonMap.get("resume").toString(), Resume.class);
+            etName.setText(preResume.getName());
+            etJianliName.setText(preResume.getResumename());
+            etTel.setText(preResume.getTel());
+            etEmail.setText(preResume.getEmail());
+            spSex.setSelection(setSpDefault(R.array.jianli_sex, preResume.getSex()));
+            spEdu.setSelection(setSpDefault(R.array.fabu_work_education, preResume.getEducation()));
+            spExp.setSelection(setSpDefault(R.array.fabu_work_experience, preResume.getWork_year()));
+            spExpSal.setSelection(setSpDefault(R.array.sal, preResume.getExp_salary()));
+            tvDate.setText(preResume.getBirth_year());
+            tvExpArea.setText(preResume.getExp_area());
+            etExpPosition.setText(preResume.getExp_position());
+            etDescribe.setText(preResume.getRedescribe());
+        }
         btnSubmi.setOnClickListener(this);
         spSex.setOnItemSelectedListener(this);
         spEdu.setOnItemSelectedListener(this);
@@ -152,27 +176,32 @@ public class JianliActivity extends BaseActivity implements View.OnClickListener
     /**
      * 向服务器发送请求并解析
      */
-    protected void sendAddServer() {
+    protected void sendSaveServer() {
         if (ps) {
             mQueue = Volley.newRequestQueue(JianliActivity.this);
             Resume resume = new Resume();
             resume.setUserid(MySharedPreferences.getUserID(JianliActivity.this));
+            if ("修改".equals(dotype)) {
+                resume.setResumeid(preResume.getResumeid());
+            }
             resume.setSex(getspSex);
             resume.setBirth_year(gettvDate);
             resume.setEducation(getspEdu);
             resume.setExp_salary(getspExpSal);
             resume.setExp_area(gettvExpArea);
-            resume.setDescribe(getetDescribe);
+            resume.setRedescribe(getetDescribe);
             resume.setTel(getetTel);
             resume.setExp_position(getetExpPosition);
             resume.setWork_year(getspExp);
             resume.setName(getetName);
             resume.setResumename(getetJianliName);
             resume.setEmail(getetEmail);
+
             String[] str = new String[]{"userid", "sex", "birth_year", "education", "exp_salary"
-                    , "exp_area", "describe", "tel", "exp_position", "work_year", "name", "resumename", "email"};
+                    , "exp_area", "redescribe", "tel", "exp_position", "work_year", "name", "resumename", "email"};
+            String[] str1 = new String[]{"resumeid", "userid", "sex", "birth_year", "education", "exp_salary"
+                    , "exp_area", "redescribe", "tel", "exp_position", "work_year", "name", "resumename", "email"};
             //创建回调接口并实例化方法
-            this.showProgressDialog();
             volleyCallback = new VolleyCallback() {
                 @Override
                 //回调内容result
@@ -187,7 +216,10 @@ public class JianliActivity extends BaseActivity implements View.OnClickListener
                         JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
                         //根据返回内容执行操作
                         if (jsonMap.get("returnCode").toString().equals("1")) {
-                            MySharedPreferences.setResumeCount(JianliActivity.this, (Integer) jsonMap.get("count"));
+                            if ("新增".equals(dotype)) {
+                                MySharedPreferences.setResumeCount(JianliActivity.this
+                                        , Integer.parseInt(jsonMap.get("count").toString()));
+                            }
                             //显示提示消息
                             DisPlay(jsonMap.get("returnString").toString());
                             mIntent = new Intent(JianliActivity.this, MainActivity.class);
@@ -200,9 +232,16 @@ public class JianliActivity extends BaseActivity implements View.OnClickListener
                     }
                 }
             };
-            String url = ServerInformation.URL + "resume/add";
-            //调用自定义的Volley函数
-            DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, resume), volleyCallback);
+            String url = "";
+            if ("修改".equals(dotype)) {
+                url = ServerInformation.URL + "resume/update";
+                //调用自定义的Volley函数
+                DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str1, resume), volleyCallback);
+            } else if ("新增".equals(dotype)) {
+                url = ServerInformation.URL + "resume/add";
+                //调用自定义的Volley函数
+                DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, resume), volleyCallback);
+            }
         }
     }
 
@@ -267,11 +306,23 @@ public class JianliActivity extends BaseActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.btn_submit:
                 checkEdit();
-                sendAddServer();
+                sendSaveServer();
                 break;
             default:
                 break;
         }
+    }
+
+    protected int setSpDefault(int srcID, String str) {
+        String[] strs = JianliActivity.this.getResources().getStringArray(srcID);
+        int strLength = strs.length;
+        int rtPosition = -1;
+        for (int i = 0; i < strLength; i++) {
+            if (str.equals(strs[i])) {
+                rtPosition = i;
+            }
+        }
+        return rtPosition;
     }
 
     @Override

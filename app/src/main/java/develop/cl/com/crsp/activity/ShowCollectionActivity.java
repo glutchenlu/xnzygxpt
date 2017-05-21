@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -28,6 +29,7 @@ import develop.cl.com.crsp.JavaBean.MyCollection;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailFuwuActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailGoodsActivity;
+import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailInfoActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailWorkActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.MyList;
@@ -41,6 +43,7 @@ public class ShowCollectionActivity extends BaseActivity {
 
     private RequestQueue mQueue;
     private VolleyCallback volleyCallback;
+    private TextView tvAdd;
 
     private Button btnTop;
     private ListView lvUserShoucang;
@@ -64,11 +67,13 @@ public class ShowCollectionActivity extends BaseActivity {
     protected void findViewById() {
         lvUserShoucang = (ListView) this.findViewById(R.id.lv_userfabu);
         btnTop = (Button) this.findViewById(R.id.btn_userfabu_top);
+        tvAdd = (TextView) this.findViewById(R.id.tv_userfabu_add);
     }
 
     @Override
     protected void initView() {
 
+        tvAdd.setVisibility(View.GONE);
         btnTop.setText("我的收藏");
         mIntent = this.getIntent();
         returnBean = mIntent.getStringExtra("returnBean");
@@ -129,7 +134,10 @@ public class ShowCollectionActivity extends BaseActivity {
                         break;
                     //7、资讯互动
                     case "7":
-                        mIntent = new Intent(ShowCollectionActivity.this, MainActivity.class);
+                        serviceUrl = ServerInformation.URL + "information/queryByID?informationid="
+                                + datalist.get(position).get("serviceid");
+                        mIntent = new Intent(ShowCollectionActivity.this, ShowDetailInfoActivity.class);
+                        sendQueryByServiceID(serviceUrl, ShowDetailFuwuActivity.class, -1);
                         break;
                     default:
                         break;

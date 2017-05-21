@@ -97,7 +97,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:background="@android:color/background_light"
                     android:orientation="vertical">
 
@@ -123,14 +123,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/background_light"
-                    android:orientation="horizontal"
-                    android:paddingTop="10dp">
+                    android:orientation="horizontal">
 
                     <GridView
                         android:id="@+id/gv_select_work_fenlei1"
                         android:layout_width="match_parent"
                         android:layout_height="265dp"
-                        android:layout_margin="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
                         android:horizontalSpacing="10dp"
                         android:numColumns="3"
                         android:verticalSpacing="10dp" />
@@ -139,7 +141,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:background="@android:color/background_light"
                     android:orientation="vertical">
 
@@ -147,8 +149,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
                         android:gravity="left"
-                        android:paddingLeft="20dp"
                         android:paddingTop="10dp"
                         android:text="生活·服务"
                         android:textColor="@android:color/holo_green_light"
@@ -181,7 +185,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:background="@android:color/background_light"
                     android:orientation="vertical">
 
@@ -207,14 +211,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/background_light"
-                    android:orientation="horizontal"
-                    android:paddingTop="10dp">
+                    android:orientation="horizontal">
 
                     <GridView
                         android:id="@+id/gv_select_work_fenlei3"
                         android:layout_width="match_parent"
                         android:layout_height="265dp"
-                        android:layout_margin="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
                         android:horizontalSpacing="10dp"
                         android:numColumns="3"
                         android:verticalSpacing="10dp" />
@@ -223,7 +229,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:background="@android:color/background_light"
                     android:orientation="vertical">
 
@@ -257,7 +263,10 @@
                         android:id="@+id/gv_select_work_fenlei4"
                         android:layout_width="match_parent"
                         android:layout_height="85dp"
-                        android:layout_margin="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
                         android:horizontalSpacing="10dp"
                         android:numColumns="3"
                         android:verticalSpacing="10dp" />

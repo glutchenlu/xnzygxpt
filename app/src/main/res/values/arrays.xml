@@ -65,6 +65,7 @@
         <item>7成新及以下</item>
     </string-array>
     <string-array name="list_str_quyu">
+        <item>区域</item>
         <item>区域1</item>
         <item>区域2</item>
         <item>区域3</item>
@@ -73,6 +74,7 @@
         <item>区域6</item>
     </string-array>
     <string-array name="list_str_leibie">
+        <item>类别</item>
         <item>类别1</item>
         <item>类别2</item>
         <item>类别3</item>
@@ -81,6 +83,7 @@
         <item>类别6</item>
     </string-array>
     <string-array name="list_str_sal">
+        <item>薪资</item>
         <item>薪资1</item>
         <item>薪资2</item>
         <item>薪资3</item>
@@ -89,6 +92,7 @@
         <item>薪资6</item>
     </string-array>
     <string-array name="list_str_qita">
+        <item>其他</item>
         <item>其他1</item>
         <item>其他2</item>
         <item>其他3</item>

@@ -1,12 +1,15 @@
 package develop.cl.com.crsp.activity.fenleiactivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -14,12 +17,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.MyCollection;
+import develop.cl.com.crsp.JavaBean.Resume;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.JianliActivity;
 import develop.cl.com.crsp.activity.SendMessageActivity;
+import develop.cl.com.crsp.activity.ShowJianliDetailActivity;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
@@ -157,6 +164,104 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
         DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, mycollection), volleyCallback);
     }
 
+    protected void SendQueryByIDServer(int locresumeid) {
+        mQueue = Volley.newRequestQueue(ShowDetailWorkActivity.this);
+        //创建回调接口并实例化方法
+        VolleyCallback delVolleyCallback = new VolleyCallback() {
+            @Override
+            //回调内容result
+            public void onSuccessResponse(String result) {
+                Log.d("callBack result", result);
+                if ("error".equals(result)) {
+                    DisPlay("服务器异常！");
+                    return;
+                } else {
+                    //解析返回的json
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+                    //根据返回内容执行操作
+                    if (jsonMap.get("returnCode").toString().equals("1")) {
+                        //显示提示消息
+                        DisPlay(jsonMap.get("returnString").toString());
+                        mIntent = new Intent(ShowDetailWorkActivity.this, ShowJianliDetailActivity.class);
+                        mIntent.putExtra("resultMap", jsonObject.get("resultMap").toString());
+                        mIntent.putExtra("dotype", "投递查看");
+                        mIntent.putExtra("companyname", mapc.get("companyname").toString());
+                        startActivity(mIntent);
+                    }
+                    Log.d("returnCode", jsonMap.get("returnCode").toString());
+                }
+            }
+        };
+        String url = ServerInformation.URL + "resume/querybyid?resumeid=" + locresumeid;
+        //调用自定义的Volley函数
+        DFVolley.NoMReq(mQueue, url, delVolleyCallback);
+    }
+
+    /**
+     * 向服务器请求数据
+     */
+    protected void sendQueryJianliServer() {
+        String locUrl = ServerInformation.URL + "resume/querybyuser?userid="
+                + MySharedPreferences.getUserID(ShowDetailWorkActivity.this);
+        mQueue = Volley.newRequestQueue(ShowDetailWorkActivity.this);
+        volleyCallback = new VolleyCallback() {
+            @Override
+            //回调内容result
+            public void onSuccessResponse(String result) {
+                Log.d("callBack result", result);
+                if ("error".equals(result)) {
+                    Toast.makeText(ShowDetailWorkActivity.this, "服务器异常！", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    //解析返回的json
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+                    //显示提示消息
+                    Toast.makeText(ShowDetailWorkActivity.this, jsonMap.get("returnString").toString(), Toast.LENGTH_SHORT).show();
+                    //根据返回内容执行操作
+                    if (jsonMap.get("returnCode").toString().equals("1")) {
+//                        mIntent = new Intent(ShowDetailWorkActivity.this, ShowJianliListActivity.class);
+//                        mIntent.putExtra("resultMap", jsonObject.getString("resultMap"));
+//                        startActivity(mIntent);
+                        int count = (Integer) jsonMap.get("count");
+                        if (count == 0) {
+                            Toast.makeText(ShowDetailWorkActivity.this, "您还没有简历，添加简历！", Toast.LENGTH_SHORT).show();
+                            mIntent = new Intent(ShowDetailWorkActivity.this, JianliActivity.class);
+                            mIntent.putExtra("dotype", "新增");
+                            startActivity(mIntent);
+                        } else {
+                            showListDialog(jsonMap, count);
+                        }
+                    }
+                    Log.d("returnCode", jsonMap.get("returnCode").toString());
+                }
+            }
+        };
+        //调用自定义的Volley函数
+        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
+    }
+
+    private void showListDialog(JSONObject jsonmap, int count) {
+
+        final String[] items = new String[count];
+        final int[] IDitems = new int[count];
+        List<Resume> rlist = JSON.parseArray(jsonmap.get("resume").toString(), Resume.class);
+        for (int i = 0; i < count; i++) {
+            items[i] = rlist.get(i).getResumename();
+            IDitems[i] = rlist.get(i).getResumeid();
+        }
+        AlertDialog.Builder listDialog =
+                new AlertDialog.Builder(ShowDetailWorkActivity.this);
+        listDialog.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SendQueryByIDServer(IDitems[which]);
+            }
+        });
+        listDialog.show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -164,6 +269,7 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
                 addShoucang();
                 break;
             case R.id.btn_workdetail_summit:
+                sendQueryJianliServer();
                 break;
             case R.id.btn_wrokdetail_calluser:
                 mIntent = new Intent(ShowDetailWorkActivity.this, SendMessageActivity.class);

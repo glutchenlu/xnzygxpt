@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -29,6 +30,7 @@ import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.MainActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailFuwuActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailGoodsActivity;
+import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailInfoActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailWorkActivity;
 import develop.cl.com.crsp.myutil.MyList;
 
@@ -36,7 +38,7 @@ public class UserFabuActivity extends BaseActivity {
     private static final String Tag = "UserFabuActivity";
     private Intent mIntent;
     private String resultBean;
-
+    private TextView tvAdd;
     private ListView lvUserFabu;
     private SimpleAdapter sadapter;
     private List<Map<String, Object>> datalist;
@@ -57,10 +59,12 @@ public class UserFabuActivity extends BaseActivity {
     @Override
     protected void findViewById() {
         lvUserFabu = (ListView) this.findViewById(R.id.lv_userfabu);
+        tvAdd = (TextView) this.findViewById(R.id.tv_userfabu_add);
     }
 
     @Override
     protected void initView() {
+        tvAdd.setVisibility(View.GONE);
         mIntent = this.getIntent();
         resultBean = mIntent.getStringExtra("returnBean");
         JSONObject jsonMap = JSON.parseObject(resultBean);
@@ -126,7 +130,9 @@ public class UserFabuActivity extends BaseActivity {
                         mIntent.putExtra("mapc", (Serializable) nextMapc);
                         break;
                     case "7":
-                        mIntent = new Intent(UserFabuActivity.this, MainActivity.class);
+                        mIntent = new Intent(UserFabuActivity.this, ShowDetailInfoActivity.class);
+                        //无法直接传map，需要序列化
+                        mIntent.putExtra("map", (Serializable) nextMap);
                         break;
                     default:
                         break;

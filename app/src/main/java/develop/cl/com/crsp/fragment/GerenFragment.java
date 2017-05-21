@@ -32,6 +32,7 @@ import develop.cl.com.crsp.activity.LoginActivity;
 import develop.cl.com.crsp.activity.Person_DataActivity;
 import develop.cl.com.crsp.activity.SettingActivity;
 import develop.cl.com.crsp.activity.ShowCollectionActivity;
+import develop.cl.com.crsp.activity.ShowJianliListActivity;
 import develop.cl.com.crsp.activity.fabuactivity.FabudetailActivity;
 import develop.cl.com.crsp.activity.fabuactivity.UserFabuActivity;
 import develop.cl.com.crsp.image.CircleImageView;
@@ -91,7 +92,7 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
         datalist_s = new ArrayList<Map<String, Object>>();
         datalist_x = new ArrayList<Map<String, Object>>();
         //数据
-        String[] iconName = {"已发帖子", "收藏", "订阅管理",};
+        String[] iconName = {"已发帖子", "收藏", "我的简历",};
         String[] typeName = {"我的求职", "我的招聘", "我的店铺", "我的测试1"};
         String[] typeShow = {"我的求职描述", "我的招聘描述", "我的店铺描述", "我的测试描述1"};
         int[] pic = {R.mipmap.userfabuicon, R.mipmap.usershoucang, R.mipmap.userdingyue};
@@ -129,12 +130,52 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
                         }
                         break;
                     case 2:
+                        if (MyCheckNet.isNetworkAvailable(getActivity())) {
+                            sendQueryJianliServer();
+                        } else {
+                            Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     default:
                         break;
                 }
             }
         });
+    }
+
+    /**
+     * 向服务器请求数据
+     */
+    protected void sendQueryJianliServer() {
+        String locUrl = ServerInformation.URL + "resume/querybyuser?userid="
+                + MySharedPreferences.getUserID(getActivity());
+        mQueue = Volley.newRequestQueue(getActivity());
+        volleyCallback = new VolleyCallback() {
+            @Override
+            //回调内容result
+            public void onSuccessResponse(String result) {
+                Log.d("callBack result", result);
+                if ("error".equals(result)) {
+                    Toast.makeText(getActivity(), "服务器异常！", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    //解析返回的json
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+                    //显示提示消息
+                    Toast.makeText(getActivity(), jsonMap.get("returnString").toString(), Toast.LENGTH_SHORT).show();
+                    //根据返回内容执行操作
+                    if (jsonMap.get("returnCode").toString().equals("1")) {
+                        mIntent = new Intent(getActivity(), ShowJianliListActivity.class);
+                        mIntent.putExtra("resultMap", jsonObject.getString("resultMap"));
+                        startActivity(mIntent);
+                    }
+                    Log.d("returnCode", jsonMap.get("returnCode").toString());
+                }
+            }
+        };
+        //调用自定义的Volley函数
+        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
     }
 
     /**

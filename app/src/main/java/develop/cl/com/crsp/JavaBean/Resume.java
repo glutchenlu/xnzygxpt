@@ -12,7 +12,7 @@ public class Resume {
     private String exp_position;
     private String exp_salary;
     private String exp_area;
-    private String describe;
+    private String redescribe;
     private String tel;
     private String work_year;
     private String name;
@@ -27,12 +27,12 @@ public class Resume {
         this.birth_year = birth_year;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getRedescribe() {
+        return redescribe;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setRedescribe(String redescribe) {
+        this.redescribe = redescribe;
     }
 
     public String getEducation() {
