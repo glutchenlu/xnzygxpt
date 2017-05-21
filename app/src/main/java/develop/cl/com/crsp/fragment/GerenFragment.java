@@ -31,6 +31,7 @@ import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.LoginActivity;
 import develop.cl.com.crsp.activity.Person_DataActivity;
 import develop.cl.com.crsp.activity.SettingActivity;
+import develop.cl.com.crsp.activity.ShowCollectionActivity;
 import develop.cl.com.crsp.activity.fabuactivity.FabudetailActivity;
 import develop.cl.com.crsp.activity.fabuactivity.UserFabuActivity;
 import develop.cl.com.crsp.image.CircleImageView;
@@ -121,6 +122,11 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
                         }
                         break;
                     case 1:
+                        if (MyCheckNet.isNetworkAvailable(getActivity())) {
+                            sendQueryShoucangServer();
+                        } else {
+                            Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case 2:
                         break;
@@ -129,6 +135,41 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+    }
+
+    /**
+     * 向服务器请求数据
+     */
+    protected void sendQueryShoucangServer() {
+        String locUrl = ServerInformation.URL + "mycollection/querybyuserid?userid="
+                + MySharedPreferences.getUserID(getActivity());
+        mQueue = Volley.newRequestQueue(getActivity());
+        volleyCallback = new VolleyCallback() {
+            @Override
+            //回调内容result
+            public void onSuccessResponse(String result) {
+                Log.d("callBack result", result);
+                if ("error".equals(result)) {
+                    Toast.makeText(getActivity(), "服务器异常！", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    //解析返回的json
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+                    //显示提示消息
+                    Toast.makeText(getActivity(), jsonMap.get("returnString").toString(), Toast.LENGTH_SHORT).show();
+                    //根据返回内容执行操作
+                    if (jsonMap.get("returnCode").toString().equals("1")) {
+                        mIntent = new Intent(getActivity(), ShowCollectionActivity.class);
+                        mIntent.putExtra("returnBean", jsonMap.getString("returnBean"));
+                        startActivity(mIntent);
+                    }
+                    Log.d("returnCode", jsonMap.get("returnCode").toString());
+                }
+            }
+        };
+        //调用自定义的Volley函数
+        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
     }
 
     /**

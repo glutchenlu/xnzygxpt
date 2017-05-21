@@ -27,6 +27,7 @@ import develop.cl.com.crsp.JavaBean.TrainTicket;
 import develop.cl.com.crsp.JavaBean.Work;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.MainActivity;
+import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailFuwuActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailGoodsActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailWorkActivity;
 import develop.cl.com.crsp.myutil.MyList;
@@ -94,7 +95,9 @@ public class UserFabuActivity extends BaseActivity {
                 //1、快递代领2、物品出租3、学习资料4、二手物品5、火车票代领6、兼职/全职7、资讯互动
                 switch (nextMap.get("type").toString()) {
                     case "1":
-                        mIntent = new Intent(UserFabuActivity.this, MainActivity.class);
+                        mIntent = new Intent(UserFabuActivity.this, ShowDetailFuwuActivity.class);
+                        //无法直接传map，需要序列化
+                        mIntent.putExtra("map", (Serializable) nextMap);
                         break;
                     case "2":
                         mIntent = new Intent(UserFabuActivity.this, ShowDetailGoodsActivity.class);
@@ -110,7 +113,9 @@ public class UserFabuActivity extends BaseActivity {
                         mIntent.putExtra("map", (Serializable) nextMap);
                         break;
                     case "5":
-                        mIntent = new Intent(UserFabuActivity.this, MainActivity.class);
+                        mIntent = new Intent(UserFabuActivity.this, ShowDetailFuwuActivity.class);
+                        //无法直接传map，需要序列化
+                        mIntent.putExtra("map", (Serializable) nextMap);
                         break;
                     case "6":
                         mIntent = new Intent(UserFabuActivity.this, ShowDetailWorkActivity.class);

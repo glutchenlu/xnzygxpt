@@ -2,7 +2,7 @@ package develop.cl.com.crsp.JavaBean;
 
 public class LearningData {
 
-    private int learning_date;
+    private int learning_dateid;
     private String userid;
     private String classify;
     private String title;
@@ -30,12 +30,12 @@ public class LearningData {
     }
 
 
-    public int getLearning_date() {
-        return learning_date;
+    public int getLearning_dateid() {
+        return learning_dateid;
     }
 
-    public void setLearning_date(int learning_date) {
-        this.learning_date = learning_date;
+    public void setLearning_dateid(int learning_dateid) {
+        this.learning_dateid = learning_dateid;
     }
 
     public String getUserid() {

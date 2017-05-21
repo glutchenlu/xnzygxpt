@@ -216,4 +216,17 @@ public class MySharedPreferences {
         editor.putString("delay", setting.getDelay());
         editor.apply();
     }
+
+    public static int getResumeCount(Context context) {
+        Setting setting = new Setting();
+        SharedPreferences spf = context.getSharedPreferences("ResumeCount", 0);
+        return spf.getInt("count", 0);
+    }
+
+    public static void setResumeCount(Context context, int count) {
+        SharedPreferences spf = context.getSharedPreferences("ResumeCount", 0);
+        SharedPreferences.Editor editor = spf.edit();
+        editor.putInt("count", count);
+        editor.apply();
+    }
 }

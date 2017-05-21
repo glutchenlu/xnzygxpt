@@ -2,17 +2,29 @@ package develop.cl.com.crsp.activity.fenleiactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
 import java.io.Serializable;
 import java.util.Map;
 
 import develop.cl.com.crsp.BaseActivity;
+import develop.cl.com.crsp.JavaBean.MyCollection;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.SendMessageActivity;
+import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyList;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
+import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.VolleyCallback;
 
 public class ShowDetailWorkActivity extends BaseActivity implements View.OnClickListener {
 
@@ -20,6 +32,8 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
     private Map<String, Object> mapc;
     private Intent mIntent;
     private static final String Tag = "ShowDetailWorkActivity";
+    private VolleyCallback volleyCallback;
+    private RequestQueue mQueue;
 
     private TextView tvTitile;
     private TextView tvTime;
@@ -104,10 +118,50 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
         tvTel.setText(mapc.get("tel").toString());
     }
 
+    protected void addShoucang() {
+        mQueue = Volley.newRequestQueue(ShowDetailWorkActivity.this);
+        MyCollection mycollection = new MyCollection();
+        mycollection.setUserid(MySharedPreferences.getUserID(ShowDetailWorkActivity.this));
+        mycollection.setServiceid((Integer) mapw.get("workid"));
+        mycollection.setTypeName("兼职/全职");
+        mycollection.setType((Integer) mapw.get("type"));
+        mycollection.setServiceTitle(mapw.get("title").toString());
+        String[] str = new String[]{"userid", "serviceid", "typeName", "type", "serviceTitle"};
+        //创建回调接口并实例化方法
+        volleyCallback = new VolleyCallback() {
+            @Override
+            //回调内容result
+            public void onSuccessResponse(String result) {
+                Log.d("callBack result", result);
+                if ("error".equals(result)) {
+                    DisPlay("服务器异常！");
+                    return;
+                } else {
+                    //解析返回的json
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+                    //根据返回内容执行操作
+                    if (jsonMap.get("returnCode").toString().equals("1")) {
+                        //显示提示消息
+                        DisPlay(jsonMap.get("returnString").toString());
+                    } else if (jsonMap.get("returnCode").toString().equals("2")) {
+                        //显示提示消息
+                        DisPlay(jsonMap.get("returnString").toString());
+                    }
+                    Log.d("returnCode", jsonMap.get("returnCode").toString());
+                }
+            }
+        };
+        String url = ServerInformation.URL + "mycollection/add";
+        //调用自定义的Volley函数
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, mycollection), volleyCallback);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_work_shoucang:
+                addShoucang();
                 break;
             case R.id.btn_workdetail_summit:
                 break;

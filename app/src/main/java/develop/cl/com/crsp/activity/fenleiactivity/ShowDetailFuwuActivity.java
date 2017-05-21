@@ -22,10 +22,13 @@ import java.util.Map;
 
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Basic;
+import develop.cl.com.crsp.JavaBean.MyCollection;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.SendMessageActivity;
 import develop.cl.com.crsp.image.CircleImageView;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyList;
+import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
 import develop.cl.com.crsp.myutil.VolleyCallback;
 
@@ -35,6 +38,7 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
     private int classposition;
     private Intent mIntent;
     private RequestQueue mQueue;
+    private VolleyCallback volleyCallback;
     private static final String Tag = "ShowDetailGoodsActivity";
 
     private Button btnCall;
@@ -82,6 +86,7 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
     protected void initView() {
         lyUser.setOnClickListener(this);
         btnCall.setOnClickListener(this);
+        tvShoucang.setOnClickListener(this);
         //从Intent获得额外信息
         mIntent = this.getIntent();
         map = (Map<String, Object>) mIntent.getSerializableExtra("map");
@@ -146,6 +151,50 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
         DFVolley.NoMReq(mQueue, userUrl, volleyCallback);
     }
 
+    protected void addShoucang() {
+        mQueue = Volley.newRequestQueue(ShowDetailFuwuActivity.this);
+        MyCollection mycollection = new MyCollection();
+        mycollection.setUserid(MySharedPreferences.getUserID(ShowDetailFuwuActivity.this));
+        if (1 == (Integer) map.get("type")) {
+            mycollection.setServiceid((Integer) map.get("courierid"));
+            mycollection.setTypeName("快递代领");
+        } else if (5 == (Integer) map.get("type")) {
+            mycollection.setServiceid((Integer) map.get("train_ticketid"));
+            mycollection.setTypeName("火车票代领");
+        }
+        mycollection.setType((Integer) map.get("type"));
+        mycollection.setServiceTitle(map.get("detail").toString());
+        String[] str = new String[]{"userid", "serviceid", "typeName", "type", "serviceTitle"};
+        //创建回调接口并实例化方法
+        volleyCallback = new VolleyCallback() {
+            @Override
+            //回调内容result
+            public void onSuccessResponse(String result) {
+                Log.d("callBack result", result);
+                if ("error".equals(result)) {
+                    DisPlay("服务器异常！");
+                    return;
+                } else {
+                    //解析返回的json
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+                    //根据返回内容执行操作
+                    if (jsonMap.get("returnCode").toString().equals("1")) {
+                        //显示提示消息
+                        DisPlay(jsonMap.get("returnString").toString());
+                    } else if (jsonMap.get("returnCode").toString().equals("2")) {
+                        //显示提示消息
+                        DisPlay(jsonMap.get("returnString").toString());
+                    }
+                    Log.d("returnCode", jsonMap.get("returnCode").toString());
+                }
+            }
+        };
+        String url = ServerInformation.URL + "mycollection/add";
+        //调用自定义的Volley函数
+        DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, mycollection), volleyCallback);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -160,6 +209,8 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
                 mIntent.putExtra("type", showtpye);
                 startActivity(mIntent);
                 break;
+            case R.id.tv_fuwu_shoucang:
+                addShoucang();
             default:
                 break;
         }
