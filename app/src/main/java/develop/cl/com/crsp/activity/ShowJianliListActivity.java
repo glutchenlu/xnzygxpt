@@ -103,7 +103,7 @@ public class ShowJianliListActivity extends BaseActivity implements View.OnClick
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(ShowJianliListActivity.this);
-        normalDialog.setTitle("确定要删除这条收藏记录吗？");
+        normalDialog.setTitle("确定要删除这份简历吗？");
         normalDialog.setPositiveButton("是",
                 new DialogInterface.OnClickListener() {
                     @Override

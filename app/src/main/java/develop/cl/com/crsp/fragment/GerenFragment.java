@@ -23,6 +23,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +101,7 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
 
         mySetAdapter2(gv_geren_s, datalist_s, sadapter_s, iconName, pic);
 
-        mySetAdapter3(gv_geren_x, datalist_x, sadapter_x, typeName, typeShow, pic1);
+//        mySetAdapter3(gv_geren_x, datalist_x, sadapter_x, typeName, typeShow, pic1);
         /**
          * 设置头像
          */
@@ -147,8 +148,9 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
      * 向服务器请求数据
      */
     protected void sendQueryJianliServer() {
-        String locUrl = ServerInformation.URL + "resume/querybyuser?userid="
-                + MySharedPreferences.getUserID(getActivity());
+        String locUrl = ServerInformation.URL + "resume/querybyuser";
+        Map<String, String> hmap = new HashMap<String, String>();
+        hmap.put("userid", MySharedPreferences.getUserID(getActivity()));
         mQueue = Volley.newRequestQueue(getActivity());
         volleyCallback = new VolleyCallback() {
             @Override
@@ -175,15 +177,17 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
             }
         };
         //调用自定义的Volley函数
-        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
+//        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
+        DFVolley.NoMPots(mQueue, locUrl, volleyCallback, hmap);
     }
 
     /**
      * 向服务器请求数据
      */
     protected void sendQueryShoucangServer() {
-        String locUrl = ServerInformation.URL + "mycollection/querybyuserid?userid="
-                + MySharedPreferences.getUserID(getActivity());
+        String locUrl = ServerInformation.URL + "mycollection/querybyuserid";
+        Map<String, String> hmap = new HashMap<String, String>();
+        hmap.put("userid", MySharedPreferences.getUserID(getActivity()));
         mQueue = Volley.newRequestQueue(getActivity());
         volleyCallback = new VolleyCallback() {
             @Override
@@ -210,15 +214,17 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
             }
         };
         //调用自定义的Volley函数
-        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
+//        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
+        DFVolley.NoMPots(mQueue, locUrl, volleyCallback, hmap);
     }
 
     /**
      * 向服务器请求数据
      */
     protected void sendQueryServer() {
-        String locUrl = ServerInformation.URL + "user/userfabu?userid="
-                + MySharedPreferences.getUserID(getActivity());
+        String locUrl = ServerInformation.URL + "user/userfabu";
+        Map<String, String> hmap = new HashMap<String, String>();
+        hmap.put("userid", MySharedPreferences.getUserID(getActivity()));
         mQueue = Volley.newRequestQueue(getActivity());
         volleyCallback = new VolleyCallback() {
             @Override
@@ -245,7 +251,8 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
             }
         };
         //调用自定义的Volley函数
-        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
+//        DFVolley.NoMReq(mQueue, locUrl, volleyCallback);
+        DFVolley.NoMPots(mQueue, locUrl, volleyCallback, hmap);
     }
 
     protected void mySetAdapter2(GridView gv, List<Map<String, Object>> list, SimpleAdapter adapter

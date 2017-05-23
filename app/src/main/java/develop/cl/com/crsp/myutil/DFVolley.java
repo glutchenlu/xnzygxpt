@@ -99,6 +99,26 @@ public class DFVolley {
         }
     }
 
+    public static void NoMPots(RequestQueue mQueue, String getUrl, final VolleyCallback callback, Map<String, String> hmap) {
+        MyStringRequest stringRequest = new MyStringRequest(1, getUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        callback.onSuccessResponse(response);
+                        Log.d("TAG", response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onSuccessResponse("error");
+//                    callback.onSuccessResponse(error.toString());
+                Log.e("TAG", error.getMessage(), error);
+            }
+        }, hmap);
+        mQueue.add(stringRequest);
+    }
+
+
     public static void VolleyUtilWithGet(int mothod, RequestQueue mQueue, String getUrl, final VolleyCallback callback) {
         List<String[]> mList = new ArrayList<String[]>();
         VolleyUtilWithGet(mothod, mQueue, getUrl, mList, callback);

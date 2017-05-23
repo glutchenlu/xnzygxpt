@@ -49,7 +49,7 @@ dependencies {
     compile files('libs/volley.jar')
     compile files('libs/android-java-air-bridge.jar')
     compile 'com.alibaba:fastjson:1.1.55.android'
-    compile files('libs/org.apache.http.legacy.jar')
+    provided files('libs/org.apache.http.legacy.jar')
     compile files('libs/commons-lang3-3.5.jar')
     compile files('libs/AndroidPicker-1.5.2.jar')
     compile 'com.ashokvarma.android:bottom-navigation-bar:1.2.0'

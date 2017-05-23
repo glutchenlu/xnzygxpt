@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -136,11 +137,12 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
                                           Log.d(Tag, "ID:" + id);
                                           Map<String, Object> locMap = finalList.get(position);
                                           String typeName = locMap.get("typeName").toString();
-                                          String sendUrl = ServerInformation.URL +
-                                                  "work/querybyindustry?industry=" + typeName
-                                                  + "&school=" + locSchool;
+                                          String sendUrl = ServerInformation.URL + "work/querybyindustry";
+                                          Map<String, String> hmap = new HashMap<String, String>();
+                                          hmap.put("industry", typeName);
+                                          hmap.put("school", locSchool);
                                           if (MyCheckNet.isNetworkAvailable(Select_ClassActivity.this)) {
-                                              LocQueryServer(sendUrl);
+                                              LocQueryServer(sendUrl, hmap);
                                           } else {
                                               DisPlay("请检查您的网络连接");
                                           }
@@ -154,7 +156,7 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
      *
      * @param url 服务器地址
      */
-    protected void LocQueryServer(String url) {
+    protected void LocQueryServer(String url, Map<String, String> hmap) {
         mQueue = Volley.newRequestQueue(Select_ClassActivity.this);
         //创建回调接口并实例化方法
         showProgressDialog();
@@ -191,7 +193,8 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
             }
         };
         //调用自定义的Volley函数
-        DFVolley.NoMReq(mQueue, url, volleyCallback);
+//        DFVolley.NoMReq(mQueue, url, volleyCallback);
+        DFVolley.NoMPots(mQueue, url, volleyCallback, hmap);
     }
 
     /**

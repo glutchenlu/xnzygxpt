@@ -292,7 +292,7 @@ public class FabudetailActivity extends BaseActivity implements View.OnClickList
 //            DFVolley dfv = new DFVolley(volleyCallback);
             String url = ServerInformation.URL + "company/checkCompany";
             //调用自定义的Volley函数
-            DFVolley.VolleyUtilWithGet(0, mQueue, url, MyList.strList(str, company), volleyCallback);
+            DFVolley.VolleyUtilWithGet(1, mQueue, url, MyList.strList(str, company), volleyCallback);
         }
     }
 

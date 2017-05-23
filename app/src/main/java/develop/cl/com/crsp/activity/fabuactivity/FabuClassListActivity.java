@@ -58,7 +58,7 @@ public class FabuClassListActivity extends BaseActivity implements View.OnClickL
                 mySetAdapter(lv_class, datalist, sadapter, typeName0, FabuGoodsdetailActivity.class);
                 break;
             case 1:
-                String[] typeName1 = {"手机/手机配件", "二手笔记本", "二手电脑", "数码产品", "家用电器"
+                String[] typeName1 = {"手机/手机配件", "笔记本", "电脑", "数码产品", "家用电器"
                         , "家具", "摩托车", "电动车", "自行车", "三轮车", "家居用品", "设备/办公用品"
                         , "服饰/箱包", "美容护肤/化妆品", "图书/乐器运动"
                         , "收藏品/工艺品", "闲置礼品", "虚拟物品", "其他物品"};

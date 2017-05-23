@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -94,7 +95,7 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                 mySetAdapter(lv_class, datalist, sadapter, typeName0, Select_ListActivity.class, 0);
                 break;
             case 1:
-                String[] typeName1 = {"手机/手机配件", "二手笔记本", "二手电脑", "数码产品", "家用电器"
+                String[] typeName1 = {"手机/手机配件", "笔记本", "电脑", "数码产品", "家用电器"
                         , "家具", "摩托车", "电动车", "自行车", "三轮车", "家居用品", "设备/办公用品"
                         , "服饰/箱包", "美容护肤/化妆品", "图书/乐器运动"
                         , "收藏品/工艺品", "闲置礼品", "虚拟物品", "其他物品"};
@@ -136,41 +137,46 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                         Map<String, Object> locMap = finalList.get(position);
                         String typeName = locMap.get("typeName").toString();
                         String sendUrl = "";
+                        Map<String, String> hmap = new HashMap<String, String>();
                         switch (firstposition) {
                             case 0:
-                                sendUrl = ServerInformation.URL +
-                                        "secondgoods/queryclass?classify="
-                                        + typeName + "&school=" + locSchool;
+//                                sendUrl = ServerInformation.URL +
+//                                        "secondgoods/queryclass?classify="
+//                                        + typeName + "&school=" + locSchool;
+                                sendUrl = ServerInformation.URL + "secondgoods/queryclass";
+                                hmap.put("classify", typeName);
+                                hmap.put("school", locSchool);
                                 break;
                             case 1:
-                                sendUrl = ServerInformation.URL +
-                                        "goods/queryclass?classify=" + typeName
-                                        + "&school=" + locSchool;
+                                sendUrl = ServerInformation.URL + "goods/queryclass";
+                                hmap.put("classify", typeName);
+                                hmap.put("school", locSchool);
                                 break;
                             case 2:
-                                sendUrl = ServerInformation.URL +
-                                        "learningdata/queryclass?classify=" + typeName
-                                        + "&school=" + locSchool;
+                                sendUrl = ServerInformation.URL + "learningdata/queryclass";
+                                hmap.put("classify", typeName);
+                                hmap.put("school", locSchool);
                                 break;
                             case 3:
                                 if ("快递代领".equals(typeName)) {
-                                    sendUrl = ServerInformation.URL + "courier/querybyschool"
-                                            + "?school=" + locSchool;
+                                    sendUrl = ServerInformation.URL + "courier/querybyschool";
+                                    hmap.put("school", locSchool);
                                 } else if ("火车票代领".equals(typeName)) {
-                                    sendUrl = ServerInformation.URL + "trainticket/querybyschool"
-                                            + "?school=" + locSchool;
+                                    sendUrl = ServerInformation.URL + "trainticket/querybyschool";
+                                    hmap.put("school", locSchool);
                                 }
                                 break;
                             case 4:
                                 sendUrl = ServerInformation.URL +
-                                        "information/queryclass?classify=" + typeName
-                                        + "&school=" + locSchool;
+                                        "information/queryclass";
+                                hmap.put("classify", typeName);
+                                hmap.put("school", locSchool);
                                 break;
                             default:
                                 break;
                         }
                         if (MyCheckNet.isNetworkAvailable(FenleiClassListActivity.this)) {
-                            LocQueryServer(sendUrl, cls, position);
+                            LocQueryServer(sendUrl, cls, position, hmap);
                         } else {
                             DisPlay("请检查您的网络连接");
                         }
@@ -186,7 +192,7 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
      * @param cls           将要跳转的页面
      * @param classposition list的序列
      */
-    protected void LocQueryServer(String url, final Class<?> cls, final int classposition) {
+    protected void LocQueryServer(String url, final Class<?> cls, final int classposition, Map<String, String> hmap) {
         mQueue = Volley.newRequestQueue(FenleiClassListActivity.this);
         //创建回调接口并实例化方法
         showProgressDialog();
@@ -225,7 +231,7 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
             }
         };
         //调用自定义的Volley函数
-        DFVolley.NoMReq(mQueue, url, volleyCallback);
+        DFVolley.NoMPots(mQueue, url, volleyCallback, hmap);
     }
 
     @Override

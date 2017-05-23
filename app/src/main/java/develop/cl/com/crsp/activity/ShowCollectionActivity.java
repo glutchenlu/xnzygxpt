@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,19 +96,20 @@ public class ShowCollectionActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Map<String, Object> nextMap = datalist.get(position);
                 String serviceUrl = "";
+                Map<String, String> hmap = new HashMap<String, String>();
                 //1、快递代领2、物品出租3、学习资料4、二手物品5、火车票代领6、兼职/全职7、资讯互动
                 switch (nextMap.get("type").toString()) {
                     //1、快递代领
                     case "1":
-                        serviceUrl = ServerInformation.URL + "courier/queryByID?courierid="
-                                + datalist.get(position).get("serviceid");
-                        sendQueryByServiceID(serviceUrl, ShowDetailFuwuActivity.class, -1);
+                        serviceUrl = ServerInformation.URL + "courier/queryByID";
+                        hmap.put("courierid", datalist.get(position).get("serviceid").toString());
+                        sendQueryByServiceID(serviceUrl, ShowDetailFuwuActivity.class, -1, hmap);
                         break;
                     //2、物品出租
                     case "2":
-                        serviceUrl = ServerInformation.URL + "goods/queryByID?goodsid="
-                                + datalist.get(position).get("serviceid");
-                        sendQueryByServiceID(serviceUrl, ShowDetailGoodsActivity.class, -1);
+                        serviceUrl = ServerInformation.URL + "goods/queryByID";
+                        hmap.put("goodsid", datalist.get(position).get("serviceid").toString());
+                        sendQueryByServiceID(serviceUrl, ShowDetailGoodsActivity.class, -1, hmap);
                         break;
                     //3、学习资料
                     case "3":
@@ -115,29 +117,29 @@ public class ShowCollectionActivity extends BaseActivity {
                         break;
                     //4、二手物品
                     case "4":
-                        serviceUrl = ServerInformation.URL + "secondgoods/queryByID?secondgoodsid="
-                                + datalist.get(position).get("serviceid");
-                        sendQueryByServiceID(serviceUrl, ShowDetailGoodsActivity.class, -1);
+                        serviceUrl = ServerInformation.URL + "secondgoods/queryByID";
+                        hmap.put("second_goodsid", datalist.get(position).get("serviceid").toString());
+                        sendQueryByServiceID(serviceUrl, ShowDetailGoodsActivity.class, -1, hmap);
                         break;
                     //5、火车票代领
                     case "5":
-                        serviceUrl = ServerInformation.URL + "trainticket/queryByID?trainticketid="
-                                + datalist.get(position).get("serviceid");
-                        sendQueryByServiceID(serviceUrl, ShowDetailFuwuActivity.class, -1);
+                        serviceUrl = ServerInformation.URL + "trainticket/queryByID";
+                        hmap.put("train_ticketid", datalist.get(position).get("serviceid").toString());
+                        sendQueryByServiceID(serviceUrl, ShowDetailFuwuActivity.class, -1, hmap);
                         break;
                     //6、兼职/全职
                     case "6":
-                        serviceUrl = ServerInformation.URL + "work/queryByID?workid="
-                                + datalist.get(position).get("serviceid");
+                        serviceUrl = ServerInformation.URL + "work/queryByID";
+                        hmap.put("workid", datalist.get(position).get("serviceid").toString());
                         sendQueryByServiceID(serviceUrl, ShowDetailWorkActivity.class
-                                , Integer.parseInt(nextMap.get("workPosition").toString()));
+                                , Integer.parseInt(nextMap.get("workPosition").toString()), hmap);
                         break;
                     //7、资讯互动
                     case "7":
-                        serviceUrl = ServerInformation.URL + "information/queryByID?informationid="
-                                + datalist.get(position).get("serviceid");
+                        serviceUrl = ServerInformation.URL + "information/queryByID";
+                        hmap.put("informationid", datalist.get(position).get("serviceid").toString());
                         mIntent = new Intent(ShowCollectionActivity.this, ShowDetailInfoActivity.class);
-                        sendQueryByServiceID(serviceUrl, ShowDetailFuwuActivity.class, -1);
+                        sendQueryByServiceID(serviceUrl, ShowDetailFuwuActivity.class, -1, hmap);
                         break;
                     default:
                         break;
@@ -207,9 +209,12 @@ public class ShowCollectionActivity extends BaseActivity {
                 }
             }
         };
-        String url = ServerInformation.URL + "mycollection/del?collectionid=" + id;
+        String url = ServerInformation.URL + "mycollection/del";
         //调用自定义的Volley函数
-        DFVolley.NoMReq(mQueue, url, delVolleyCallback);
+        Map<String, String> hmap = new HashMap<String, String>();
+        hmap.put("collectionid", id + "");
+//        DFVolley.NoMReq(mQueue, url, delVolleyCallback);
+        DFVolley.NoMPots(mQueue, url, delVolleyCallback, hmap);
     }
 
 
@@ -219,7 +224,7 @@ public class ShowCollectionActivity extends BaseActivity {
      * @param serviceUrl url
      * @param cls        跳转查看的界面class
      */
-    protected void sendQueryByServiceID(String serviceUrl, final Class<?> cls, final int workposition) {
+    protected void sendQueryByServiceID(String serviceUrl, final Class<?> cls, final int workposition, Map<String, String> hmap) {
         mQueue = Volley.newRequestQueue(ShowCollectionActivity.this);
         volleyCallback = new VolleyCallback() {
             @Override
@@ -258,7 +263,8 @@ public class ShowCollectionActivity extends BaseActivity {
             }
         };
         //调用自定义的Volley函数
-        DFVolley.NoMReq(mQueue, serviceUrl, volleyCallback);
+//        DFVolley.NoMReq(mQueue, serviceUrl, volleyCallback);
+        DFVolley.NoMPots(mQueue, serviceUrl, volleyCallback, hmap);
     }
 
     protected void listBeanToMapPic(List<?> olist) {
@@ -277,9 +283,9 @@ public class ShowCollectionActivity extends BaseActivity {
         for (Object list : olist) {
             final Map<String, Object> map = MyList.transBean2Map(list);
             if ("6".equals(map.get("type").toString())) {
-                workPosition++;
 //                map.put("typeName", "兼职/全职");
                 map.put("workPosition", workPosition);
+                workPosition++;
             }
             datalist.add(map);
         }
