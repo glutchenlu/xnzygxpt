@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -26,6 +27,7 @@ import develop.cl.com.crsp.JavaBean.MyCollection;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.SendMessageActivity;
 import develop.cl.com.crsp.image.CircleImageView;
+import develop.cl.com.crsp.myutil.CheckUtil;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
@@ -204,19 +206,27 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
                 startActivity(mIntent);
                 break;
             case R.id.btn_fuwudetail_calluser:
-                if (MySharedPreferences.getBasicData(
-                        ShowDetailFuwuActivity.this).getCredit() >=
-                        Integer.parseInt(map.get("degree").toString())) {
-                    mIntent = new Intent(ShowDetailFuwuActivity.this, SendMessageActivity.class);
-                    mIntent.putExtra("touserid", map.get("userid").toString());
-                    mIntent.putExtra("type", showtpye);
-                    startActivity(mIntent);
+                if (CheckUtil.checkLogin(ShowDetailFuwuActivity.this)) {
+                    if (MySharedPreferences.getBasicData(
+                            ShowDetailFuwuActivity.this).getCredit() >=
+                            Integer.parseInt(map.get("degree").toString())) {
+                        mIntent = new Intent(ShowDetailFuwuActivity.this, SendMessageActivity.class);
+                        mIntent.putExtra("touserid", map.get("userid").toString());
+                        mIntent.putExtra("type", showtpye);
+                        startActivity(mIntent);
+                    } else {
+                        DisPlay("您的信誉等级不够，无法联系发布者！");
+                    }
                 } else {
-                    DisPlay("您的信誉等级不够，无法联系发布者！");
+                    Toast.makeText(ShowDetailFuwuActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.tv_fuwu_shoucang:
-                addShoucang();
+                if (CheckUtil.checkLogin(ShowDetailFuwuActivity.this)) {
+                    addShoucang();
+                } else {
+                    Toast.makeText(ShowDetailFuwuActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
             default:
                 break;
         }

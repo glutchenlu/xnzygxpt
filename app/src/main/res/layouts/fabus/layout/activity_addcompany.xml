@@ -140,7 +140,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="35dp"
-            android:hint="请输入公司联系电话" />
+            android:hint="请输入公司联系电话"
+            android:inputType="number" />
     </LinearLayout>
 
     <LinearLayout

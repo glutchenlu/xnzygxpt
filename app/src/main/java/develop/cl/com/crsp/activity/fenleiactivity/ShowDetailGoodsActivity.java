@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -34,6 +35,7 @@ import develop.cl.com.crsp.activity.SendMessageActivity;
 import develop.cl.com.crsp.adapter.ViewPagerNetAdapter;
 import develop.cl.com.crsp.image.CircleImageView;
 import develop.cl.com.crsp.myutil.BitmapCache;
+import develop.cl.com.crsp.myutil.CheckUtil;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
@@ -293,13 +295,21 @@ public class ShowDetailGoodsActivity extends BaseActivity implements ViewPager.O
                 startActivity(mIntent);
                 break;
             case R.id.btn_goodsdetail_calluser:
-                mIntent = new Intent(ShowDetailGoodsActivity.this, SendMessageActivity.class);
-                mIntent.putExtra("touserid", map.get("userid").toString());
-                mIntent.putExtra("type", showtpye);
-                startActivity(mIntent);
+                if (CheckUtil.checkLogin(ShowDetailGoodsActivity.this)) {
+                    mIntent = new Intent(ShowDetailGoodsActivity.this, SendMessageActivity.class);
+                    mIntent.putExtra("touserid", map.get("userid").toString());
+                    mIntent.putExtra("type", showtpye);
+                    startActivity(mIntent);
+                } else {
+                    Toast.makeText(ShowDetailGoodsActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.tv_goods_shoucang:
-                addShoucang();
+                if (CheckUtil.checkLogin(ShowDetailGoodsActivity.this)) {
+                    addShoucang();
+                } else {
+                    Toast.makeText(ShowDetailGoodsActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
             default:
                 break;
         }

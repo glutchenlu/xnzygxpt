@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -21,6 +22,7 @@ import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.MyCollection;
 import develop.cl.com.crsp.JavaBean.WebChar;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.myutil.CheckUtil;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
@@ -212,13 +214,25 @@ public class ShowDetailInfoActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_info_shoucang:
-                addShoucang();
+                if (CheckUtil.checkLogin(ShowDetailInfoActivity.this)) {
+                    addShoucang();
+                } else {
+                    Toast.makeText(ShowDetailInfoActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.tv_infodetail_et:
-                showInputDialog();
+                if (CheckUtil.checkLogin(ShowDetailInfoActivity.this)) {
+                    showInputDialog();
+                } else {
+                    Toast.makeText(ShowDetailInfoActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.tv_infodetail_show:
-                showwebchar();
+                if (CheckUtil.checkLogin(ShowDetailInfoActivity.this)) {
+                    showwebchar();
+                } else {
+                    Toast.makeText(ShowDetailInfoActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;

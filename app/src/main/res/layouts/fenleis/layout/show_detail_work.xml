@@ -335,7 +335,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="公司规模："
+                                android:text="公司性质："
                                 android:textColor="@color/black" />
 
                             <TextView

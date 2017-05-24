@@ -37,6 +37,7 @@ import develop.cl.com.crsp.activity.ShowJianliListActivity;
 import develop.cl.com.crsp.activity.fabuactivity.FabudetailActivity;
 import develop.cl.com.crsp.activity.fabuactivity.UserFabuActivity;
 import develop.cl.com.crsp.image.CircleImageView;
+import develop.cl.com.crsp.myutil.CheckUtil;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
 import develop.cl.com.crsp.myutil.MyCheckNet;
@@ -117,24 +118,42 @@ public class GerenFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        if (MyCheckNet.isNetworkAvailable(getActivity())) {
-                            sendQueryServer();
+                        if (CheckUtil.checkLogin(getActivity())) {
+                            if (MyCheckNet.isNetworkAvailable(getActivity())) {
+                                sendQueryServer();
+                            } else {
+                                Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                            mIntent = new Intent(getActivity(), LoginActivity.class);
+                            Toast.makeText(getActivity(), "请登录", Toast.LENGTH_SHORT).show();
+                            startActivity(mIntent);
                         }
                         break;
                     case 1:
-                        if (MyCheckNet.isNetworkAvailable(getActivity())) {
-                            sendQueryShoucangServer();
+                        if (CheckUtil.checkLogin(getActivity())) {
+                            if (MyCheckNet.isNetworkAvailable(getActivity())) {
+                                sendQueryShoucangServer();
+                            } else {
+                                Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                            mIntent = new Intent(getActivity(), LoginActivity.class);
+                            Toast.makeText(getActivity(), "请登录", Toast.LENGTH_SHORT).show();
+                            startActivity(mIntent);
                         }
                         break;
                     case 2:
-                        if (MyCheckNet.isNetworkAvailable(getActivity())) {
-                            sendQueryJianliServer();
+                        if (CheckUtil.checkLogin(getActivity())) {
+                            if (MyCheckNet.isNetworkAvailable(getActivity())) {
+                                sendQueryJianliServer();
+                            } else {
+                                Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(getActivity(), "请检查您的网络连接", Toast.LENGTH_SHORT).show();
+                            mIntent = new Intent(getActivity(), LoginActivity.class);
+                            Toast.makeText(getActivity(), "请登录", Toast.LENGTH_SHORT).show();
+                            startActivity(mIntent);
                         }
                         break;
                     default:

@@ -184,6 +184,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         return isLogin;
     }
 
+    /**
+     * 查询消息列表
+     */
     protected void LocQueryServer() {
         Message message = new Message();
         message.setMessage_time(MySharedPreferences.getlastQueryMessageTime(MainActivity.this));

@@ -127,6 +127,10 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
         mQueue = Volley.newRequestQueue(Select_ListActivity.this);
         JSONObject jsonObject = JSON.parseObject(json);
         JSONObject jsonMap = JSON.parseObject(jsonObject.get("resultMap").toString());
+        spSelectList1.setVisibility(View.GONE);
+        spSelectList2.setVisibility(View.GONE);
+        spSelectList3.setVisibility(View.GONE);
+        spSelectList4.setVisibility(View.GONE);
         switch (type) {
             case "二手交易":
                 preUrl = ServerInformation.URL + "secondgoods";
@@ -149,20 +153,20 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                     List<Courier> clist = JSON.parseArray(jsonMap.get("resultBean").toString(), Courier.class);
                     datalistp = new ArrayList<Map<String, Object>>();
                     listBeanToMapPic(clist, datalistp);
-                    spSelectList1.setVisibility(View.GONE);
-                    spSelectList2.setVisibility(View.GONE);
-                    spSelectList3.setVisibility(View.GONE);
-                    spSelectList4.setVisibility(View.GONE);
+//                    spSelectList1.setVisibility(View.GONE);
+//                    spSelectList2.setVisibility(View.GONE);
+//                    spSelectList3.setVisibility(View.GONE);
+//                    spSelectList4.setVisibility(View.GONE);
                     setDataByFuwu(classposition);
                 } else if (classposition == 1) {
                     preUrl = ServerInformation.URL + "trainticket";
                     List<TrainTicket> tlist = JSON.parseArray(jsonMap.get("resultBean").toString(), TrainTicket.class);
                     datalistp = new ArrayList<Map<String, Object>>();
                     listBeanToMapPic(tlist, datalistp);
-                    spSelectList1.setVisibility(View.GONE);
-                    spSelectList2.setVisibility(View.GONE);
-                    spSelectList3.setVisibility(View.GONE);
-                    spSelectList4.setVisibility(View.GONE);
+//                    spSelectList1.setVisibility(View.GONE);
+//                    spSelectList2.setVisibility(View.GONE);
+//                    spSelectList3.setVisibility(View.GONE);
+//                    spSelectList4.setVisibility(View.GONE);
                     setDataByFuwu(classposition);
                 }
                 break;
@@ -171,10 +175,10 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 List<Information> ilist = JSON.parseArray(jsonMap.get("resultBean").toString(), Information.class);
                 datalistp = new ArrayList<Map<String, Object>>();
                 listBeanToMapPic(ilist, datalistp);
-                spSelectList1.setVisibility(View.GONE);
-                spSelectList2.setVisibility(View.GONE);
-                spSelectList3.setVisibility(View.GONE);
-                spSelectList4.setVisibility(View.GONE);
+//                spSelectList1.setVisibility(View.GONE);
+//                spSelectList2.setVisibility(View.GONE);
+//                spSelectList3.setVisibility(View.GONE);
+//                spSelectList4.setVisibility(View.GONE);
                 setDataByInfo();
                 break;
             default:

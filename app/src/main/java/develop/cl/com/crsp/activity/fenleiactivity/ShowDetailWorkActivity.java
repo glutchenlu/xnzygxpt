@@ -27,6 +27,7 @@ import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.JianliActivity;
 import develop.cl.com.crsp.activity.SendMessageActivity;
 import develop.cl.com.crsp.activity.ShowJianliDetailActivity;
+import develop.cl.com.crsp.myutil.CheckUtil;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
@@ -266,16 +267,28 @@ public class ShowDetailWorkActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_work_shoucang:
-                addShoucang();
+                if (CheckUtil.checkLogin(ShowDetailWorkActivity.this)) {
+                    addShoucang();
+                } else {
+                    Toast.makeText(ShowDetailWorkActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btn_workdetail_summit:
-                sendQueryJianliServer();
+                if (CheckUtil.checkLogin(ShowDetailWorkActivity.this)) {
+                    sendQueryJianliServer();
+                } else {
+                    Toast.makeText(ShowDetailWorkActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btn_wrokdetail_calluser:
-                mIntent = new Intent(ShowDetailWorkActivity.this, SendMessageActivity.class);
-                mIntent.putExtra("touserid", mapw.get("userid").toString());
-                mIntent.putExtra("type", showtpye);
-                startActivity(mIntent);
+                if (CheckUtil.checkLogin(ShowDetailWorkActivity.this)) {
+                    mIntent = new Intent(ShowDetailWorkActivity.this, SendMessageActivity.class);
+                    mIntent.putExtra("touserid", mapw.get("userid").toString());
+                    mIntent.putExtra("type", showtpye);
+                    startActivity(mIntent);
+                } else {
+                    Toast.makeText(ShowDetailWorkActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.ly_workdetail_company:
                 mIntent = new Intent(ShowDetailWorkActivity.this,

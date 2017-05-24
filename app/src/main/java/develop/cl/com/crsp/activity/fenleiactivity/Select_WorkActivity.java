@@ -105,7 +105,10 @@ public class Select_WorkActivity extends BaseActivity implements View.OnClickLis
         if (MySharedPreferences.getResumeCount(Select_WorkActivity.this) != 0) {
             tvJianli.setVisibility(View.INVISIBLE);
         }
-
+        spWork1.setVisibility(View.GONE);
+        spWork2.setVisibility(View.GONE);
+        spWork3.setVisibility(View.GONE);
+        spWork4.setVisibility(View.GONE);
         mIntent = this.getIntent();
         //从Intent获得额外信息，设置为TextView的文本
         json = mIntent.getStringExtra("result");

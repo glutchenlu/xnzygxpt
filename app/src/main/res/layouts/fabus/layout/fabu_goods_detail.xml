@@ -166,6 +166,7 @@
                             android:layout_weight="7"
                             android:hint="大于0的数字"
                             android:padding="10dp"
+                            android:inputType="number"
                             android:textSize="15sp" />
 
                         <TextView

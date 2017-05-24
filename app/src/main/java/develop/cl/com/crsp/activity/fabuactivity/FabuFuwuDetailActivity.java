@@ -136,11 +136,11 @@ public class FabuFuwuDetailActivity extends BaseActivity implements View.OnClick
         getetPrice = etPrice.getText().toString();
         getetDetail = etDetail.getText().toString();
         gettvArea = tvArea.getText().toString();
-        if (!getetStation.equals("") && getetStation.length() > 0
+        if (!getetDetail.equals("") && getetDetail.length() > 0
+                && !getetStation.equals("") && getetStation.length() > 0
                 && !gettvReceiveTime.equals("") && gettvReceiveTime.length() > 0
-                && !gettvArea.equals("") && gettvArea.length() > 0
                 && !getetPrice.equals("") && getetPrice.length() > 0
-                && !getetDetail.equals("") && getetDetail.length() > 0) {
+                && !gettvArea.equals("") && gettvArea.length() > 0) {
             ps = true;
         } else if (getetStation.equals("") && getetStation.length() <= 0) {
             ps = false;
@@ -331,16 +331,18 @@ public class FabuFuwuDetailActivity extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.btn_fabu_fuwu_submit:
                 checkEdit();
-                if (MyCheckNet.isNetworkAvailable(FabuFuwuDetailActivity.this)) {
-                    if ("快递代领".equals(typeName)) {
-                        showProgressDialog();
-                        sendAddCourierServer();
-                    } else if ("火车票代领".equals(typeName)) {
-                        showProgressDialog();
-                        sendAddTrainTicketServer();
+                if (ps) {
+                    if (MyCheckNet.isNetworkAvailable(FabuFuwuDetailActivity.this)) {
+                        if ("快递代领".equals(typeName)) {
+                            showProgressDialog();
+                            sendAddCourierServer();
+                        } else if ("火车票代领".equals(typeName)) {
+                            showProgressDialog();
+                            sendAddTrainTicketServer();
+                        }
+                    } else {
+                        DisPlay("请检查您的网络连接");
                     }
-                } else {
-                    DisPlay("请检查您的网络连接");
                 }
                 break;
             default:
