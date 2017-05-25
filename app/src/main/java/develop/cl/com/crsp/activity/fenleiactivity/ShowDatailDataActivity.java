@@ -163,7 +163,11 @@ public class ShowDatailDataActivity extends BaseActivity implements View.OnClick
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String path = datalist.get(position).get("data_path").toString();
                 String name = datalist.get(position).get("data_name").toString();
-                onDirPicker(name, path, position);
+                if (CheckUtil.checkLogin(ShowDatailDataActivity.this)) {
+                    onDirPicker(name, path, position);
+                } else {
+                    Toast.makeText(ShowDatailDataActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
