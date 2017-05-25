@@ -28,8 +28,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -151,7 +149,7 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
      * 联系人电话
      */
     private EditText etGoodsTel;
-    private String getPic;
+    private String getPic = "";
     private String gettvTop;
     private String getetTitle;
     private String getetGoodsName;
@@ -590,7 +588,7 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
     /**
      * 上传文件向服务器发送请求并解析
      */
-    protected void sendUploadServer() throws FileNotFoundException {
+    protected void sendUploadServer() {
         if (ps) {
             mQueue = Volley.newRequestQueue(FabuGoodsdetailActivity.this);
             showProgressDialog();
@@ -616,7 +614,15 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
                     }
                 }
             };
-            UploadUtil.UploadReq(uploadUrl, dataList, FabuGoodsdetailActivity.this, mQueue, volleyUploadBack);
+            if (dataList.size() > 1) {
+                UploadUtil.UploadReq(uploadUrl, dataList, FabuGoodsdetailActivity.this, mQueue, volleyUploadBack);
+            } else {
+                if (servicePosition == 0) {
+                    sendAddSecondGoodsServer();
+                } else if (servicePosition == 1) {
+                    sendAddGoodsServer();
+                }
+            }
         }
     }
 
@@ -669,11 +675,7 @@ public class FabuGoodsdetailActivity extends BaseActivity implements View.OnClic
             case R.id.btn_fabu_goods_submit:
                 checkEdit();
                 if (MyCheckNet.isNetworkAvailable(FabuGoodsdetailActivity.this)) {
-                    try {
-                        sendUploadServer();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    sendUploadServer();
                 } else {
                     DisPlay("请检查您的网络连接");
                 }

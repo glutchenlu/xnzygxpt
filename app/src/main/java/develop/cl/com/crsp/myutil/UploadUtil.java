@@ -20,44 +20,108 @@ import develop.cl.com.crsp.util.MultipartRequest;
 
 public class UploadUtil {
 
-    public static void UploadReq(String url, ArrayList<String> dataList, final Context context, RequestQueue mQueue, final VolleyCallback callback) throws FileNotFoundException {
+    public static void UploadReq(String url, List<String> dataList, final Context context, RequestQueue mQueue, final VolleyCallback callback) {
         List<Part> partList = new ArrayList<Part>();
         String picStr[];
         String pic = "";
-        if (dataList.size() > 1) {
-            for (int i = 0; i <= dataList.size() - 2; i++) {
+        int datasiez = dataList.size();
+        if (datasiez > 1) {
+            if (datasiez > 1) {
+                for (int i = 0; i <= datasiez - 2; i++) {
+                    if (i == 0) {
+                        pic = dataList.get(i);
+                    } else {
+                        pic = pic + "," + dataList.get(i);
+                    }
+                }
+            }
+            picStr = pic.split(",");
+            int i = 0;
+            for (String aPicStr : picStr) {
+                i++;
+                FilePart filePart = null;
+                try {
+                    filePart = new FilePart("photo", new File(aPicStr));
+                    filePart.setCharSet("UTF-8");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (filePart == null) {
+                    Toast.makeText(context, "第" + i + "个文件格式不正确！", Toast.LENGTH_SHORT).show();
+                }
+                partList.add(filePart);
+            }
+            MultipartRequest profileUpdateRequest = new MultipartRequest(url, partList.toArray(new Part[partList.size()]), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    //处理成功返回信息
+                    callback.onSuccessResponse(response);
+                    Log.d("Multipartresponse", response);
+//                String info = response.substring(0, 20);
+//                Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //处理失败错误信息
+                    Log.e("MultipartRequest", error.getMessage(), error);
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            //将请求加入队列
+            mQueue.add(profileUpdateRequest);
+        }
+    }
+
+    public static void UploadData(String url, List<String> dataList, final Context context, RequestQueue mQueue, final VolleyCallback callback) {
+        List<Part> partList = new ArrayList<Part>();
+        String picStr[];
+        String pic = "";
+        int datasiez = dataList.size();
+        if (datasiez > 0) {
+            for (int i = 0; i < datasiez; i++) {
                 if (i == 0) {
                     pic = dataList.get(i);
                 } else {
                     pic = pic + "," + dataList.get(i);
                 }
             }
-        }
-        picStr = pic.split(",");
-        for (String aPicStr : picStr) {
-            FilePart filePart = new FilePart("photo", new File(aPicStr));
-            filePart.setCharSet("UTF-8");
-            partList.add(filePart);
-        }
-        MultipartRequest profileUpdateRequest = new MultipartRequest(url, partList.toArray(new Part[partList.size()]), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //处理成功返回信息
-                callback.onSuccessResponse(response);
-                Log.d("Multipartresponse", response);
+            picStr = pic.split(",");
+            int i = 0;
+            for (String aPicStr : picStr) {
+                i++;
+                FilePart filePart = null;
+                try {
+                    filePart = new FilePart("photo", new File(aPicStr));
+                    filePart.setCharSet("UTF-8");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (filePart == null) {
+                    Toast.makeText(context, "第" + i + "个文件格式不正确！", Toast.LENGTH_SHORT).show();
+                }
+                partList.add(filePart);
+            }
+            MultipartRequest profileUpdateRequest = new MultipartRequest(url, partList.toArray(new Part[partList.size()]), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    //处理成功返回信息
+                    callback.onSuccessResponse(response);
+                    Log.d("Multipartresponse", response);
 //                String info = response.substring(0, 20);
 //                Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //处理失败错误信息
-                Log.e("MultipartRequest", error.getMessage(), error);
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        //将请求加入队列
-        mQueue.add(profileUpdateRequest);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //处理失败错误信息
+                    Log.e("MultipartRequest", error.getMessage(), error);
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            //将请求加入队列
+            mQueue.add(profileUpdateRequest);
+        }
     }
 
     public static void UploadReqPhoto(String url, String picUrl, final Context context

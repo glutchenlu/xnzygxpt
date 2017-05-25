@@ -25,6 +25,7 @@ import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.JianliActivity;
 import develop.cl.com.crsp.activity.SearchActivity;
+import develop.cl.com.crsp.myutil.CheckUtil;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
 import develop.cl.com.crsp.myutil.MyCheckNet;
@@ -140,7 +141,9 @@ public class Select_ClassActivity extends BaseActivity implements View.OnClickLi
                                           String sendUrl = ServerInformation.URL + "work/querybyindustry";
                                           Map<String, String> hmap = new HashMap<String, String>();
                                           hmap.put("industry", typeName);
-                                          hmap.put("school", locSchool);
+                                          if (CheckUtil.checkLogin(Select_ClassActivity.this)) {
+                                              hmap.put("school", locSchool);
+                                          }
                                           if (MyCheckNet.isNetworkAvailable(Select_ClassActivity.this)) {
                                               LocQueryServer(sendUrl, hmap);
                                           } else {

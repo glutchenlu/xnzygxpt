@@ -36,6 +36,7 @@ import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Courier;
 import develop.cl.com.crsp.JavaBean.Goods;
 import develop.cl.com.crsp.JavaBean.Information;
+import develop.cl.com.crsp.JavaBean.LearningData;
 import develop.cl.com.crsp.JavaBean.SecondGoods;
 import develop.cl.com.crsp.JavaBean.TrainTicket;
 import develop.cl.com.crsp.R;
@@ -146,6 +147,10 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 break;
             case "学习资料":
                 preUrl = ServerInformation.URL + "learningdata";
+                List<LearningData> llist = JSON.parseArray(jsonMap.get("resultBean").toString(), LearningData.class);
+                datalistp = new ArrayList<Map<String, Object>>();
+                listBeanToMapPic(llist, datalistp);
+                setDataByLearning();
                 break;
             case "校内快捷服务":
                 if (classposition == 0) {
@@ -153,20 +158,12 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                     List<Courier> clist = JSON.parseArray(jsonMap.get("resultBean").toString(), Courier.class);
                     datalistp = new ArrayList<Map<String, Object>>();
                     listBeanToMapPic(clist, datalistp);
-//                    spSelectList1.setVisibility(View.GONE);
-//                    spSelectList2.setVisibility(View.GONE);
-//                    spSelectList3.setVisibility(View.GONE);
-//                    spSelectList4.setVisibility(View.GONE);
                     setDataByFuwu(classposition);
                 } else if (classposition == 1) {
                     preUrl = ServerInformation.URL + "trainticket";
                     List<TrainTicket> tlist = JSON.parseArray(jsonMap.get("resultBean").toString(), TrainTicket.class);
                     datalistp = new ArrayList<Map<String, Object>>();
                     listBeanToMapPic(tlist, datalistp);
-//                    spSelectList1.setVisibility(View.GONE);
-//                    spSelectList2.setVisibility(View.GONE);
-//                    spSelectList3.setVisibility(View.GONE);
-//                    spSelectList4.setVisibility(View.GONE);
                     setDataByFuwu(classposition);
                 }
                 break;
@@ -175,10 +172,6 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                 List<Information> ilist = JSON.parseArray(jsonMap.get("resultBean").toString(), Information.class);
                 datalistp = new ArrayList<Map<String, Object>>();
                 listBeanToMapPic(ilist, datalistp);
-//                spSelectList1.setVisibility(View.GONE);
-//                spSelectList2.setVisibility(View.GONE);
-//                spSelectList3.setVisibility(View.GONE);
-//                spSelectList4.setVisibility(View.GONE);
                 setDataByInfo();
                 break;
             default:
@@ -209,6 +202,11 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
                         startActivity(mIntent);
                         break;
                     case "学习资料":
+                        nextMap = datalistp.get(position);
+                        mIntent = new Intent(Select_ListActivity.this, ShowDatailDataActivity.class);
+                        //无法直接传map，需要序列化
+                        mIntent.putExtra("map", (Serializable) nextMap);
+                        startActivity(mIntent);
                         break;
                     case "校内快捷服务":
                         if (classposition == 0) {
@@ -272,6 +270,16 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
         int[] controlId = new int[]{R.id.lv_info_list_title, R.id.lv_info_list_theme
                 , R.id.lv_info_list_time};
         sadapter = new SimpleAdapter(this, datalistp, R.layout.lv_info_list_item, mapName, controlId);
+        lv_select_list.setAdapter(sadapter);
+    }
+
+    /**
+     * 学习资料数据绑定
+     */
+    protected void setDataByLearning() {
+        String[] mapName = {"title", "showtime"};
+        int[] controlId = new int[]{R.id.lv_data_list_title, R.id.lv_data_list_time};
+        sadapter = new SimpleAdapter(this, datalistp, R.layout.lv_learningdata_item, mapName, controlId);
         lv_select_list.setAdapter(sadapter);
     }
 
@@ -419,6 +427,14 @@ public class Select_ListActivity extends BaseActivity implements View.OnClickLis
         progressDialog.show();
     }
 
+    /**
+     * 未实现
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (view.getId()) {

@@ -28,6 +28,7 @@ import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Company;
 import develop.cl.com.crsp.JavaBean.MyCollection;
 import develop.cl.com.crsp.R;
+import develop.cl.com.crsp.activity.fenleiactivity.ShowDatailDataActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailFuwuActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailGoodsActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailInfoActivity;
@@ -113,7 +114,9 @@ public class ShowCollectionActivity extends BaseActivity {
                         break;
                     //3、学习资料
                     case "3":
-                        mIntent = new Intent(ShowCollectionActivity.this, MainActivity.class);
+                        serviceUrl = ServerInformation.URL + "learningdata/queryByID";
+                        hmap.put("learning_dataid", datalist.get(position).get("serviceid").toString());
+                        sendQueryByServiceID(serviceUrl, ShowDatailDataActivity.class, -1, hmap);
                         break;
                     //4、二手物品
                     case "4":

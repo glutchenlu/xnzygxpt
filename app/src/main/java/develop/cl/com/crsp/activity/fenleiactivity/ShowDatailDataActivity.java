@@ -6,8 +6,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,10 +20,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import cn.qqtheme.framework.picker.FilePicker;
+import cn.qqtheme.framework.util.FileUtils;
+import cn.qqtheme.framework.util.StorageUtils;
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Basic;
 import develop.cl.com.crsp.JavaBean.MyCollection;
@@ -34,54 +44,50 @@ import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
 import develop.cl.com.crsp.myutil.VolleyCallback;
 
-public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClickListener {
+public class ShowDatailDataActivity extends BaseActivity implements View.OnClickListener {
 
     private Map<String, Object> map;
-    private int classposition;
     private Intent mIntent;
     private RequestQueue mQueue;
     private VolleyCallback volleyCallback;
-    private static final String Tag = "ShowDetailGoodsActivity";
+    private static final String Tag = "ShowDatailDataActivity";
 
     private Button btnCall;
-    private TextView tvStation;
-    private TextView tvStationName;
-    private TextView tvReceivetime;
-    private TextView tvPrice;
-    private TextView tvShoucang;
-    private TextView tvDegree;
-    private TextView tvDetail;
-    private TextView tvArea;
     private TextView tvName;
     private CircleImageView ivPic;
     private LinearLayout lyUser;
 
+    private GridView gv_data;
+    private SimpleAdapter sadapter;
+    private List<Map<String, Object>> datalist;
+
     private String nextMap;
     private String showtpye;
+    private TextView tvDetail;
+    private TextView tvShoucang;
+    private TextView tvTitle;
+    private TextView tvTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.show_detail_fuwu);
+        setContentView(R.layout.show_detail_data);
         findViewById();
         initView();
     }
 
     @Override
     protected void findViewById() {
+        tvShoucang = (TextView) this.findViewById(R.id.tv_data_shoucang);
+        tvName = (TextView) this.findViewById(R.id.tv_data_user_name);
+        ivPic = (CircleImageView) this.findViewById(R.id.iv_data_user_pic);
+        btnCall = (Button) this.findViewById(R.id.btn_datadetail_calluser);
+        lyUser = (LinearLayout) findViewById(R.id.ly_data_user);
+        gv_data = (GridView) findViewById(R.id.gv_datadetail_data);
 
-        tvPrice = (TextView) this.findViewById(R.id.tv_fuwudetail_price);
-        tvStation = (TextView) this.findViewById(R.id.tv_fuwudetail_station);
-        tvStationName = (TextView) this.findViewById(R.id.tv_fuwudetail_stationname);
-        tvReceivetime = (TextView) this.findViewById(R.id.tv_fuwudetail_receivetime);
-        tvShoucang = (TextView) this.findViewById(R.id.tv_fuwu_shoucang);
-        tvDegree = (TextView) this.findViewById(R.id.tv_fuwudetail_degree);
-        tvDetail = (TextView) this.findViewById(R.id.tv_fuwudetail_detail);
-        tvArea = (TextView) this.findViewById(R.id.tv_fuwudetail_area);
-        tvName = (TextView) this.findViewById(R.id.tv_fuwu_user_name);
-        ivPic = (CircleImageView) this.findViewById(R.id.iv_fuwu_user_pic);
-        btnCall = (Button) this.findViewById(R.id.btn_fuwudetail_calluser);
-        lyUser = (LinearLayout) findViewById(R.id.ly_fuwu_user);
+        tvTitle = (TextView) this.findViewById(R.id.tv_datadetail_title);
+        tvTime = (TextView) this.findViewById(R.id.tv_datadetail_releasetime);
+        tvDetail = (TextView) this.findViewById(R.id.tv_datadetail_detal);
     }
 
     @Override
@@ -89,12 +95,21 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
         lyUser.setOnClickListener(this);
         btnCall.setOnClickListener(this);
         tvShoucang.setOnClickListener(this);
+        datalist = new ArrayList<Map<String, Object>>();
         //从Intent获得额外信息
         mIntent = this.getIntent();
         map = (Map<String, Object>) mIntent.getSerializableExtra("map");
         showtpye = map.get("type").toString();
-        classposition = mIntent.getIntExtra("classposition", -1);
-        mQueue = Volley.newRequestQueue(ShowDetailFuwuActivity.this);
+        String[] datanamestr = map.get("data_name").toString().split(",");
+        String[] datapathistr = map.get("data_path").toString().split(",");
+        strToMap(datanamestr, datapathistr);
+
+        mQueue = Volley.newRequestQueue(ShowDatailDataActivity.this);
+        String[] mapName = new String[]{"data_name"};
+        int[] controlId = new int[]{R.id.tv_fabu_class_item};
+        sadapter = new SimpleAdapter(ShowDatailDataActivity.this, datalist
+                , R.layout.gv_fabu_class_item, mapName, controlId);
+        gv_data.setAdapter(sadapter);
         /**
          * 请求数据
          */
@@ -115,19 +130,11 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
                         JSONObject beanMap = JSON.parseObject(jsonMap.get("returnBean").toString());
                         nextMap = beanMap.toJSONString();
                         Basic locbasic = JSON.parseObject(beanMap.get("basic").toString(), Basic.class);
-                        if (classposition == 0) {
-                            tvStationName.setText("快递商家：");
-                            tvStation.setText(map.get("merchant").toString());
-                        } else if (classposition == 1) {
-                            tvStation.setText(map.get("station").toString());
-                        }
                         //卖家名称
                         tvName.setText(locbasic.getName());
-                        tvReceivetime.setText(map.get("receive_time").toString());
-                        tvPrice.setText(map.get("price").toString());
-                        tvDegree.setText(map.get("degree").toString());
                         tvDetail.setText(map.get("detail").toString());
-                        tvArea.setText(map.get("area").toString());
+                        tvTitle.setText(map.get("title").toString());
+                        tvTime.setText(map.get("release_time").toString());
                         ImageRequest imageRequest = new ImageRequest(locbasic.getPicture(),
                                 new Response.Listener<Bitmap>() {
                                     @Override
@@ -151,19 +158,58 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
          * 请求卖家信息
          */
         DFVolley.NoMReq(mQueue, userUrl, volleyCallback);
+        gv_data.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String path = datalist.get(position).get("data_path").toString();
+                String name = datalist.get(position).get("data_name").toString();
+                onDirPicker(name, path, position);
+            }
+        });
+    }
+
+    public void onDirPicker(final String name, final String path, int position) {
+        FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
+        picker.setRootPath(StorageUtils.getExternalRootPath() + "Download/");
+        picker.setItemHeight(30);
+        picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
+            @Override
+            public void onFilePicked(final String currentPath) {
+                Log.d("currentPath", currentPath);
+                StringRequest stringRequest = new StringRequest(0, path,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                FileUtils.writeText(currentPath + "/" + name, response);
+                                Log.d("TAG", response);
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("TAG", error.getMessage(), error);
+                    }
+                });
+                mQueue.add(stringRequest);
+            }
+        });
+        picker.show();
+    }
+
+    protected void strToMap(String[] strname, String[] strpath) {
+        for (int i = 0; i < strname.length; i++) {
+            Map<String, Object> locmap = new HashMap<String, Object>();
+            locmap.put("data_name", strname[i]);
+            locmap.put("data_path", strpath[i]);
+            datalist.add(locmap);
+        }
     }
 
     protected void addShoucang() {
-        mQueue = Volley.newRequestQueue(ShowDetailFuwuActivity.this);
+        mQueue = Volley.newRequestQueue(ShowDatailDataActivity.this);
         MyCollection mycollection = new MyCollection();
-        mycollection.setUserid(MySharedPreferences.getUserID(ShowDetailFuwuActivity.this));
-        if (1 == (Integer) map.get("type")) {
-            mycollection.setServiceid((Integer) map.get("courierid"));
-            mycollection.setTypeName("快递代领");
-        } else if (5 == (Integer) map.get("type")) {
-            mycollection.setServiceid((Integer) map.get("train_ticketid"));
-            mycollection.setTypeName("火车票代领");
-        }
+        mycollection.setUserid(MySharedPreferences.getUserID(ShowDatailDataActivity.this));
+        mycollection.setServiceid((Integer) map.get("learning_dataid"));
+        mycollection.setTypeName("学习资料");
         mycollection.setType((Integer) map.get("type"));
         mycollection.setServiceTitle(map.get("detail").toString());
         String[] str = new String[]{"userid", "serviceid", "typeName", "type", "serviceTitle"};
@@ -200,32 +246,26 @@ public class ShowDetailFuwuActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ly_fuwu_user:
-                mIntent = new Intent(ShowDetailFuwuActivity.this, ShowUserInfoActivity.class);
+            case R.id.ly_data_user:
+                mIntent = new Intent(ShowDatailDataActivity.this, ShowUserInfoActivity.class);
                 mIntent.putExtra("nextMap", nextMap);
                 startActivity(mIntent);
                 break;
-            case R.id.btn_fuwudetail_calluser:
-                if (CheckUtil.checkLogin(ShowDetailFuwuActivity.this)) {
-                    if (MySharedPreferences.getBasicData(
-                            ShowDetailFuwuActivity.this).getCredit() >=
-                            Integer.parseInt(map.get("degree").toString())) {
-                        mIntent = new Intent(ShowDetailFuwuActivity.this, SendMessageActivity.class);
-                        mIntent.putExtra("touserid", map.get("userid").toString());
-                        mIntent.putExtra("type", showtpye);
-                        startActivity(mIntent);
-                    } else {
-                        DisPlay("您的信誉等级不够，无法联系发布者！");
-                    }
+            case R.id.btn_datadetail_calluser:
+                if (CheckUtil.checkLogin(ShowDatailDataActivity.this)) {
+                    mIntent = new Intent(ShowDatailDataActivity.this, SendMessageActivity.class);
+                    mIntent.putExtra("touserid", map.get("userid").toString());
+                    mIntent.putExtra("type", showtpye);
+                    startActivity(mIntent);
                 } else {
-                    Toast.makeText(ShowDetailFuwuActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShowDatailDataActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.tv_fuwu_shoucang:
-                if (CheckUtil.checkLogin(ShowDetailFuwuActivity.this)) {
+            case R.id.tv_data_shoucang:
+                if (CheckUtil.checkLogin(ShowDatailDataActivity.this)) {
                     addShoucang();
                 } else {
-                    Toast.makeText(ShowDetailFuwuActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShowDatailDataActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                 }
             default:
                 break;

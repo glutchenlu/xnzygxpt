@@ -25,6 +25,7 @@ import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.activity.SearchActivity;
 import develop.cl.com.crsp.activity.fabuactivity.FabuClassListActivity;
+import develop.cl.com.crsp.myutil.CheckUtil;
 import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.GridViewData;
 import develop.cl.com.crsp.myutil.MyCheckNet;
@@ -138,6 +139,9 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
                         String typeName = locMap.get("typeName").toString();
                         String sendUrl = "";
                         Map<String, String> hmap = new HashMap<String, String>();
+                        if (CheckUtil.checkLogin(FenleiClassListActivity.this)) {
+                            hmap.put("school", locSchool);
+                        }
                         switch (firstposition) {
                             case 0:
 //                                sendUrl = ServerInformation.URL +
@@ -145,32 +149,26 @@ public class FenleiClassListActivity extends BaseActivity implements View.OnClic
 //                                        + typeName + "&school=" + locSchool;
                                 sendUrl = ServerInformation.URL + "secondgoods/queryclass";
                                 hmap.put("classify", typeName);
-                                hmap.put("school", locSchool);
                                 break;
                             case 1:
                                 sendUrl = ServerInformation.URL + "goods/queryclass";
                                 hmap.put("classify", typeName);
-                                hmap.put("school", locSchool);
                                 break;
                             case 2:
                                 sendUrl = ServerInformation.URL + "learningdata/queryclass";
                                 hmap.put("classify", typeName);
-                                hmap.put("school", locSchool);
                                 break;
                             case 3:
                                 if ("快递代领".equals(typeName)) {
                                     sendUrl = ServerInformation.URL + "courier/querybyschool";
-                                    hmap.put("school", locSchool);
                                 } else if ("火车票代领".equals(typeName)) {
                                     sendUrl = ServerInformation.URL + "trainticket/querybyschool";
-                                    hmap.put("school", locSchool);
                                 }
                                 break;
                             case 4:
                                 sendUrl = ServerInformation.URL +
                                         "information/queryclass";
                                 hmap.put("classify", typeName);
-                                hmap.put("school", locSchool);
                                 break;
                             default:
                                 break;

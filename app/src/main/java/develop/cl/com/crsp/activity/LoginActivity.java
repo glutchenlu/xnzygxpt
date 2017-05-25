@@ -52,12 +52,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private boolean isDisplayflag = false;//是否显示密码
     private String getloginaccount;
     private String getpassword;
-    private TextView find_password;
     private TextView tvToMain;
     private Button register;
     private Button loginBtn;
     private Intent mIntent;
     private VolleyCallback volleyCallback;
+    private TextView etModify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +76,18 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         isShowPassword = (ToggleButton) this.findViewById(R.id.isShowPassword);
         loginBtn = (Button) this.findViewById(R.id.login);
         register = (Button) this.findViewById(R.id.register);
-        find_password = (TextView) this.findViewById(R.id.find_password);
         tvToMain = (TextView) this.findViewById(R.id.login_toMain);
         getpassword = loginpassword.getText().toString();
         getloginaccount = loginaccount.getText().toString();
+        etModify = (TextView) this.findViewById(R.id.modify_password);
     }
 
 
     @Override
     protected void initView() {
+        etModify.setOnClickListener(this);
         register.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
-        find_password.setOnClickListener(this);
         tvToMain.setOnClickListener(this);
         isShowPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
@@ -260,6 +260,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             case R.id.login_toMain:
                 mIntent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(mIntent);
+            case R.id.modify_password:
+                mIntent = new Intent(LoginActivity.this, ModifyPassWordActivity.class);
+                startActivity(mIntent);
+                break;
             default:
                 break;
         }

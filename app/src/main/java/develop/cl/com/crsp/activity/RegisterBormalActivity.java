@@ -23,6 +23,7 @@ import develop.cl.com.crsp.JavaBean.XUser;
 import develop.cl.com.crsp.R;
 import develop.cl.com.crsp.adapter.AddressPickTask;
 import develop.cl.com.crsp.myutil.DFVolley;
+import develop.cl.com.crsp.myutil.MyCheckNet;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
@@ -226,8 +227,12 @@ public class RegisterBormalActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_register_do:
-                checkRegister();
-                sendServer();
+                if (MyCheckNet.isNetworkAvailable(RegisterBormalActivity.this)) {
+                    checkRegister();
+                    sendServer();
+                } else {
+                    DisPlay("请检查您的网络连接");
+                }
                 break;
             default:
                 break;

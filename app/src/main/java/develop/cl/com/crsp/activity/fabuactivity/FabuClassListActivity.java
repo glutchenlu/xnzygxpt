@@ -67,7 +67,7 @@ public class FabuClassListActivity extends BaseActivity implements View.OnClickL
             case 2:
                 String[] typeName2 = {"英语四/六级", "计算机一/二等级考试", "考研相关", "文史类书籍"
                         , "理学类", "信息类", "课外读物", "考试相关", "知识分享", "其他"};
-                mySetAdapter(lv_class, datalist, sadapter, typeName2, FabuGoodsdetailActivity.class);
+                mySetAdapter(lv_class, datalist, sadapter, typeName2, FabuDataDetailActivity.class);
                 break;
             case 3:
                 String[] typeName3 = {"快递代领", "火车票代领"};

@@ -2,16 +2,25 @@ package develop.cl.com.crsp.JavaBean;
 
 public class LearningData {
 
-    private int learning_dateid;
+    private int learning_dataid;
     private String userid;
     private String classify;
     private String title;
     private String detail;
     private String keyword;
     private String data_name;
-    private String data_time;
+    private String release_time;
     private int type;
     private String school;
+    private String data_path;
+
+    public String getData_path() {
+        return data_path;
+    }
+
+    public void setData_path(String data_path) {
+        this.data_path = data_path;
+    }
 
     public String getSchool() {
         return school;
@@ -30,12 +39,12 @@ public class LearningData {
     }
 
 
-    public int getLearning_dateid() {
-        return learning_dateid;
+    public int getLearning_dataid() {
+        return learning_dataid;
     }
 
-    public void setLearning_dateid(int learning_dateid) {
-        this.learning_dateid = learning_dateid;
+    public void setLearning_dataid(int learning_dataid) {
+        this.learning_dataid = learning_dataid;
     }
 
     public String getUserid() {
@@ -86,13 +95,11 @@ public class LearningData {
         this.data_name = data_name;
     }
 
-    public String getData_time() {
-        return data_time;
+    public String getRelease_time() {
+        return release_time;
     }
 
-    public void setData_time(String data_time) {
-        this.data_time = data_time;
+    public void setRelease_time(String release_time) {
+        this.release_time = release_time;
     }
-
-
 }

@@ -27,7 +27,7 @@ import develop.cl.com.crsp.JavaBean.SecondGoods;
 import develop.cl.com.crsp.JavaBean.TrainTicket;
 import develop.cl.com.crsp.JavaBean.Work;
 import develop.cl.com.crsp.R;
-import develop.cl.com.crsp.activity.MainActivity;
+import develop.cl.com.crsp.activity.fenleiactivity.ShowDatailDataActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailFuwuActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailGoodsActivity;
 import develop.cl.com.crsp.activity.fenleiactivity.ShowDetailInfoActivity;
@@ -109,7 +109,9 @@ public class UserFabuActivity extends BaseActivity {
                         mIntent.putExtra("map", (Serializable) nextMap);
                         break;
                     case "3":
-                        mIntent = new Intent(UserFabuActivity.this, MainActivity.class);
+                        mIntent = new Intent(UserFabuActivity.this, ShowDatailDataActivity.class);
+                        //无法直接传map，需要序列化
+                        mIntent.putExtra("map", (Serializable) nextMap);
                         break;
                     case "4":
                         mIntent = new Intent(UserFabuActivity.this, ShowDetailGoodsActivity.class);
