@@ -9,7 +9,9 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-
+/**
+ * 重写Volley中的StringRequest，进行post请求
+ */
 public class MyStringRequest extends Request<String> {
     private final Response.Listener<String> mListener;
     private Map<String, String> mMap;

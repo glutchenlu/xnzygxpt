@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 
+/**
+ * 设置GridView的高度，进行动态调整GridView的高度
+ */
 public class SetHight {
     public static void setListViewHeightBasedOnChildren(GridView listView, int code) {
         // 获取listview的adapter

@@ -159,6 +159,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public void onTabSelected(int position) {
         if (position == 2) {
             Log.i("positon", position + "");
+            MySharedPreferences.setlastQueryMessageTime(MainActivity.this);
             xiaoxiBottomNavigationItem.setBadgeItem(numberBadItem);
             numberBadItem.hide(true);
         }

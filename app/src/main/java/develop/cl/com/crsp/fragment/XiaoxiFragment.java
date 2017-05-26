@@ -272,7 +272,7 @@ public class XiaoxiFragment extends Fragment {
     }
 
     /**
-     * 根据选择的分类请求数据
+     *
      */
     protected void LocQueryServer() {
         mQueue = Volley.newRequestQueue(getActivity());

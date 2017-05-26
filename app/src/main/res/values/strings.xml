@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">校内资源共享平台</string>
+    <string name="app_name">CRSP</string>
 
     <!-- 菜单 -->
     <string name="menu_setting">设置</string>

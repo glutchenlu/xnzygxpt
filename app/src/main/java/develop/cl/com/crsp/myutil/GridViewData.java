@@ -6,14 +6,23 @@ import java.util.Map;
 
 import develop.cl.com.crsp.R;
 
-
+/**
+ * 将listview或GridView中item固定的参数绑定
+ */
 public class GridViewData {
+
     private List<Map<String, Object>> datalist;
 
     public GridViewData(List<Map<String, Object>> datalist) {
         this.datalist = datalist;
     }
 
+    /**
+     * 控件绑定的item只有1个显示文字的控件，将参数封装到list内
+     *
+     * @param iconName 文字参数
+     * @return 已经绑定好参数的list
+     */
     public List<Map<String, Object>> getData1(String[] iconName) {
         for (int i = 0; i < iconName.length; i++) {
             Map<String, Object> map = new HashMap<String, Object>();
@@ -23,9 +32,16 @@ public class GridViewData {
         return datalist;
     }
 
+    /**
+     * 控件绑定的item有2个控件，一个文字，一个图片，图片固定，将参数封装至list
+     *
+     * @param iconName 文字参数
+     * @return 已经绑定好参数的list
+     */
     public List<Map<String, Object>> getDataP1(String[] iconName) {
         for (int i = 0; i < iconName.length; i++) {
             Map<String, Object> map = new HashMap<String, Object>();
+            //listview右键头
             map.put("pic", R.mipmap.next);
             map.put("typeName", iconName[i]);
             datalist.add(map);
@@ -33,6 +49,13 @@ public class GridViewData {
         return datalist;
     }
 
+    /**
+     * 控件绑定的item有2个控件，一个文字，一个图片，图片不固定，将参数封装至list
+     *
+     * @param pic      图片参数
+     * @param iconName 文字参数
+     * @return 已经绑定好参数的list
+     */
     public List<Map<String, Object>> getData2(int[] pic, String[] iconName) {
         for (int i = 0; i < iconName.length; i++) {
             Map<String, Object> map = new HashMap<String, Object>();
@@ -43,6 +66,14 @@ public class GridViewData {
         return datalist;
     }
 
+    /**
+     * 控件绑定的item有3个控件，2个文字，1个图片，图片不固定，将参数封装至list
+     *
+     * @param pic       图片参数
+     * @param iconName1 文字参数1
+     * @param iconName2 文字参数2
+     * @return 已经绑定好参数的list
+     */
     public List<Map<String, Object>> getData3(int[] pic, String[] iconName1, String[] iconName2) {
         for (int i = 0; i < iconName1.length; i++) {
             Map<String, Object> map = new HashMap<String, Object>();
@@ -53,30 +84,4 @@ public class GridViewData {
         }
         return datalist;
     }
-
-    public List<Map<String, Object>> getData4(String[] iconName1, String[] iconName2, String[] time) {
-        for (int i = 0; i < iconName1.length; i++) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("pic", R.drawable.ic_launcher);
-            map.put("name1", iconName1[i]);
-            map.put("name2", iconName2[i]);
-            map.put("time", time[i]);
-            datalist.add(map);
-        }
-        return datalist;
-    }
-
-//        for (int i = 0; i < selectwork.getWork_title().length; i++) {
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put("title", selectwork.getWork_title()[i]);
-//            map.put("work_sal", selectwork.getWork_sal()[i]);
-//            map.put("work_welfare", selectwork.getWork_welfare()[i]);
-//            map.put("work_company", selectwork.getWork_company()[i]);
-//            map.put("work_time", selectwork.getWork_time()[i]);
-//            map.put("work_land", selectwork.getWork_land()[i]);
-//            map.put("work_submit", selectwork.getWork_submit());
-//            datalist.add(map);
-//        }
-//        return datalist;
-//    }
 }

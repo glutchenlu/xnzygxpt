@@ -6,11 +6,14 @@ import android.util.LruCache;
 import com.android.volley.toolbox.ImageLoader;
 
 /**
- * 实现ImageCache接口，进行缓存设置
+ * 实现Volley中ImageCache接口，进行缓存设置
  */
 public class BitmapCache implements ImageLoader.ImageCache {
     private LruCache<String, Bitmap> mCache;
 
+    /**
+     * 设置缓存大小
+     */
     public BitmapCache() {
         int maxSize = 10 * 1024 * 1024;
         mCache = new LruCache<String, Bitmap>(maxSize) {
