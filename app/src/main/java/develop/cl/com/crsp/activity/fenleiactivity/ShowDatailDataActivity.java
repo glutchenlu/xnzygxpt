@@ -20,7 +20,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.qqtheme.framework.picker.FilePicker;
-import cn.qqtheme.framework.util.FileUtils;
 import cn.qqtheme.framework.util.StorageUtils;
 import develop.cl.com.crsp.BaseActivity;
 import develop.cl.com.crsp.JavaBean.Basic;
@@ -42,6 +40,7 @@ import develop.cl.com.crsp.myutil.DFVolley;
 import develop.cl.com.crsp.myutil.MyList;
 import develop.cl.com.crsp.myutil.MySharedPreferences;
 import develop.cl.com.crsp.myutil.ServerInformation;
+import develop.cl.com.crsp.myutil.UploadUtil;
 import develop.cl.com.crsp.myutil.VolleyCallback;
 
 public class ShowDatailDataActivity extends BaseActivity implements View.OnClickListener {
@@ -164,7 +163,7 @@ public class ShowDatailDataActivity extends BaseActivity implements View.OnClick
                 String path = datalist.get(position).get("data_path").toString();
                 String name = datalist.get(position).get("data_name").toString();
                 if (CheckUtil.checkLogin(ShowDatailDataActivity.this)) {
-                    onDirPicker(name, path, position);
+                    onDirPicker(name, path);
                 } else {
                     Toast.makeText(ShowDatailDataActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                 }
@@ -172,28 +171,15 @@ public class ShowDatailDataActivity extends BaseActivity implements View.OnClick
         });
     }
 
-    public void onDirPicker(final String name, final String path, int position) {
+    public void onDirPicker(final String name, final String path) {
         FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
         picker.setRootPath(StorageUtils.getExternalRootPath() + "Download/");
         picker.setItemHeight(30);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
-            public void onFilePicked(final String currentPath) {
+            public void onFilePicked(String currentPath) {
                 Log.d("currentPath", currentPath);
-                StringRequest stringRequest = new StringRequest(0, path,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                FileUtils.writeText(currentPath + "/" + name, response);
-                                Log.d("TAG", response);
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("TAG", error.getMessage(), error);
-                    }
-                });
-                mQueue.add(stringRequest);
+                UploadUtil.downloadFile(path, currentPath, name);
             }
         });
         picker.show();

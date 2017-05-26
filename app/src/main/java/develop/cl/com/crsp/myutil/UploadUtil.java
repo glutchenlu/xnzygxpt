@@ -13,6 +13,10 @@ import com.android.volley.VolleyError;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,5 +151,45 @@ public class UploadUtil {
         });
         //将请求加入队列
         mQueue.add(profileUpdateRequest);
+    }
+
+    /**
+     * 下载文件
+     *
+     * @param getUrl 请求文件的URL
+     * @param dir    保存文件的地址
+     * @param fname  保存文件的名称
+     */
+    public static void downloadFile(final String getUrl, final String dir, final String fname) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(getUrl);
+                    URLConnection uc = url.openConnection();
+                    // System.out.println("文件大小："+(uc.getContentLength()/1024)+"KB");
+                    String path = dir + "/" + fname;
+                    File file = new File(path);
+                    if (!file.getParentFile().exists()) {
+                        System.out.println("目录路径不存在,创建中...");
+                        file.getParentFile().mkdirs();
+                        System.out.println("保存目录已创建。");
+                    }
+                    FileOutputStream os = new FileOutputStream(path);
+                    InputStream is = uc.getInputStream();
+                    byte[] b = new byte[1024];
+                    int len = 0;
+                    while ((len = is.read(b)) != -1) {
+                        os.write(b, 0, len);
+                    }
+                    os.close();
+                    is.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+        thread.start();
     }
 }
